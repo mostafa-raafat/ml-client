@@ -17,17 +17,19 @@ import { appWithTranslation } from 'next-i18next';
 // @mui
 import { NoSsr } from '@mui/material';
 // contexts
-import { SettingsProvider } from '../contexts/SettingsContext';
-import { CollapseDrawerProvider } from '../contexts/CollapseDrawerContext';
+import { SettingsProvider } from 'Contexts/SettingsContext';
+import { CollapseDrawerProvider } from 'Contexts/CollapseDrawerContext';
+import { AuthProvider } from 'Contexts/FirebaseContext';
 // theme
-import ThemeProvider from '../theme';
-import GlobalStyles from '../theme/globalStyles';
+import ThemeProvider from 'Theme/index';
+import GlobalStyles from 'Theme/globalStyles';
 // components
-import Settings from '../components/settings';
-import RtlLayout from '../components/RtlLayout';
-import ProgressBar from '../components/ProgressBar';
-import ThemeColorPresets from '../components/ThemeColorPresets';
-import MotionLazyContainer from '../components/animate/MotionLazyContainer';
+import Settings from 'Components/settings';
+import RtlLayout from 'Components/RtlLayout';
+import ProgressBar from 'Components/ProgressBar';
+import ThemeColorPresets from 'Components/ThemeColorPresets';
+import MotionLazyContainer from 'Components/animate/MotionLazyContainer';
+import NotistackProvider from 'Components/NotistackProvider';
 
 // ----------------------------------------------------------------------
 
@@ -43,22 +45,26 @@ const MyApp = (props) => {
       </Head>
 
       <SettingsProvider>
-        <CollapseDrawerProvider>
-          <ThemeProvider>
-            <ThemeColorPresets>
-              <RtlLayout>
-                <MotionLazyContainer>
-                  <NoSsr>
-                    <Settings />
-                  </NoSsr>
-                  <GlobalStyles />
-                  <ProgressBar />
-                  {getLayout(<Component {...pageProps} />)}
-                </MotionLazyContainer>
-              </RtlLayout>
-            </ThemeColorPresets>
-          </ThemeProvider>
-        </CollapseDrawerProvider>
+        <AuthProvider>
+          <CollapseDrawerProvider>
+            <ThemeProvider>
+              <ThemeColorPresets>
+                <RtlLayout>
+                  <NotistackProvider>
+                    <MotionLazyContainer>
+                      <NoSsr>
+                        <Settings />
+                      </NoSsr>
+                      <GlobalStyles />
+                      <ProgressBar />
+                      {getLayout(<Component {...pageProps} />)}
+                    </MotionLazyContainer>
+                  </NotistackProvider>
+                </RtlLayout>
+              </ThemeColorPresets>
+            </ThemeProvider>
+          </CollapseDrawerProvider>
+        </AuthProvider>
       </SettingsProvider>
     </>
   );

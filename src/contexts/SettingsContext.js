@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import { createContext } from 'react';
 // hooks
-import useLocalStorage from '../hooks/useLocalStorage';
+import useLocalStorage from 'Hooks/useLocalStorage';
 // utils
-import getColorPresets, { colorPresets, defaultPreset } from '../utils/getColorPresets';
+import getColorPresets, { colorPresets, defaultPreset } from 'Utils/getColorPresets';
 // config
 import { defaultSettings } from '../config';
 
