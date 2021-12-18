@@ -5,16 +5,16 @@ import { useRouter } from 'next/router';
 import { styled, useTheme } from '@mui/material/styles';
 import { Box, Stack, Drawer } from '@mui/material';
 // hooks
-import useResponsive from '../../../hooks/useResponsive';
-import useCollapseDrawer from '../../../hooks/useCollapseDrawer';
+import useResponsive from 'Hooks/useResponsive';
+import useCollapseDrawer from 'Hooks/useCollapseDrawer';
 // utils
 import cssStyles from '../../../utils/cssStyles';
 // config
-import { DASHBOARD_NAVBAR_WIDTH, DASHBOARD_NAVBAR_COLLAPSE_WIDTH } from '../../../config';
+import { DASHBOARD_NAVBAR_WIDTH, DASHBOARD_NAVBAR_COLLAPSE_WIDTH } from 'Config';
 // components
-import Logo from '../../../components/Logo';
-import Scrollbar from '../../../components/Scrollbar';
-import NavSection from '../../../components/nav-section';
+import Logo from 'Components/Logo';
+import Scrollbar from 'Components/Scrollbar';
+import NavSection from 'Components/nav-section';
 //
 import NavbarAccount from './NavbarAccount';
 import NavbarDocs from './NavbarDocs';

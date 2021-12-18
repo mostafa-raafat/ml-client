@@ -1,5 +1,5 @@
 // components
-import SvgIconStyle from '../../../components/SvgIconStyle';
+import SvgIconStyle from 'Components/SvgIconStyle';
 
 // ----------------------------------------------------------------------
 

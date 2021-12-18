@@ -5,8 +5,8 @@ import { Input, Slide, Button, InputAdornment, ClickAwayListener } from '@mui/ma
 // utils
 import cssStyles from '../../../utils/cssStyles';
 // components
-import Iconify from '../../../components/Iconify';
-import { IconButtonAnimate } from '../../../components/animate';
+import Iconify from 'Components/Iconify';
+import { IconButtonAnimate } from 'Components/animate';
 
 // ----------------------------------------------------------------------
 

@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { Box, Stack, AppBar, Toolbar } from '@mui/material';
 // hooks
-import useOffSetTop from '../../../hooks/useOffSetTop';
-import useResponsive from '../../../hooks/useResponsive';
-import useCollapseDrawer from '../../../hooks/useCollapseDrawer';
+import useOffSetTop from 'Hooks/useOffSetTop';
+import useResponsive from 'Hooks/useResponsive';
+import useCollapseDrawer from 'Hooks/useCollapseDrawer';
 // utils
 import cssStyles from '../../../utils/cssStyles';
 // config
@@ -14,10 +14,10 @@ import {
   DASHBOARD_HEADER_MOBILE,
   DASHBOARD_HEADER_DESKTOP,
   DASHBOARD_NAVBAR_COLLAPSE_WIDTH,
-} from '../../../config';
+} from 'Config';
 // components
-import Iconify from '../../../components/Iconify';
-import { IconButtonAnimate } from '../../../components/animate';
+import Iconify from 'Components/Iconify';
+import { IconButtonAnimate } from 'Components/animate';
 //
 import Searchbar from './Searchbar';
 import AccountPopover from './AccountPopover';

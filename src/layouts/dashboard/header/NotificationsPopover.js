@@ -21,10 +21,10 @@ import { fToNow } from '../../../utils/formatTime';
 // _mock_
 import { _notifications } from '../../../_mock';
 // components
-import Iconify from '../../../components/Iconify';
-import Scrollbar from '../../../components/Scrollbar';
-import MenuPopover from '../../../components/MenuPopover';
-import { IconButtonAnimate } from '../../../components/animate';
+import Iconify from 'Components/Iconify';
+import Scrollbar from 'Components/Scrollbar';
+import MenuPopover from 'Components/MenuPopover';
+import { IconButtonAnimate } from 'Components/animate';
 
 // ----------------------------------------------------------------------
 

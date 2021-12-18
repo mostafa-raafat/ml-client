@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Box, Grid, Card, Stack, Container, Typography, CardHeader, CardContent } from '@mui/material';
 // layouts
-import DashboardLayout from '../../layouts/dashboard';
+import DashboardLayout from 'Layouts/dashboard';
 // hooks
-import useSettings from '../../hooks/useSettings';
+import useSettings from 'Hooks/useSettings';
 // components
-import Page from '../../components/Page';
-import Editor from '../../components/editor';
+import Page from 'Components/Page';
+import Editor from 'Components/editor';
 
 // ----------------------------------------------------------------------
 

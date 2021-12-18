@@ -1,17 +1,9 @@
 // @mui
-import {
-  Box,
-  Grid,
-  Radio,
-  Paper,
-  RadioGroup,
-  CardActionArea,
-  FormControlLabel,
-} from '@mui/material';
+import { Box, Grid, Radio, Paper, RadioGroup, CardActionArea, FormControlLabel } from '@mui/material';
 // hooks
-import useSettings from '../../hooks/useSettings';
+import useSettings from 'Hooks/useSettings';
 // components
-import Iconify from '../Iconify';
+import Iconify from 'Components/Iconify';
 
 // ----------------------------------------------------------------------
 
@@ -49,11 +41,7 @@ export default function SettingMode() {
                     }),
                   }}
                 >
-                  <Iconify
-                    icon={index === 0 ? 'eva:sun-fill' : 'eva:moon-fill'}
-                    width={24}
-                    height={24}
-                  />
+                  <Iconify icon={index === 0 ? 'eva:sun-fill' : 'eva:moon-fill'} width={24} height={24} />
                 </Box>
 
                 <FormControlLabel

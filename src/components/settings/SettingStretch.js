@@ -1,9 +1,9 @@
 // @mui
 import { Paper, CardActionArea, Stack } from '@mui/material';
 // hooks
-import useSettings from '../../hooks/useSettings';
+import useSettings from 'Hooks/useSettings';
 // components
-import Iconify from '../Iconify';
+import Iconify from 'Components/Iconify';
 
 // ----------------------------------------------------------------------
 

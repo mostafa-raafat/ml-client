@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react';
 import { alpha, styled } from '@mui/material/styles';
 import { Backdrop, Divider, Typography, Stack } from '@mui/material';
 // hooks
-import useSettings from '../../hooks/useSettings';
+import useSettings from 'Hooks/useSettings';
 // utils
-import cssStyles from '../../utils/cssStyles';
+import cssStyles from 'Utils/cssStyles';
 // config
 import { DRAWER_WIDTH, defaultSettings } from '../../config';
 //
@@ -45,8 +45,7 @@ const RootStyle = styled(m.div)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Settings() {
-  const { themeMode, themeDirection, themeColorPresets, themeStretch, onResetSetting } =
-    useSettings();
+  const { themeMode, themeDirection, themeColorPresets, themeStretch, onResetSetting } = useSettings();
   const [open, setOpen] = useState(false);
 
   const notDefault =
@@ -98,12 +97,7 @@ export default function Settings() {
         {open && (
           <>
             <RootStyle {...varSidebar}>
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-                sx={{ py: 2, pr: 1, pl: 2.5 }}
-              >
+              <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ py: 2, pr: 1, pl: 2.5 }}>
                 <Typography variant="subtitle1">Settings</Typography>
                 <div>
                   <IconButtonAnimate onClick={onResetSetting}>

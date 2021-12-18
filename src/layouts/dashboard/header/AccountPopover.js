@@ -4,8 +4,8 @@ import { useRef, useState } from 'react';
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, MenuItem, Typography, Stack, Avatar } from '@mui/material';
 // components
-import MenuPopover from '../../../components/MenuPopover';
-import { IconButtonAnimate } from '../../../components/animate';
+import MenuPopover from 'Components/MenuPopover';
+import { IconButtonAnimate } from 'Components/animate';
 
 // ----------------------------------------------------------------------
 
@@ -60,18 +60,10 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar
-          src="https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_5.jpg"
-          alt="Rayan Moran"
-        />
+        <Avatar src="https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_5.jpg" alt="Rayan Moran" />
       </IconButtonAnimate>
 
-      <MenuPopover
-        open={open}
-        onClose={handleClose}
-        anchorEl={anchorRef.current}
-        sx={{ width: 220 }}
-      >
+      <MenuPopover open={open} onClose={handleClose} anchorEl={anchorRef.current} sx={{ width: 220 }}>
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap>
             Kiley Barker
@@ -85,10 +77,7 @@ export default function AccountPopover() {
         <Stack spacing={0.5} sx={{ p: 1 }}>
           {MENU_OPTIONS.map((option) => (
             <NextLink key={option.label} href={option.linkTo}>
-              <MenuItem
-                onClick={handleClose}
-                sx={{ typography: 'body2', py: 1, px: 2, borderRadius: 1 }}
-              >
+              <MenuItem onClick={handleClose} sx={{ typography: 'body2', py: 1, px: 2, borderRadius: 1 }}>
                 {option.label}
               </MenuItem>
             </NextLink>
@@ -96,9 +85,7 @@ export default function AccountPopover() {
         </Stack>
         <Divider />
 
-        <MenuItem sx={{ typography: 'body2', py: 1, px: 2, borderRadius: 1, m: 1 }}>
-          Logout
-        </MenuItem>
+        <MenuItem sx={{ typography: 'body2', py: 1, px: 2, borderRadius: 1, m: 1 }}>Logout</MenuItem>
       </MenuPopover>
     </>
   );

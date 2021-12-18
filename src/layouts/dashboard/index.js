@@ -3,7 +3,7 @@ import { useState } from 'react';
 // @mui
 import { styled } from '@mui/material/styles';
 // hooks
-import useCollapseDrawer from '../../hooks/useCollapseDrawer';
+import useCollapseDrawer from 'Hooks/useCollapseDrawer';
 // config
 import {
   DASHBOARD_NAVBAR_WIDTH,

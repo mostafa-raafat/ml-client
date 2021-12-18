@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 // @mui
 import { styled } from '@mui/material/styles';
 // components
-import Logo from '../components/Logo';
+import Logo from 'Components/Logo';
 
 // ----------------------------------------------------------------------
 
