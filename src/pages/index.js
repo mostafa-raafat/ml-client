@@ -1,16 +1,57 @@
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
+// @mui
+import { styled } from '@mui/material/styles';
+// components
+import Page from 'Components/Page';
+// sections
+import {
+  HomeHero,
+  HomeMinimal,
+  HomeDarkMode,
+  HomeLookingFor,
+  HomeColorPresets,
+  HomePricingPlans,
+  HomeAdvertisement,
+  HomeCleanInterfaces,
+  HomeHugePackElements,
+} from 'Sections/home';
 
 // ----------------------------------------------------------------------
 
-export default function Index() {
-  const router = useRouter();
+const RootStyle = styled('div')(() => ({
+  height: '100%',
+}));
 
-  useEffect(() => {
-    if (router.pathname == '/') {
-      router.push('/dashboard/one');
-    }
-  });
+const ContentStyle = styled('div')(({ theme }) => ({
+  overflow: 'hidden',
+  position: 'relative',
+  backgroundColor: theme.palette.background.default,
+}));
 
-  return null;
+// ----------------------------------------------------------------------
+
+export default function HomePage() {
+  return (
+    <Page title="The starting point for your next project">
+      <RootStyle>
+        <HomeHero />
+        <ContentStyle>
+          <HomeMinimal />
+
+          <HomeHugePackElements />
+
+          <HomeDarkMode />
+
+          <HomeColorPresets />
+
+          <HomeCleanInterfaces />
+
+          <HomePricingPlans />
+
+          <HomeLookingFor />
+
+          <HomeAdvertisement />
+        </ContentStyle>
+      </RootStyle>
+    </Page>
+  );
 }
