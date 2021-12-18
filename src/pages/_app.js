@@ -12,6 +12,8 @@ import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 import PropTypes from 'prop-types';
 // next
 import Head from 'next/head';
+// i18next
+import { appWithTranslation } from 'next-i18next';
 // @mui
 import { NoSsr } from '@mui/material';
 // contexts
@@ -29,12 +31,7 @@ import MotionLazyContainer from '../components/animate/MotionLazyContainer';
 
 // ----------------------------------------------------------------------
 
-MyApp.propTypes = {
-  Component: PropTypes.func,
-  pageProps: PropTypes.any,
-};
-
-export default function MyApp(props) {
+const MyApp = (props) => {
   const { Component, pageProps } = props;
 
   const getLayout = Component.getLayout ?? ((page) => page);
@@ -65,4 +62,11 @@ export default function MyApp(props) {
       </SettingsProvider>
     </>
   );
-}
+};
+
+MyApp.propTypes = {
+  Component: PropTypes.func,
+  pageProps: PropTypes.any,
+};
+
+export default appWithTranslation(MyApp);
