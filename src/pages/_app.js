@@ -1,6 +1,10 @@
 // scroll bar
 import 'simplebar/src/simplebar.css';
 
+// slick-carousel
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
 // editor
 import 'react-quill/dist/quill.snow.css';
 
@@ -30,6 +34,7 @@ import ProgressBar from 'Components/ProgressBar';
 import ThemeColorPresets from 'Components/ThemeColorPresets';
 import MotionLazyContainer from 'Components/animate/MotionLazyContainer';
 import NotistackProvider from 'Components/NotistackProvider';
+import { ChartStyle } from 'Components/chart';
 
 // ----------------------------------------------------------------------
 
@@ -56,6 +61,7 @@ const MyApp = (props) => {
                         <Settings />
                       </NoSsr>
                       <GlobalStyles />
+                      <ChartStyle />
                       <ProgressBar />
                       {getLayout(<Component {...pageProps} />)}
                     </MotionLazyContainer>
