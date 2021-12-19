@@ -7,14 +7,14 @@ import useOffSetTop from 'Hooks/useOffSetTop';
 import useResponsive from 'Hooks/useResponsive';
 import useCollapseDrawer from 'Hooks/useCollapseDrawer';
 // utils
-import cssStyles from '../../../utils/cssStyles';
+import cssStyles from 'Utils/cssStyles';
 // config
 import {
   DASHBOARD_NAVBAR_WIDTH,
   DASHBOARD_HEADER_MOBILE,
   DASHBOARD_HEADER_DESKTOP,
   DASHBOARD_NAVBAR_COLLAPSE_WIDTH,
-} from 'Config';
+} from 'src/config';
 // components
 import Iconify from 'Components/Iconify';
 import { IconButtonAnimate } from 'Components/animate';

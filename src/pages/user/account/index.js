@@ -23,13 +23,13 @@ import useLocales from 'Hooks/useLocales';
 
 // ----------------------------------------------------------------------
 
-export default function Home(props) {
+export default function UserAccount(props) {
   const { themeStretch } = useSettings();
   const { translate } = useLocales('home');
   console.log(translate('title'));
 
   return (
-    <Page title="General: Banking">
+    <Page title="MoneyFly - Home">
       <Container maxWidth={themeStretch ? false : 'xl'}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={7}>
@@ -85,6 +85,6 @@ export const getStaticProps = async ({ locale }) => ({
 
 // ----------------------------------------------------------------------
 
-Home.getLayout = function getLayout(page) {
+UserAccount.getLayout = function getLayout(page) {
   return <DashboardLayout>{page}</DashboardLayout>;
 };

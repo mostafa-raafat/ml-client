@@ -1,43 +1,50 @@
 // components
-import SvgIconStyle from 'Components/SvgIconStyle';
-
+import { Icon } from '@iconify/react';
 // ----------------------------------------------------------------------
 
-const getIcon = (name) => <SvgIconStyle src={`/icons/${name}.svg`} sx={{ width: 1, height: 1 }} />;
-
 const ICONS = {
-  user: getIcon('ic_user'),
-  ecommerce: getIcon('ic_ecommerce'),
-  analytics: getIcon('ic_analytics'),
-  dashboard: getIcon('ic_dashboard'),
+  plus: <Icon icon="akar-icons:plus" />,
+  home: <Icon icon="bx:bx-home" />,
+  recipients: <Icon icon="bx:bx-group" />,
+  account: <Icon icon="bx:bx-user" />,
+  gift: <Icon icon="bx:bx-gift" />,
 };
 
 const sidebarConfig = [
   // GENERAL
   // ----------------------------------------------------------------------
   {
-    subheader: 'general v2.8.0',
+    subheader: '',
     items: [
-      { title: 'One', path: '/dashboard/one', icon: ICONS.dashboard },
-      { title: 'Two', path: '/dashboard/two', icon: ICONS.ecommerce },
-      { title: 'Three', path: '/dashboard/three', icon: ICONS.analytics },
+      { title: 'Home', path: '/user/account', icon: ICONS.home },
+      { title: 'Recipients', path: '/recipients', icon: ICONS.recipients },
+      { title: 'Account', path: '/account', icon: ICONS.account },
+      { title: 'Invite & earn 50 GBP', path: '/invite', icon: ICONS.gift },
     ],
   },
 
-  // MANAGEMENT
+  // Balances
   // ----------------------------------------------------------------------
   {
-    subheader: 'management',
+    subheader: 'balances',
     items: [
       {
-        title: 'user',
+        title: 'Open a balance',
         path: '/dashboard/user',
-        icon: ICONS.user,
-        children: [
-          { title: 'Four', path: '/dashboard/user/four' },
-          { title: 'Five', path: '/dashboard/user/five' },
-          { title: 'Six', path: '/dashboard/user/six' },
-        ],
+        icon: ICONS.plus,
+      },
+    ],
+  },
+
+  // Jars
+  // ----------------------------------------------------------------------
+  {
+    subheader: 'jars',
+    items: [
+      {
+        title: 'Open a jar',
+        path: '/dashboard/user',
+        icon: ICONS.plus,
       },
     ],
   },

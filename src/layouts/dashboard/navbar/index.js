@@ -10,7 +10,7 @@ import useCollapseDrawer from 'Hooks/useCollapseDrawer';
 // utils
 import cssStyles from '../../../utils/cssStyles';
 // config
-import { DASHBOARD_NAVBAR_WIDTH, DASHBOARD_NAVBAR_COLLAPSE_WIDTH } from 'Config';
+import { DASHBOARD_NAVBAR_WIDTH, DASHBOARD_NAVBAR_COLLAPSE_WIDTH } from 'src/config';
 // components
 import Logo from 'Components/Logo';
 import Scrollbar from 'Components/Scrollbar';
@@ -80,8 +80,6 @@ export default function DashboardNavbar({ isOpenSidebar, onCloseSidebar }) {
             <CollapseButton onToggleCollapse={onToggleCollapse} collapseClick={collapseClick} />
           )}
         </Stack>
-
-        <NavbarAccount isCollapse={isCollapse} />
       </Stack>
 
       <NavSection navConfig={navConfig} isCollapse={isCollapse} />
