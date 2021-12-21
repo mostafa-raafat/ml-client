@@ -1,5 +1,6 @@
 // components
 import { Icon } from '@iconify/react';
+import { PATH_DASHBOARD, PATH_PAGE } from 'Routes/paths';
 // ----------------------------------------------------------------------
 
 const ICONS = {
@@ -16,10 +17,10 @@ const sidebarConfig = [
   {
     subheader: '',
     items: [
-      { title: 'Home', path: '/user/account', icon: ICONS.home },
-      { title: 'Recipients', path: '/recipients', icon: ICONS.recipients },
-      { title: 'Account', path: '/account', icon: ICONS.account },
-      { title: 'Invite & earn 50 GBP', path: '/invite', icon: ICONS.gift },
+      { title: 'Home', path: PATH_DASHBOARD.root, icon: ICONS.home },
+      { title: 'Recipients', path: PATH_DASHBOARD.recipients, icon: ICONS.recipients },
+      { title: 'Account', path: PATH_DASHBOARD.account, icon: ICONS.account },
+      { title: 'Invite & earn 50 GBP', path: PATH_PAGE.invite, icon: ICONS.gift },
     ],
   },
 
@@ -30,7 +31,7 @@ const sidebarConfig = [
     items: [
       {
         title: 'Open a balance',
-        path: '/dashboard/user',
+        path: PATH_DASHBOARD.user.balances,
         icon: ICONS.plus,
       },
     ],
@@ -43,7 +44,7 @@ const sidebarConfig = [
     items: [
       {
         title: 'Open a jar',
-        path: '/dashboard/user',
+        path: PATH_DASHBOARD.user.jars,
         icon: ICONS.plus,
       },
     ],

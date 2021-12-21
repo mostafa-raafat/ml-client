@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { alpha, styled } from '@mui/material/styles';
 import { Tooltip } from '@mui/material';
 // utils
-import cssStyles from '../../utils/cssStyles';
+import cssStyles from 'Utils/cssStyles';
 //
 import Iconify from '../Iconify';
 import { IconButtonAnimate } from '../animate';

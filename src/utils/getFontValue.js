@@ -1,7 +1,7 @@
 // @mui
 import { useTheme } from '@mui/material/styles';
 // hooks
-import useResponsive from '../hooks/useResponsive';
+import useResponsive from 'Hooks/useResponsive';
 
 // ----------------------------------------------------------------------
 
@@ -20,9 +20,7 @@ export default function GetFontValue(variant) {
     variant === 'h6';
 
   const getFont =
-    hasResponsive && theme.typography[variant][key]
-      ? theme.typography[variant][key]
-      : theme.typography[variant];
+    hasResponsive && theme.typography[variant][key] ? theme.typography[variant][key] : theme.typography[variant];
 
   const fontSize = remToPx(getFont.fontSize);
   const lineHeight = Number(theme.typography[variant].lineHeight) * fontSize;

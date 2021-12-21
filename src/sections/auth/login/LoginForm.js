@@ -7,13 +7,13 @@ import { useRouter } from 'next/router';
 import { Stack, Alert, Checkbox, TextField, IconButton, InputAdornment, FormControlLabel } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // routes
-import { PATH_AUTH } from 'Routes/paths';
+import { PATH_AUTH, PATH_DASHBOARD } from 'Routes/paths';
 // hooks
 import useAuth from 'Hooks/useAuth';
 import useIsMountedRef from 'Hooks/useIsMountedRef';
 // components
-import Iconify from 'Components/Iconify';
 import Link from 'Components/Link';
+import Iconify from 'Components/Iconify';
 
 // ----------------------------------------------------------------------
 
@@ -43,7 +43,7 @@ export default function LoginForm() {
         if (isMountedRef.current) {
           setSubmitting(false);
         }
-        router.push(PATH_DASHBOARD.home);
+        router.push(PATH_DASHBOARD.root);
       } catch (error) {
         console.error(error);
         resetForm();

@@ -10,6 +10,8 @@ import { IconButtonAnimate } from 'Components/animate';
 import Iconify from 'Components/Iconify';
 // config
 import { DASHBOARD_NAVBAR_ICON_ITEM_SIZE } from 'src/config';
+// routes
+import { PATH_DASHBOARD, PATH_PAGE } from 'Routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -23,17 +25,17 @@ const ICONS = {
 const MENU_OPTIONS = [
   {
     label: 'Your details',
-    linkTo: '/',
+    linkTo: PATH_DASHBOARD.profile,
     icon: ICONS.details,
   },
   {
     label: 'Settings',
-    linkTo: '#',
+    linkTo: PATH_DASHBOARD.settings,
     icon: ICONS.settings,
   },
   {
     label: 'Help center',
-    linkTo: '#',
+    linkTo: PATH_PAGE.help,
     icon: ICONS.help,
   },
 ];

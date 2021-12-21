@@ -3,7 +3,7 @@ import { useRef, useState } from 'react';
 import { alpha } from '@mui/material/styles';
 import { Avatar, Typography, ListItemText, ListItemButton, ListItemAvatar } from '@mui/material';
 // utils
-import { fToNow } from '../../../utils/formatTime';
+import { fToNow } from 'Utils/formatTime';
 // _mock_
 import { _contacts } from '../../../_mock';
 // components

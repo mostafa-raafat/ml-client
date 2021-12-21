@@ -157,11 +157,11 @@ export function NavItemSub({ item, open = false, active, onOpen }) {
       {renderContent}
     </ListItemStyle>
   ) : (
-    <NextLink href={path}>
+    <Link href={path}>
       <ListItemStyle activeSub={active} subItem>
         {renderContent}
       </ListItemStyle>
-    </NextLink>
+    </Link>
   );
 }
 

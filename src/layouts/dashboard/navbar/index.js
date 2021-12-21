@@ -3,22 +3,23 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 // @mui
 import { styled, useTheme } from '@mui/material/styles';
-import { Box, Stack, Drawer } from '@mui/material';
+import { Box, Stack, Drawer, Button } from '@mui/material';
 // hooks
 import useResponsive from 'Hooks/useResponsive';
 import useCollapseDrawer from 'Hooks/useCollapseDrawer';
 // utils
-import cssStyles from '../../../utils/cssStyles';
+import cssStyles from 'Utils/cssStyles';
+// routes
+import { PATH_DASHBOARD } from 'Routes/paths';
 // config
 import { DASHBOARD_NAVBAR_WIDTH, DASHBOARD_NAVBAR_COLLAPSE_WIDTH } from 'src/config';
 // components
 import Logo from 'Components/Logo';
 import Scrollbar from 'Components/Scrollbar';
 import NavSection from 'Components/nav-section';
+import Link from 'Components/Link';
 //
-import NavbarAccount from './NavbarAccount';
 import NavbarDocs from './NavbarDocs';
-import CollapseButton from './CollapseButton';
 import navConfig from './NavConfig';
 
 // ----------------------------------------------------------------------
@@ -42,12 +43,11 @@ DashboardNavbar.propTypes = {
 export default function DashboardNavbar({ isOpenSidebar, onCloseSidebar }) {
   const theme = useTheme();
 
-  const { pathname } = useRouter();
+  const { pathname, push } = useRouter();
 
   const isDesktop = useResponsive('up', 'lg');
 
-  const { isCollapse, collapseClick, collapseHover, onToggleCollapse, onHoverEnter, onHoverLeave } =
-    useCollapseDrawer();
+  const { isCollapse, collapseClick, collapseHover } = useCollapseDrawer();
 
   useEffect(() => {
     if (isOpenSidebar) {
@@ -67,18 +67,23 @@ export default function DashboardNavbar({ isOpenSidebar, onCloseSidebar }) {
         spacing={3}
         sx={{
           pt: 3,
-          pb: 2,
+
           px: 2.5,
           flexShrink: 0,
           ...(isCollapse && { alignItems: 'center' }),
         }}
       >
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Stack alignItems="center" justifyContent="space-between" spacing={2}>
           <Logo />
-
-          {isDesktop && !isCollapse && (
-            <CollapseButton onToggleCollapse={onToggleCollapse} collapseClick={collapseClick} />
-          )}
+          <Button
+            variant="contained"
+            sx={{
+              px: 5,
+            }}
+            onClick={() => push(PATH_DASHBOARD.user.sendMoney)}
+          >
+            Send Money
+          </Button>
         </Stack>
       </Stack>
 
@@ -111,8 +116,6 @@ export default function DashboardNavbar({ isOpenSidebar, onCloseSidebar }) {
         <Drawer
           open
           variant="persistent"
-          onMouseEnter={onHoverEnter}
-          onMouseLeave={onHoverLeave}
           PaperProps={{
             sx: {
               width: DASHBOARD_NAVBAR_WIDTH,

@@ -2,6 +2,8 @@
 import { styled } from '@mui/material/styles';
 // components
 import Page from 'Components/Page';
+// layouts
+import MainLayout from 'Layouts/main';
 // sections
 import {
   HomeHero,
@@ -55,3 +57,9 @@ export default function HomePage() {
     </Page>
   );
 }
+
+// ----------------------------------------------------------------------
+
+HomePage.getLayout = function getLayout(page) {
+  return <MainLayout>{page}</MainLayout>;
+};
