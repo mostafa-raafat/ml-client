@@ -6,7 +6,7 @@ import LogoOnlyLayout from 'Layouts/LogoOnlyLayout';
 import useSettings from 'Hooks/useSettings';
 // components
 import Page from 'Components/Page';
-import Stepper from 'Components/Stepper';
+import Stepper from 'Components/stepper';
 
 const Step = (props) => {
   // console.log(props);

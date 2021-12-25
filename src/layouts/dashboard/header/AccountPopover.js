@@ -68,7 +68,7 @@ export default function AccountPopover() {
 
   return (
     <>
-      <IconButtonAnimate
+      {/* <IconButtonAnimate
         ref={anchorRef}
         onClick={handleOpen}
         sx={{
@@ -89,7 +89,22 @@ export default function AccountPopover() {
         }}
       >
         <Avatar src="https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_5.jpg" alt="Rayan Moran" />
-      </IconButtonAnimate>
+      </IconButtonAnimate> */}
+
+      <Stack
+        direction="row"
+        alignItems="center"
+        spacing={1}
+        justifyContent="space-between"
+        sx={{ px: 2, py: 1, borderRadius: 1 }}
+        onClick={handleOpen}
+        ref={anchorRef}
+      >
+        <Avatar src="https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_5.jpg" alt="Rayan Moran" />
+        <Typography variant="subtitle1" sx={{ color: 'black' }}>
+          Mostafa Raafat Ismail
+        </Typography>
+      </Stack>
 
       <MenuPopover open={open} onClose={handleClose} anchorEl={anchorRef.current} sx={{ width: 300 }}>
         <Box sx={{ my: 2, px: 2.5 }}>

@@ -17,10 +17,15 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": [
-    "react",
-    "@next/eslint-plugin-next"
-  ],
+  "plugins": ["react", "@next/eslint-plugin-next"],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"],
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
   "rules": {
     "arrow-body-style": 1,
     "react/display-name": 0,
