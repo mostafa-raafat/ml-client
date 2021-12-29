@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 // @mui
-import { useTheme, styled } from '@mui/material/styles';
-import { Popper, ClickAwayListener, Autocomplete, InputBase, Box, ButtonBase, Typography } from '@mui/material';
-// iconify
-import Iconify from 'Components/Iconify';
+import { styled } from '@mui/material/styles';
+import { Popper, ClickAwayListener, Autocomplete, InputBase, Box } from '@mui/material';
 //
-import PopperComponent from './Popper';
+import AutoCompletePopper from './Popper';
+import AutoCompleteButton from './Button';
 
 // ----------------------------------------------------------------------
 
@@ -33,37 +32,18 @@ const StyledInput = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const Button = styled(ButtonBase)(({ theme }) => ({
-  display: 'flex',
-  width: '100%',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  paddingBottom: theme.spacing(1),
-  color: theme.palette.text.disabled,
-  height: theme.spacing(6.6),
-  padding: theme.spacing(0, 2),
-  borderRadius: theme.shape.borderRadius,
-  border: `1px solid ${theme.palette.grey[500_32]}`,
-  '&:hover': {
-    borderColor: theme.palette.grey[theme.palette.mode === 'light' ? 800 : 200],
-  },
-  '& svg': {
-    width: theme.spacing(2),
-    height: theme.spacing(2),
-  },
-}));
-
 AutoComplete.propTypes = {
   options: PropTypes.arrayOf(PropTypes.object),
   width: PropTypes.number,
+  onChange: PropTypes.func,
   children: PropTypes.node,
+  OptionComponent: PropTypes.func,
 };
 
-export default function AutoComplete({ options = [], width = 400, children, onChange }) {
+export default function AutoComplete({ options = [], width = 400, children, onChange, OptionComponent }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [value, setValue] = useState(null);
   const [inputValue, setInputValue] = useState('');
-  const theme = useTheme();
 
   const handleClose = () => {
     if (anchorEl) {
@@ -80,13 +60,10 @@ export default function AutoComplete({ options = [], width = 400, children, onCh
   const id = open ? 'autoComplete-label' : undefined;
 
   return (
-    <Box width={width}>
-      <Button onClick={handleClick}>
-        <Typography>{children}</Typography>
-        <Iconify icon="akar-icons:chevron-down" color={theme.palette.primary.main} />
-      </Button>
+    <Box width={width + 2}>
+      <AutoCompleteButton onClick={handleClick}>{children}</AutoCompleteButton>
 
-      <StyledPopper id={id} open={open} anchorEl={anchorEl} width={width}>
+      <StyledPopper id={id} open={open} anchorEl={anchorEl} width={width + 2}>
         <ClickAwayListener onClickAway={handleClose}>
           <Autocomplete
             open
@@ -104,21 +81,19 @@ export default function AutoComplete({ options = [], width = 400, children, onCh
               onChange(newValue);
             }}
             disableCloseOnSelect
-            PopperComponent={(props) => <PopperComponent width={width} {...props} />}
+            PopperComponent={(props) => <AutoCompletePopper width={width + 2} {...props} />}
             renderTags={() => null}
-            renderOption={(props, option) => (
-              <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                <img
-                  loading="lazy"
-                  width="24"
-                  src={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png`}
-                  srcSet={`https://flagcdn.com/w80/${option.code.toLowerCase()}.png 2x`}
-                  alt=""
-                />
-                {option.label}
-              </Box>
-            )}
+            renderOption={(props, option) => {
+              return OptionComponent ? (
+                <OptionComponent component="li" option={option} {...props} />
+              ) : (
+                <Box component="li" {...props}>
+                  {option.label}
+                </Box>
+              );
+            }}
             options={options}
+            clearOnBlur={false}
             getOptionLabel={(option) => option.label}
             onInputChange={(test) => setInputValue(test?.target?.value || '')}
             inputValue={inputValue}

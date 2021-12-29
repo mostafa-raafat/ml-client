@@ -44,13 +44,13 @@ const StyledAutocompletePopper = styled('div')(({ theme, width }) => ({
   },
 }));
 
-PopperComponent.propTypes = {
+AutoCompletePopper.propTypes = {
   anchorEl: PropTypes.any,
   disablePortal: PropTypes.bool,
   open: PropTypes.bool.isRequired,
 };
 
-export default function PopperComponent(props) {
+export default function AutoCompletePopper(props) {
   // eslint-disable-next-line no-unused-vars
   const { disablePortal, anchorEl, open, ...other } = props;
   return <StyledAutocompletePopper {...other} />;

@@ -38,6 +38,11 @@ export const DASHBOARD_NAVBAR_ICON_ITEM_SIZE = 22;
 export const MAIN_HEADER_DESKTOP = 88;
 export const MAIN_HEADER_MOBILE = 64;
 
+export const Flow_MAIN_HEADER = 105;
+export const Flow_LOGO_WIDTH = 180;
+export const Flow_MENU_WIDTH = 180;
+export const Flow_STEPPER_WIDTH = 562;
+
 // SETTINGS
 // ----------------------------------------------------------------------
 

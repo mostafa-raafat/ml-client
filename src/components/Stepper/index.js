@@ -36,7 +36,7 @@ Stepper.propTypes = {
   children: PropTypes.node,
 };
 
-export default function Stepper({ children }) {
+export default function Stepper({ children = [] }) {
   const [activeStep, setActiveStep] = useState(0);
 
   const handleNext = () => {

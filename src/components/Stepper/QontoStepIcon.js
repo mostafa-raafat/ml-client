@@ -14,14 +14,9 @@ const QontoStepIconRoot = styled('div')(({ theme, ownerState }) => ({
   ...(ownerState.active && {
     color: theme.palette.success.main,
   }),
-  '& .QontoStepIcon-completedIcon': {
-    zIndex: 1,
-    fontSize: 18,
-    color: theme.palette.success.main,
-  },
   '& .QontoStepIcon-circle': {
-    width: 8,
-    height: 8,
+    width: theme.spacing(1),
+    height: theme.spacing(1),
     borderRadius: '50%',
     backgroundColor: 'currentColor',
   },
@@ -40,11 +35,7 @@ export default function QontoStepIcon(props) {
 
   return (
     <QontoStepIconRoot ownerState={{ active }} className={className}>
-      {completed ? (
-        <Iconify icon="eva:checkmark-fill" className="QontoStepIcon-completedIcon" width={24} height={24} />
-      ) : (
-        <div className="QontoStepIcon-circle" />
-      )}
+      {active && <div className="QontoStepIcon-circle" />}
     </QontoStepIconRoot>
   );
 }

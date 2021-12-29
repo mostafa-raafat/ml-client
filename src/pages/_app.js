@@ -24,6 +24,7 @@ import { NoSsr } from '@mui/material';
 import { SettingsProvider } from 'Contexts/SettingsContext';
 import { CollapseDrawerProvider } from 'Contexts/CollapseDrawerContext';
 import { AuthProvider } from 'Contexts/FirebaseContext';
+import { FlowManagerProvider } from 'Contexts/FlowManagerContext';
 // theme
 import ThemeProvider from 'Theme/index';
 import GlobalStyles from 'Theme/globalStyles';
@@ -52,23 +53,25 @@ const MyApp = (props) => {
       <SettingsProvider>
         <AuthProvider>
           <CollapseDrawerProvider>
-            <ThemeProvider>
-              <ThemeColorPresets>
-                <RtlLayout>
-                  <NotistackProvider>
-                    <MotionLazyContainer>
-                      <NoSsr>
-                        <Settings />
-                      </NoSsr>
-                      <GlobalStyles />
-                      <ChartStyle />
-                      <ProgressBar />
-                      {getLayout(<Component {...pageProps} />)}
-                    </MotionLazyContainer>
-                  </NotistackProvider>
-                </RtlLayout>
-              </ThemeColorPresets>
-            </ThemeProvider>
+            <FlowManagerProvider>
+              <ThemeProvider>
+                <ThemeColorPresets>
+                  <RtlLayout>
+                    <NotistackProvider>
+                      <MotionLazyContainer>
+                        <NoSsr>
+                          <Settings />
+                        </NoSsr>
+                        <GlobalStyles />
+                        <ChartStyle />
+                        <ProgressBar />
+                        {getLayout(<Component {...pageProps} />)}
+                      </MotionLazyContainer>
+                    </NotistackProvider>
+                  </RtlLayout>
+                </ThemeColorPresets>
+              </ThemeProvider>
+            </FlowManagerProvider>
           </CollapseDrawerProvider>
         </AuthProvider>
       </SettingsProvider>

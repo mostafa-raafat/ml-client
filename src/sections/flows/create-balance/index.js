@@ -1,29 +1,29 @@
-import { useState } from 'react';
-// next
-import Image from 'next/image';
-// @mui
-import { Container, Typography } from '@mui/material';
-// hooks
-import useSettings from 'Hooks/useSettings';
-// utils
-import { countries } from 'Utils/countries';
-// components
-import AutoComplete from 'Components/autoComplete';
+import { useContext, useEffect } from 'react';
+// context
+import { FlowManagerContext } from 'Contexts/FlowManagerContext';
+//
+import steps from './steps';
+import SelectCurrency from './steps/select-currency';
+import FlowLayout from 'Layouts/flow';
 
 export default function CreateBalance() {
-  const { themeStretch } = useSettings();
-  const [country, setCountry] = useState({ label: 'Choose currency', code: null });
+  const { flowManagerDispatch } = useContext(FlowManagerContext);
+
+  useEffect(() => {
+    flowManagerDispatch({
+      type: 'INIT_STEPS',
+      payload: {
+        steps,
+      },
+    });
+  }, []);
 
   return (
-    <Container maxWidth={themeStretch ? false : 'l'}>
-      <Typography variant="subtitle1">subtitle</Typography>
-
-      <AutoComplete options={countries} width={400} onChange={(country) => setCountry(country)}>
-        {country.code && (
-          <Image src={`/countries/${country.code.toLowerCase()}.svg`} alt={country.label} width={24} height={24} />
-        )}
-        {country.label}
-      </AutoComplete>
-    </Container>
+    <FlowLayout>
+      <SelectCurrency />
+      <SelectCurrency />
+      <SelectCurrency />
+      <SelectCurrency />
+    </FlowLayout>
   );
 }
