@@ -1,38 +1,38 @@
 // @mui
 import { Button, Typography, TextField, Stack } from '@mui/material';
 // components
-import { varFade, MotionInView } from 'Components/animate';
+import { varFade, MotionViewport } from 'Components/animate';
 
 // ----------------------------------------------------------------------
 
 export default function FaqsForm() {
   return (
     <Stack spacing={3}>
-      <MotionInView variants={varFade().inUp}>
+      <MotionViewport variants={varFade().inUp}>
         <Typography variant="h4">Haven't found the right help?</Typography>
-      </MotionInView>
+      </MotionViewport>
 
-      <MotionInView variants={varFade().inUp}>
+      <MotionViewport variants={varFade().inUp}>
         <TextField fullWidth label="Name" />
-      </MotionInView>
+      </MotionViewport>
 
-      <MotionInView variants={varFade().inUp}>
+      <MotionViewport variants={varFade().inUp}>
         <TextField fullWidth label="Email" />
-      </MotionInView>
+      </MotionViewport>
 
-      <MotionInView variants={varFade().inUp}>
+      <MotionViewport variants={varFade().inUp}>
         <TextField fullWidth label="Subject" />
-      </MotionInView>
+      </MotionViewport>
 
-      <MotionInView variants={varFade().inUp}>
+      <MotionViewport variants={varFade().inUp}>
         <TextField fullWidth label="Enter your message here." multiline rows={4} />
-      </MotionInView>
+      </MotionViewport>
 
-      <MotionInView variants={varFade().inUp}>
+      <MotionViewport variants={varFade().inUp}>
         <Button size="large" variant="contained">
           Submit Now
         </Button>
-      </MotionInView>
+      </MotionViewport>
     </Stack>
   );
 }

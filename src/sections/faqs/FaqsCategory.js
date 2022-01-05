@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Typography, Box, Paper } from '@mui/material';
 // components
 import Image from 'Components/Image';
-import { MotionInView, varFade } from 'Components/animate';
+import { MotionViewport, varFade } from 'Components/animate';
 
 // ----------------------------------------------------------------------
 
@@ -58,9 +58,9 @@ export default function FaqsCategory() {
       }}
     >
       {CATEGORIES.map((category) => (
-        <MotionInView key={category.label} variants={varFade().in}>
+        <MotionViewport key={category.label} variants={varFade().in}>
           <CategoryCard category={category} />
-        </MotionInView>
+        </MotionViewport>
       ))}
     </Box>
   );
