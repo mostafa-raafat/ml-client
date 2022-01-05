@@ -6,37 +6,40 @@ import Layout from 'Layouts/index';
 import useSettings from 'Hooks/useSettings';
 // components
 import Page from 'Components/Page';
-import Stepper from 'Components/stepper';
+// import Stepper from 'Components/stepper';
 
 // ----------------------------------------------------------------------
 
-const Step = (props) => {
-  // console.log(props);
-  const { label, key, handleNext } = props;
-  return (
-    <>
-      <Typography sx={{ my: 1 }} key={key} label={label}>
-        {label}
-      </Typography>
-      <Button variant="contained" onClick={handleNext} sx={{ mr: 1 }}>
-        next
-      </Button>
-    </>
-  );
-};
+// const Step = (props) => {
+//   // console.log(props);
+//   const { label, key, handleNext } = props;
+//   return (
+//     <>
+//       <Typography sx={{ my: 1 }} key={key} label={label}>
+//         {label}
+//       </Typography>
+//       <Button variant="contained" onClick={handleNext} sx={{ mr: 1 }}>
+//         next
+//       </Button>
+//     </>
+//   );
+// };
 
 export default function Send() {
   const { themeStretch } = useSettings();
   return (
     <Page title="Send">
       <Container maxWidth={themeStretch ? false : 'l'}>
-        <Stepper>
+        {/* <Stepper>
           <Step key="1" label="Amount" urlHash="enterpayment" />
           <Step key="2" label="You" urlHash="senderdetails" />
           <Step key="3" label="Recipient" urlHash="recipient" />
           <Step key="4" label="Review" urlHash="review" />
           <Step key="5" label="Pay" urlHash="pay" />
-        </Stepper>
+        </Stepper> */}
+        <Typography variant="h3" component="h1" paragraph>
+          Settings
+        </Typography>
       </Container>
     </Page>
   );
