@@ -3,7 +3,6 @@ import { cloneElement, useState } from 'react';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Step, Stepper as MuiStepper, StepLabel, StepConnector, stepConnectorClasses } from '@mui/material';
-import QontoStepIcon from './QontoStepIcon';
 
 // ----------------------------------------------------------------------
 
@@ -29,6 +28,32 @@ const QontoConnector = styled(StepConnector)(({ theme }) => ({
     borderColor: theme.palette.divider,
   },
 }));
+
+const QontoStepIconRoot = styled('div')(({ theme, ownerState }) => ({
+  height: 22,
+  display: 'flex',
+  alignItems: 'center',
+  color: theme.palette.text.disabled,
+  ...(ownerState.active && {
+    color: theme.palette.success.main,
+  }),
+  '& .QontoStepIcon-circle': {
+    width: theme.spacing(1),
+    height: theme.spacing(1),
+    borderRadius: '50%',
+    backgroundColor: 'currentColor',
+  },
+}));
+
+export function QontoStepIcon(props) {
+  const { active, completed, className } = props;
+
+  return (
+    <QontoStepIconRoot ownerState={{ active }} className={className}>
+      {active && <div className="QontoStepIcon-circle" />}
+    </QontoStepIconRoot>
+  );
+}
 
 // ----------------------------------------------------------------------
 

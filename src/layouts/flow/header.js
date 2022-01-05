@@ -24,7 +24,7 @@ import { FLOW } from 'Config/index';
 // components
 import Logo from 'Components/Logo';
 import Iconify from 'Components/Iconify';
-import QontoStepIcon from 'Components/stepper/QontoStepIcon';
+import { QontoStepIcon } from 'Components/Stepper';
 
 // ----------------------------------------------------------------------
 
