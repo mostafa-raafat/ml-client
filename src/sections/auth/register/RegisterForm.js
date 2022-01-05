@@ -58,12 +58,11 @@ export default function RegisterForm() {
       await register(email, password, firstName, lastName, mobile);
       enqueueSnackbar('Register successfully!');
     } catch (error) {
-      console.error(error, isMountedRef.current);
+      console.error(error);
+      reset();
       if (isMountedRef.current) {
         setError('afterSubmit', error);
       }
-    } finally {
-      reset();
     }
   };
 

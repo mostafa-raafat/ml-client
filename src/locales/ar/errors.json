@@ -1,6 +1,11 @@
 {
-  "demo": {
-    "title": "English",
-    "introduction": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-  }
+  "USER_NOT_FOUND": "User not found",
+  "INVALID_CREDENTIALS": "Invalid Credential",
+  "USER_EXISTS": "User already exist",
+  "EMAIL_NOT_VERIFIED": "Email is not verified, Please check you email",
+  "EMAIL_VERIFICATION_EXPIRED_TOKEN": "Expired token",
+  "EMAIL_VERIFICATION_CODE_MISMATCH": "Wrong code",
+  "EMAIL_VERIFICATION_INVALID_TOKEN": "Invalid token",
+  "RESET_PASSWORD_TOKEN_USED": "You have already reset your password",
+  "RESET_PASSWORD_INVALID_TOKEN": "Invalid token"
 }

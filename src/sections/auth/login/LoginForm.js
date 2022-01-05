@@ -57,11 +57,10 @@ export default function LoginForm() {
       enqueueSnackbar('Login successfully!');
     } catch (error) {
       console.error(error);
+      reset();
       if (isMountedRef.current) {
         setError('afterSubmit', error);
       }
-    } finally {
-      reset();
     }
   };
 
