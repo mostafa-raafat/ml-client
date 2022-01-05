@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import dynamic from 'next/dynamic';
 import merge from 'lodash/merge';
 // @mui
 import { styled, useTheme } from '@mui/material/styles';
@@ -8,13 +7,7 @@ import { Card, Typography, Stack } from '@mui/material';
 import { fCurrency, fPercent } from 'Utils/formatNumber';
 // components
 import Iconify from 'Components/Iconify';
-import BaseOptionChart from 'Components/chart/BaseOptionChart';
-
-// ----------------------------------------------------------------------
-
-const ReactApexChart = dynamic(() => import('react-apexcharts'), {
-  ssr: false,
-});
+import ReactApexChart, { BaseOptionChart } from 'Components/chart';
 
 // ----------------------------------------------------------------------
 

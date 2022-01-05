@@ -1,9 +1,10 @@
+import { m } from 'framer-motion';
 // @mui
 import { alpha, useTheme, styled } from '@mui/material/styles';
 import { Box, Card, Container, Typography } from '@mui/material';
 // components
 import Image from 'Components/Image';
-import { MotionInView, varFade } from 'Components/animate';
+import { MotionViewport, varFade } from 'Components/animate';
 
 // ----------------------------------------------------------------------
 
@@ -89,21 +90,21 @@ export default function HomeMinimal() {
 
   return (
     <RootStyle>
-      <Container>
+      <Container component={MotionViewport}>
         <Box
           sx={{
             textAlign: 'center',
             mb: { xs: 10, md: 25 },
           }}
         >
-          <MotionInView variants={varFade().inUp}>
+          <m.div variants={varFade().inUp}>
             <Typography component="div" variant="overline" sx={{ mb: 2, color: 'text.disabled' }}>
               Minimal
             </Typography>
-          </MotionInView>
-          <MotionInView variants={varFade().inDown}>
+          </m.div>
+          <m.div variants={varFade().inDown}>
             <Typography variant="h2">What minimal helps you?</Typography>
-          </MotionInView>
+          </m.div>
         </Box>
 
         <Box
@@ -114,7 +115,7 @@ export default function HomeMinimal() {
           }}
         >
           {CARDS.map((card, index) => (
-            <MotionInView variants={varFade().inUp} key={card.title}>
+            <m.div variants={varFade().inUp} key={card.title}>
               <CardStyle className={(index === 0 && 'cardLeft') || (index === 1 && 'cardCenter') || ''}>
                 <Image
                   src={card.icon}
@@ -138,7 +139,7 @@ export default function HomeMinimal() {
                 </Typography>
                 <Typography sx={{ color: isLight ? 'text.secondary' : 'common.white' }}>{card.description}</Typography>
               </CardStyle>
-            </MotionInView>
+            </m.div>
           ))}
         </Box>
       </Container>

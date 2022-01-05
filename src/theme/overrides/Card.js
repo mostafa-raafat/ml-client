@@ -1,20 +1,12 @@
-import { alpha } from '@mui/material/styles';
-
 // ----------------------------------------------------------------------
 
 export default function Card(theme) {
-  const isLight = theme.palette.mode === 'light';
-
-  const boxShadow = `0 0 2px 0 ${alpha(isLight ? theme.palette.grey[500] : theme.palette.common.black, 0.2)}, ${
-    theme.customShadows.z12
-  }`;
-
   return {
     MuiCard: {
       styleOverrides: {
         root: {
-          boxShadow,
           position: 'relative',
+          boxShadow: theme.customShadows.card,
           borderRadius: Number(theme.shape.borderRadius) * 2,
           zIndex: 0, // Fix Safari overflow: hidden with border radius
         },

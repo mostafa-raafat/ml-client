@@ -4,7 +4,7 @@ import { useTheme, styled } from '@mui/material/styles';
 import { Box, Stack } from '@mui/material';
 //
 import Iconify from 'Components/Iconify';
-import { IconButtonAnimate } from '../animate';
+import { IconButtonAnimate } from 'Components/animate';
 
 // ----------------------------------------------------------------------
 

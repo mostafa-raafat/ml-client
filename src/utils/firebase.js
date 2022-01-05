@@ -1,6 +1,6 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
-import { FIREBASE_API } from '../config';
+import { FIREBASE_API } from 'Config/index';
 
 // ----------------------------------------------------------------------
 

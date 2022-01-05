@@ -6,6 +6,7 @@ import { styled, useTheme } from '@mui/material/styles';
 import {
   Box,
   Card,
+  Link,
   Stack,
   Input,
   Button,
@@ -25,7 +26,6 @@ import { fCurrency } from 'Utils/formatNumber';
 import { _bankingQuickTransfer } from '../../../../_mock';
 // components
 import { CarouselArrows } from 'Components/carousel';
-import Link from 'Components/Link';
 
 // ----------------------------------------------------------------------
 
@@ -42,11 +42,15 @@ const RootStyle = styled(Card)(({ theme }) => ({
 
 export default function BankingQuickTransfer() {
   const theme = useTheme();
+
   const carouselRef = useRef(null);
 
   const [autoWidth, setAutoWidth] = useState(24);
+
   const [openConfirm, setOpenConfirm] = useState(false);
+
   const [selectContact, setSelectContact] = useState(0);
+
   const [amount, setAmount] = useState(0);
 
   const getContactInfo = _bankingQuickTransfer.find((_, index) => index === selectContact);
@@ -124,9 +128,7 @@ export default function BankingQuickTransfer() {
             <Typography variant="overline" sx={{ color: 'text.secondary' }}>
               Recent
             </Typography>
-            <Link href="#" sx={{ typography: 'button' }}>
-              View All
-            </Link>
+            <Link sx={{ typography: 'button' }}>View All</Link>
           </Stack>
 
           <Box sx={{ position: 'relative' }}>

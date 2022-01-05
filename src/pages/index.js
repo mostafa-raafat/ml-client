@@ -1,9 +1,9 @@
 // @mui
 import { styled } from '@mui/material/styles';
+// layouts
+import Layout from 'Layouts/index';
 // components
 import Page from 'Components/Page';
-// layouts
-import MainLayout from 'Layouts/main';
 // sections
 import {
   HomeHero,
@@ -28,6 +28,12 @@ const ContentStyle = styled('div')(({ theme }) => ({
   position: 'relative',
   backgroundColor: theme.palette.background.default,
 }));
+
+// ----------------------------------------------------------------------
+
+HomePage.getLayout = function getLayout(page) {
+  return <Layout variant="main">{page}</Layout>;
+};
 
 // ----------------------------------------------------------------------
 
@@ -57,9 +63,3 @@ export default function HomePage() {
     </Page>
   );
 }
-
-// ----------------------------------------------------------------------
-
-HomePage.getLayout = function getLayout(page) {
-  return <MainLayout>{page}</MainLayout>;
-};

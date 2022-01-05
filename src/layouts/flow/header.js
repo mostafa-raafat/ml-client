@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 // nextjs
 import { useRouter } from 'next/router';
 // @mui
@@ -16,15 +15,16 @@ import {
   IconButton,
   Stack,
 } from '@mui/material';
+// hooks
+import useFlowManager from 'Hooks/useFlowManager';
+// routes
+import { PATH_DASHBOARD } from 'Routes/paths';
+// config
+import { FLOW } from 'Config/index';
 // components
 import Logo from 'Components/Logo';
 import Iconify from 'Components/Iconify';
 import QontoStepIcon from 'Components/stepper/QontoStepIcon';
-// routes
-import { PATH_DASHBOARD } from 'Routes/paths';
-// config
-import { Flow_LOGO_WIDTH, Flow_MAIN_HEADER, Flow_MENU_WIDTH, Flow_STEPPER_WIDTH } from 'src/config';
-import { FlowManagerContext } from 'Contexts/FlowManagerContext';
 
 // ----------------------------------------------------------------------
 
@@ -62,7 +62,7 @@ const HeaderStyle = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'space-between',
   display: 'flex',
-  height: Flow_MAIN_HEADER,
+  height: FLOW.MAIN_HEADER,
   py: theme.spacing(3),
 }));
 
@@ -72,7 +72,7 @@ export default function FlowLayoutHeader() {
   const {
     flowManagerState: { steps, activeStep },
     flowManagerDispatch,
-  } = useContext(FlowManagerContext);
+  } = useFlowManager();
 
   const router = useRouter();
   const theme = useTheme();
@@ -80,62 +80,59 @@ export default function FlowLayoutHeader() {
   const goBack = () => router.push(PATH_DASHBOARD.root);
 
   return (
-    <>
-      <HeaderStyle>
-        <Box sx={{ width: Flow_LOGO_WIDTH, alignItems: 'center', justifyContent: 'center', display: 'flex' }}>
-          <Logo />
-        </Box>
-        {steps.length > 1 && (
-          <MuiStepper
-            alternativeLabel
-            activeStep={activeStep}
-            connector={<QontoConnector />}
-            sx={{
-              flexGrow: '1',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minWidth: Flow_STEPPER_WIDTH,
-              px: theme.spacing(3),
-            }}
-          >
-            {steps.map(({ label }, index) => (
-              <Step key={label}>
-                <StepLabelStyle
-                  StepIconComponent={QontoStepIcon}
-                  onClick={() =>
-                    index < activeStep &&
-                    flowManagerDispatch({
-                      type: 'ACTIVE_STEP',
-                      payload: {
-                        activeStep: index,
-                      },
-                    })
-                  }
-                  sx={{ cursor: index < activeStep ? 'pointer' : 'default' }}
-                >
-                  {label}
-                </StepLabelStyle>
-              </Step>
-            ))}
-          </MuiStepper>
-        )}
-        <Stack
-          direction="row"
-          sx={{ width: Flow_MENU_WIDTH, alignItems: 'center', justifyContent: 'center' }}
-          divider={<Divider orientation="vertical" flexItem />}
-          spacing={2}
+    <HeaderStyle>
+      <Box sx={{ width: FLOW.LOGO_WIDTH, alignItems: 'center', justifyContent: 'center', display: 'flex' }}>
+        <Logo />
+      </Box>
+      {steps.length > 1 && (
+        <MuiStepper
+          alternativeLabel
+          activeStep={activeStep}
+          connector={<QontoConnector />}
+          sx={{
+            flexGrow: '1',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minWidth: FLOW.STEPPER_WIDTH,
+            px: theme.spacing(3),
+          }}
         >
-          <Avatar
-            src="https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_5.jpg"
-            alt="Rayan Moran"
-            sx={{ width: theme.spacing(6), height: theme.spacing(6) }}
-          />
-          <IconButton size="large" color="primary" aria-label="upload picture" component="span" onClick={goBack}>
-            <Iconify icon="codicon:chrome-close" />
-          </IconButton>
-        </Stack>
-      </HeaderStyle>
-      <Divider sx={{ position: 'absolute', top: Flow_MAIN_HEADER, width: '100%' }} />
-    </>
+          {steps.map(({ label }, index) => (
+            <Step key={label}>
+              <StepLabelStyle
+                StepIconComponent={QontoStepIcon}
+                onClick={() =>
+                  index < activeStep &&
+                  flowManagerDispatch({
+                    type: 'ACTIVE_STEP',
+                    payload: {
+                      activeStep: index,
+                    },
+                  })
+                }
+                sx={{ cursor: index < activeStep ? 'pointer' : 'default' }}
+              >
+                {label}
+              </StepLabelStyle>
+            </Step>
+          ))}
+        </MuiStepper>
+      )}
+      <Stack
+        direction="row"
+        sx={{ width: FLOW.MENU_WIDTH, alignItems: 'center', justifyContent: 'center' }}
+        divider={<Divider orientation="vertical" flexItem />}
+        spacing={2}
+      >
+        <Avatar
+          src="https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_5.jpg"
+          alt="Rayan Moran"
+          sx={{ width: theme.spacing(6), height: theme.spacing(6) }}
+        />
+        <IconButton size="large" color="primary" aria-label="upload picture" component="span" onClick={goBack}>
+          <Iconify icon="codicon:chrome-close" />
+        </IconButton>
+      </Stack>
+    </HeaderStyle>
   );
 }

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import Slider from 'react-slick';
 // @mui
 import { styled, useTheme } from '@mui/material/styles';
@@ -133,6 +133,7 @@ function CardItem({ card }) {
           <Image
             disabledEffect
             visibleByDefault
+            alt="credit-card"
             src={`https://minimal-assets-api.vercel.app/assets/icons/ic_${
               cardType === 'mastercard' ? 'mastercard' : 'visa'
             }.svg`}
@@ -159,31 +160,49 @@ function CardItem({ card }) {
 // ----------------------------------------------------------------------
 
 function MoreMenuButton() {
-  const anchorRef = useRef(null);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(null);
 
-  const handleOpen = () => {
-    setOpen(true);
+  const handleOpen = (event) => {
+    setOpen(event.currentTarget);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setOpen(null);
+  };
+
+  const ICON = {
+    mr: 2,
+    width: 20,
+    height: 20,
   };
 
   return (
     <>
-      <IconButton ref={anchorRef} size="large" color="inherit" sx={{ opacity: 0.48 }} onClick={handleOpen}>
+      <IconButton size="large" color="inherit" sx={{ opacity: 0.48 }} onClick={handleOpen}>
         <Iconify icon={'eva:more-vertical-fill'} width={20} height={20} />
       </IconButton>
 
-      <MenuPopover open={open} onClose={handleClose} anchorEl={anchorRef.current} sx={{ p: 1, mt: -1, width: 'auto' }}>
-        <MenuItem onClick={handleClose} sx={{ py: 0.75, px: 1.5, borderRadius: 1 }}>
-          <Iconify icon={'eva:edit-fill'} sx={{ width: 20, height: 20, flexShrink: 0, mr: 1 }} />
-          <Typography variant="body2">Edit card</Typography>
+      <MenuPopover
+        open={Boolean(open)}
+        anchorEl={open}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        arrow="right-top"
+        sx={{
+          mt: -0.5,
+          width: 'auto',
+          '& .MuiMenuItem-root': { px: 1, typography: 'body2', borderRadius: 0.75 },
+        }}
+      >
+        <MenuItem onClick={handleClose} sx={{ color: 'error.main' }}>
+          <Iconify icon={'eva:trash-2-outline'} sx={{ ...ICON }} />
+          Delete card
         </MenuItem>
-        <MenuItem onClick={handleClose} sx={{ py: 0.75, px: 1.5, borderRadius: 1, color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ width: 20, height: 20, flexShrink: 0, mr: 1 }} />
-          <Typography variant="body2">Delete card</Typography>
+
+        <MenuItem onClick={handleClose}>
+          <Iconify icon={'eva:edit-fill'} sx={{ ...ICON }} />
+          Edit card
         </MenuItem>
       </MenuPopover>
     </>

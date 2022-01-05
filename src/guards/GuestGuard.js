@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useRouter } from "next/router";
+// next
+import { useRouter } from 'next/router';
 // hooks
 import useAuth from 'Hooks/useAuth';
 // routes
@@ -8,16 +10,18 @@ import { PATH_DASHBOARD } from 'Routes/paths';
 // ----------------------------------------------------------------------
 
 GuestGuard.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
 };
 
 export default function GuestGuard({ children }) {
   const { isAuthenticated } = useAuth();
-  const router = useRouter();
+  const { push } = useRouter();
 
-  if (isAuthenticated) {
-    router.push(PATH_DASHBOARD.root)
-  }
+  useEffect(() => {
+    if (isAuthenticated) {
+      push(PATH_DASHBOARD.root);
+    }
+  }, [isAuthenticated]);
 
   return <>{children}</>;
 }

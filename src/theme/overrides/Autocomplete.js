@@ -1,23 +1,11 @@
-import { alpha } from '@mui/material/styles';
-
 // ----------------------------------------------------------------------
 
 export default function Autocomplete(theme) {
-  const isLight = theme.palette.mode === 'light';
-
-  const boxShadow = `0 0 2px 0 ${alpha(isLight ? theme.palette.grey[500] : theme.palette.common.black, 0.2)}, ${
-    theme.customShadows.z20
-  }`;
-
   return {
     MuiAutocomplete: {
       styleOverrides: {
-        popper: {
-          minWidth: 260,
-          maxWidth: 260,
-        },
         paper: {
-          boxShadow,
+          boxShadow: theme.customShadows.dropdown,
         },
         listbox: {
           padding: theme.spacing(0, 1),

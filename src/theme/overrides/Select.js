@@ -10,10 +10,6 @@ export default function Select() {
       defaultProps: {
         IconComponent: InputSelectIcon,
       },
-
-      styleOverrides: {
-        root: {},
-      },
     },
   };
 }

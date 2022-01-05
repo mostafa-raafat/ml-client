@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import { Button, Box, Container, Typography } from '@mui/material';
 // components
 import Image from 'Components/Image';
-import { MotionInView, varFade } from 'Components/animate';
+import { MotionViewport, varFade } from 'Components/animate';
 
 // ----------------------------------------------------------------------
 
@@ -29,9 +29,10 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 export default function HomeAdvertisement() {
   return (
-    <Container>
+    <Container component={MotionViewport}>
       <ContentStyle>
-        <MotionInView
+        <Box
+          component={m.div}
           variants={varFade().inUp}
           sx={{
             mb: { xs: 3, md: 0 },
@@ -46,7 +47,7 @@ export default function HomeAdvertisement() {
               sx={{ maxWidth: 460 }}
             />
           </m.div>
-        </MotionInView>
+        </Box>
 
         <Box
           sx={{
@@ -54,13 +55,13 @@ export default function HomeAdvertisement() {
             textAlign: { xs: 'center', md: 'left' },
           }}
         >
-          <MotionInView variants={varFade().inDown} sx={{ color: 'common.white', mb: 5 }}>
+          <Box component={m.div} variants={varFade().inDown} sx={{ color: 'common.white', mb: 5 }}>
             <Typography variant="h2">
               Get started with
               <br /> minimal kit today
             </Typography>
-          </MotionInView>
-          <MotionInView variants={varFade().inDown}>
+          </Box>
+          <m.div variants={varFade().inDown}>
             <Button
               size="large"
               variant="contained"
@@ -77,7 +78,7 @@ export default function HomeAdvertisement() {
             >
               Purchase Now
             </Button>
-          </MotionInView>
+          </m.div>
         </Box>
       </ContentStyle>
     </Container>

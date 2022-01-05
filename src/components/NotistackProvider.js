@@ -1,12 +1,12 @@
-import { useRef } from 'react';
 import PropTypes from 'prop-types';
+import { useRef } from 'react';
 import { SnackbarProvider } from 'notistack';
 // @mui
 import { alpha, useTheme } from '@mui/material/styles';
 import { Box, GlobalStyles } from '@mui/material';
 //
-import Iconify from 'Components/Iconify';
-import { IconButtonAnimate } from 'Components/animate';
+import Iconify from './Iconify';
+import { IconButtonAnimate } from './animate';
 
 // ----------------------------------------------------------------------
 
@@ -17,7 +17,7 @@ function SnackbarStyles() {
   return (
     <GlobalStyles
       styles={{
-        '#root': {
+        '#__next': {
           '& .SnackbarContent-root': {
             width: '100%',
             padding: theme.spacing(1),

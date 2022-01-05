@@ -1,6 +1,6 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 // @mui
-import { MenuItem, ListItemText, Stack } from '@mui/material';
+import { MenuItem, Stack } from '@mui/material';
 // hooks
 import useLocales from 'Hooks/useLocales';
 // components
@@ -11,40 +11,55 @@ import { IconButtonAnimate } from 'Components/animate';
 // ----------------------------------------------------------------------
 
 export default function LanguagePopover() {
-  const anchorRef = useRef(null);
-  const [open, setOpen] = useState(false);
   const { allLang, currentLang, onChangeLang } = useLocales();
+
+  const [open, setOpen] = useState(null);
+
+  const handleOpen = (event) => {
+    setOpen(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setOpen(null);
+  };
 
   return (
     <>
       <IconButtonAnimate
-        ref={anchorRef}
-        onClick={() => setOpen(true)}
+        onClick={handleOpen}
         sx={{
-          padding: 0,
-          width: 44,
-          height: 44,
+          width: 40,
+          height: 40,
           ...(open && { bgcolor: 'action.selected' }),
         }}
       >
         <Image disabledEffect src={currentLang.icon} alt={currentLang.label} />
       </IconButtonAnimate>
 
-      <MenuPopover open={open} onClose={() => setOpen(false)} anchorEl={anchorRef.current}>
-        <Stack spacing={0.5} sx={{ p: 1 }}>
+      <MenuPopover
+        open={Boolean(open)}
+        anchorEl={open}
+        onClose={handleClose}
+        sx={{
+          mt: 1.5,
+          ml: 0.75,
+          width: 180,
+          '& .MuiMenuItem-root': { px: 1, typography: 'body2', borderRadius: 0.75 },
+        }}
+      >
+        <Stack spacing={0.75}>
           {allLang.map((option) => (
             <MenuItem
               key={option.value}
               selected={option.value === currentLang.value}
               onClick={() => {
                 onChangeLang(option.value);
-                setOpen(false);
+                handleClose();
               }}
-              sx={{ height: 40, borderRadius: 1, px: 1 }}
             >
-              <Image disabledEffect alt={option.label} src={option.icon} sx={{ mr: 2 }} />
+              <Image disabledEffect alt={option.label} src={option.icon} sx={{ width: 28, mr: 2 }} />
 
-              <ListItemText primaryTypographyProps={{ variant: 'body2' }}>{option.label}</ListItemText>
+              {option.label}
             </MenuItem>
           ))}
         </Stack>

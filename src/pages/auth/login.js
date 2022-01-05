@@ -1,20 +1,22 @@
 import { capitalCase } from 'change-case';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Box, Card, Stack, Alert, Tooltip, Container, Typography } from '@mui/material';
+import { Box, Card, Stack, Tooltip, Container, Typography } from '@mui/material';
 // routes
 import { PATH_AUTH } from 'Routes/paths';
 // hooks
 import useAuth from 'Hooks/useAuth';
 import useResponsive from 'Hooks/useResponsive';
+// guards
+import GuestGuard from 'Guards/GuestGuard';
+// sections
+import { LoginForm } from 'Sections/auth/login';
+import AuthFirebaseSocials from 'Sections/auth/AuthFirebaseSocial';
 // components
 import Page from 'Components/Page';
 import Logo from 'Components/Logo';
 import Image from 'Components/Image';
 import Link from 'Components/Link';
-// sections
-import { LoginForm } from 'Sections/auth/login';
-import AuthFirebaseSocials from 'Sections/auth/AuthFirebaseSocial';
 
 // ----------------------------------------------------------------------
 
@@ -61,79 +63,79 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function Login() {
+const Login = () => {
   const { method } = useAuth();
 
   const smUp = useResponsive('up', 'sm');
   const mdUp = useResponsive('up', 'md');
 
   return (
-    <Page title="Login">
-      <RootStyle>
-        <HeaderStyle>
-          <Logo />
-          {smUp && (
-            <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-              Don’t have an account? {''}
-              <Link variant="subtitle2" href={PATH_AUTH.register}>
-                Get started
-              </Link>
-            </Typography>
-          )}
-        </HeaderStyle>
-
-        {mdUp && (
-          <SectionStyle>
-            <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Hi, Welcome Back
-            </Typography>
-            <Image
-              alt="login"
-              src="https://minimal-assets-api.vercel.app/assets/illustrations/illustration_login.png"
-            />
-          </SectionStyle>
-        )}
-
-        <Container maxWidth="sm">
-          <ContentStyle>
-            <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
-              <Box sx={{ flexGrow: 1 }}>
-                <Typography variant="h4" gutterBottom>
-                  Sign in to Minimal
-                </Typography>
-                <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
-              </Box>
-
-              <Tooltip title={capitalCase(method)} placement="right">
-                <>
-                  <Image
-                    disabledEffect
-                    src={`https://minimal-assets-api.vercel.app/assets/icons/auth/ic_${method}.png`}
-                    sx={{ width: 32, height: 32 }}
-                  />
-                </>
-              </Tooltip>
-            </Stack>
-
-            {method === 'firebase' && <AuthFirebaseSocials />}
-
-            <Alert severity="info" sx={{ mb: 3 }}>
-              Use email : <strong>demo@minimals.cc</strong> / password :<strong> demo1234</strong>
-            </Alert>
-
-            <LoginForm />
-
-            {!smUp && (
-              <Typography variant="body2" align="center" sx={{ mt: 3 }}>
+    <GuestGuard>
+      <Page title="Login">
+        <RootStyle>
+          <HeaderStyle>
+            <Logo />
+            {smUp && (
+              <Typography variant="body2" sx={{ mt: { md: -2 } }}>
                 Don’t have an account?{' '}
                 <Link variant="subtitle2" href={PATH_AUTH.register}>
                   Get started
                 </Link>
               </Typography>
             )}
-          </ContentStyle>
-        </Container>
-      </RootStyle>
-    </Page>
+          </HeaderStyle>
+
+          {mdUp && (
+            <SectionStyle>
+              <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
+                Hi, Welcome Back
+              </Typography>
+              <Image
+                alt="login"
+                src="https://minimal-assets-api.vercel.app/assets/illustrations/illustration_login.png"
+              />
+            </SectionStyle>
+          )}
+
+          <Container maxWidth="sm">
+            <ContentStyle>
+              <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
+                <Box sx={{ flexGrow: 1 }}>
+                  <Typography variant="h4" gutterBottom>
+                    Sign in to Minimal
+                  </Typography>
+                  <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
+                </Box>
+
+                <Tooltip title={capitalCase(method)} placement="right">
+                  <>
+                    <Image
+                      disabledEffect
+                      src={`https://minimal-assets-api.vercel.app/assets/icons/auth/ic_${method}.png`}
+                      sx={{ width: 32, height: 32 }}
+                    />
+                  </>
+                </Tooltip>
+              </Stack>
+
+              <AuthFirebaseSocials />
+
+              <LoginForm />
+
+              {!smUp && (
+                <Typography variant="body2" align="center" sx={{ mt: 3 }}>
+                  Don’t have an account?{' '}
+                  <Link variant="subtitle2" href={PATH_AUTH.register}>
+                    Get started
+                  </Link>
+                </Typography>
+              )}
+            </ContentStyle>
+          </Container>
+        </RootStyle>
+      </Page>
+    </GuestGuard>
   );
-}
+};
+
+export default Login;

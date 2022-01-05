@@ -40,7 +40,14 @@ AutoComplete.propTypes = {
   OptionComponent: PropTypes.func,
 };
 
-export default function AutoComplete({ options = [], width = 400, children, onChange, OptionComponent }) {
+export default function AutoComplete({
+  options = [],
+  ButtonWidth = 400,
+  dropDownWidth = 400,
+  children,
+  onChange,
+  OptionComponent,
+}) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [value, setValue] = useState(null);
   const [inputValue, setInputValue] = useState('');
@@ -60,10 +67,12 @@ export default function AutoComplete({ options = [], width = 400, children, onCh
   const id = open ? 'autoComplete-label' : undefined;
 
   return (
-    <Box width={width + 2}>
-      <AutoCompleteButton onClick={handleClick}>{children}</AutoCompleteButton>
+    <Box width={ButtonWidth + 2}>
+      <AutoCompleteButton onClick={handleClick} width={ButtonWidth}>
+        {children}
+      </AutoCompleteButton>
 
-      <StyledPopper id={id} open={open} anchorEl={anchorEl} width={width + 2}>
+      <StyledPopper id={id} open={open} anchorEl={anchorEl} width={dropDownWidth + 2}>
         <ClickAwayListener onClickAway={handleClose}>
           <Autocomplete
             open
@@ -81,7 +90,7 @@ export default function AutoComplete({ options = [], width = 400, children, onCh
               onChange(newValue);
             }}
             disableCloseOnSelect
-            PopperComponent={(props) => <AutoCompletePopper width={width + 2} {...props} />}
+            PopperComponent={(props) => <AutoCompletePopper width={dropDownWidth + 2} {...props} />}
             renderTags={() => null}
             renderOption={(props, option) => {
               return OptionComponent ? (

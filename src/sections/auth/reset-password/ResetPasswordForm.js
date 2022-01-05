@@ -1,73 +1,97 @@
-import * as Yup from 'yup';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Form, FormikProvider, useFormik } from 'formik';
+import { useSnackbar } from 'notistack';
+import * as Yup from 'yup';
+// next
+import { useRouter } from 'next/router';
+// form
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
 // @mui
-import { TextField, Alert, Stack } from '@mui/material';
+import { Stack, Alert, InputAdornment, IconButton } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+// services
+import useResetPassword from 'Services/mutations/useResetPassword';
 // hooks
-import useAuth from 'Hooks/useAuth';
-import useIsMountedRef from 'Hooks/useIsMountedRef';
+import useLocales from 'Hooks/useLocales';
+// routes
+import { PATH_AUTH } from 'Routes/paths';
+// components
+import { FormProvider, RHFTextField } from 'Components/hook-form';
+import Iconify from 'Components/Iconify';
 
 // ----------------------------------------------------------------------
 
-ResetPasswordForm.propTypes = {
-  onSent: PropTypes.func,
-  onGetEmail: PropTypes.func,
-};
+export default function ResetPasswordForm() {
+  const { translate } = useLocales();
+  const { push, query } = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+  const [showPassword, setShowPassword] = useState(false);
 
-export default function ResetPasswordForm({ onSent, onGetEmail }) {
-  const { resetPassword } = useAuth();
-  const isMountedRef = useIsMountedRef();
+  const { mutate, error, isLoading, isError } = useResetPassword();
 
   const ResetPasswordSchema = Yup.object().shape({
-    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
+    password: Yup.string().required('Password is required'),
+    confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),
   });
 
-  const formik = useFormik({
-    initialValues: {
-      email: 'demo@minimals.cc',
-    },
-    validationSchema: ResetPasswordSchema,
-    onSubmit: async (values, { setErrors, setSubmitting }) => {
-      try {
-        await resetPassword(values.email);
-        if (isMountedRef.current) {
-          onSent();
-          onGetEmail(formik.values.email);
-          setSubmitting(false);
-        }
-      } catch (error) {
-        console.error(error);
-        if (isMountedRef.current) {
-          setErrors({ afterSubmit: error.message });
-          setSubmitting(false);
-        }
+  const methods = useForm({
+    resolver: yupResolver(ResetPasswordSchema),
+    defaultValues: { password: '', confirmPassword: '' },
+  });
+
+  const { handleSubmit, reset } = methods;
+
+  const onSubmit = ({ password, confirmPassword }) => {
+    mutate(
+      { password, confirmPassword, token: query.token },
+      {
+        onSuccess: () => {
+          enqueueSnackbar('Reset successfully!');
+          push(PATH_AUTH.login);
+        },
+        onSettled: () => reset(),
       }
-    },
-  });
-
-  const { errors, touched, isSubmitting, handleSubmit, getFieldProps } = formik;
+    );
+  };
 
   return (
-    <FormikProvider value={formik}>
-      <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-        <Stack spacing={3}>
-          {errors.afterSubmit && <Alert severity="error">{errors.afterSubmit}</Alert>}
+    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+      {isError && (
+        <Alert severity="error" sx={{ mb: 3 }}>
+          {translate(`errors:${error.code}`)}
+        </Alert>
+      )}
+      <Stack spacing={3}>
+        <RHFTextField
+          name="password"
+          label="Password"
+          type={showPassword ? 'text' : 'password'}
+          autoComplete="current-password"
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                  <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
 
-          <TextField
-            fullWidth
-            {...getFieldProps('email')}
-            type="email"
-            label="Email address"
-            error={Boolean(touched.email && errors.email)}
-            helperText={touched.email && errors.email}
-          />
+        <RHFTextField name="confirmPassword" label="Confirm Password" type="password" autoComplete="confirm-password" />
 
-          <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
-            Reset Password
-          </LoadingButton>
-        </Stack>
-      </Form>
-    </FormikProvider>
+        <LoadingButton
+          fullWidth
+          size="large"
+          type="submit"
+          variant="contained"
+          loading={isLoading}
+          disabled={isLoading}
+        >
+          Reset Password
+        </LoadingButton>
+      </Stack>
+    </FormProvider>
   );
 }

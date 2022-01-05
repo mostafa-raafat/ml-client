@@ -1,13 +1,13 @@
-import { useContext, useEffect } from 'react';
-// context
-import { FlowManagerContext } from 'Contexts/FlowManagerContext';
+import { useEffect } from 'react';
+// hooks
+import useFlowManager from 'Hooks/useFlowManager';
 //
 import steps from './steps';
 import SelectCurrency from './steps/select-currency';
 import FlowLayout from 'Layouts/flow';
 
 export default function CreateBalance() {
-  const { flowManagerDispatch } = useContext(FlowManagerContext);
+  const { flowManagerDispatch } = useFlowManager();
 
   useEffect(() => {
     flowManagerDispatch({

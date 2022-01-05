@@ -1,5 +1,3 @@
-// @mui
-//
 import { ErrorIcon, InfoIcon, SuccessIcon, WarningIcon } from './CustomIcons';
 
 // ----------------------------------------------------------------------

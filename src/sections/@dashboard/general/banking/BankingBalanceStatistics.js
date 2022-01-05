@@ -1,16 +1,9 @@
 import merge from 'lodash/merge';
 import { useState } from 'react';
-import dynamic from 'next/dynamic';
 // @mui
 import { Card, CardHeader, Box, TextField } from '@mui/material';
 // components
-import { BaseOptionChart } from 'Components/chart';
-
-// ----------------------------------------------------------------------
-
-const ReactApexChart = dynamic(() => import('react-apexcharts'), {
-  ssr: false,
-});
+import ReactApexChart, { BaseOptionChart } from 'Components/chart';
 
 // ----------------------------------------------------------------------
 

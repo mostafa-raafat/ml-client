@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { noCase } from 'change-case';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 // @mui
 import {
   Box,
@@ -29,17 +29,18 @@ import { IconButtonAnimate } from 'Components/animate';
 // ----------------------------------------------------------------------
 
 export default function NotificationsPopover() {
-  const anchorRef = useRef(null);
-  const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState(_notifications);
+
   const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
 
-  const handleOpen = () => {
-    setOpen(true);
+  const [open, setOpen] = useState(null);
+
+  const handleOpen = (event) => {
+    setOpen(event.currentTarget);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setOpen(null);
   };
 
   const handleMarkAllAsRead = () => {
@@ -53,13 +54,18 @@ export default function NotificationsPopover() {
 
   return (
     <>
-      <IconButtonAnimate ref={anchorRef} size="large" color={open ? 'primary' : 'default'} onClick={handleOpen}>
+      <IconButtonAnimate color={open ? 'primary' : 'default'} onClick={handleOpen} sx={{ width: 40, height: 40 }}>
         <Badge badgeContent={totalUnRead} color="error">
           <Iconify icon="eva:bell-fill" width={20} height={20} />
         </Badge>
       </IconButtonAnimate>
 
-      <MenuPopover open={open} onClose={handleClose} anchorEl={anchorRef.current} sx={{ width: 360 }}>
+      <MenuPopover
+        open={Boolean(open)}
+        anchorEl={open}
+        onClose={handleClose}
+        sx={{ width: 360, p: 0, mt: 1.5, ml: 0.75 }}
+      >
         <Box sx={{ display: 'flex', alignItems: 'center', py: 2, px: 2.5 }}>
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="subtitle1">Notifications</Typography>
@@ -77,7 +83,7 @@ export default function NotificationsPopover() {
           )}
         </Box>
 
-        <Divider />
+        <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Scrollbar sx={{ height: { xs: 340, sm: 'auto' } }}>
           <List
@@ -107,7 +113,7 @@ export default function NotificationsPopover() {
           </List>
         </Scrollbar>
 
-        <Divider />
+        <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Box sx={{ p: 1 }}>
           <Button fullWidth disableRipple>

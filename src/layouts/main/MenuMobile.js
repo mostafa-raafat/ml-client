@@ -1,25 +1,25 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
+// next
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 // @mui
 import { alpha, styled } from '@mui/material/styles';
-import { Box, List, Drawer, Collapse, ListItemText, ListItemIcon, ListItemButton } from '@mui/material';
+import { Box, List, Link, Drawer, Collapse, ListItemText, ListItemIcon, ListItemButton } from '@mui/material';
 // config
-import { DASHBOARD_NAVBAR_ROOT_ITEM_HEIGHT } from 'src/config';
+import { NAVBAR } from 'Config/index';
 // components
-import NavLink from 'Components/NavLink';
-import Link from 'Components/Link';
 import Logo from 'Components/Logo';
 import Iconify from 'Components/Iconify';
 import Scrollbar from 'Components/Scrollbar';
-import NavSection from 'Components/nav-section';
 import { IconButtonAnimate } from 'Components/animate';
+import { NavSectionVertical } from 'Components/nav-section';
 
 // ----------------------------------------------------------------------
 
 const ListItemStyle = styled(ListItemButton)(({ theme }) => ({
   ...theme.typography.body2,
-  height: DASHBOARD_NAVBAR_ROOT_ITEM_HEIGHT,
+  height: NAVBAR.DASHBOARD_ITEM_ROOT_HEIGHT,
   textTransform: 'capitalize',
   color: theme.palette.text.secondary,
 }));
@@ -34,7 +34,9 @@ MenuMobile.propTypes = {
 
 export default function MenuMobile({ isOffset, isHome, navConfig }) {
   const { pathname } = useRouter();
+
   const [open, setOpen] = useState(false);
+
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
@@ -103,7 +105,10 @@ MenuMobileItem.propTypes = {
 };
 
 function MenuMobileItem({ item, isOpen, onOpen }) {
+  const { pathname } = useRouter();
   const { title, path, icon, children } = item;
+
+  const isActive = pathname === path;
 
   if (children) {
     return (
@@ -119,7 +124,7 @@ function MenuMobileItem({ item, isOpen, onOpen }) {
 
         <Collapse in={isOpen} timeout="auto" unmountOnExit>
           <Box sx={{ display: 'flex', flexDirection: 'column-reverse' }}>
-            <NavSection
+            <NavSectionVertical
               navConfig={children}
               sx={{
                 '& .MuiList-root:last-of-type .MuiListItemButton-root': {
@@ -150,19 +155,19 @@ function MenuMobileItem({ item, isOpen, onOpen }) {
   }
 
   return (
-    <NavLink href={path}>
+    <NextLink href={path} passHref>
       <ListItemStyle
         sx={{
-          '&.active': {
+          ...(isActive && {
             color: 'primary.main',
             fontWeight: 'fontWeightMedium',
             bgcolor: (theme) => alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
-          },
+          }),
         }}
       >
         <ListItemIcon>{icon}</ListItemIcon>
         <ListItemText disableTypography primary={title} />
       </ListItemStyle>
-    </NavLink>
+    </NextLink>
   );
 }

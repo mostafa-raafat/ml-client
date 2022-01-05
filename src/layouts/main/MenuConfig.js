@@ -1,3 +1,5 @@
+// routes
+import { PATH_PAGE } from 'Routes/paths';
 // components
 import Iconify from 'Components/Iconify';
 
@@ -23,11 +25,15 @@ const menuConfig = [
     title: 'Pages',
     path: '/pages',
     icon: <Iconify icon={'eva:file-fill'} {...ICON_SIZE} />,
-  },
-  {
-    title: 'Documentation',
-    icon: <Iconify icon={'eva:book-open-fill'} {...ICON_SIZE} />,
-    path: '/',
+    children: [
+      {
+        subheader: 'Error',
+        items: [
+          { title: 'Page 404', path: PATH_PAGE.page404 },
+          { title: 'Page 500', path: PATH_PAGE.page500 },
+        ],
+      },
+    ],
   },
 ];
 

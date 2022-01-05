@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
-import { useContext } from 'react';
 import { Box, Stack } from '@mui/material';
-// context
-import { FlowManagerContext } from 'Contexts/FlowManagerContext';
+// Hooks
+import useFlowManager from 'Hooks/useFlowManager';
 
 // ----------------------------------------------------------------------
 
@@ -13,7 +12,7 @@ FlowLayoutContent.propTypes = {
 export default function FlowLayoutContent({ children }) {
   const {
     flowManagerState: { activeStep },
-  } = useContext(FlowManagerContext);
+  } = useFlowManager();
 
   return (
     <Stack alignItems="center">

@@ -1,18 +1,11 @@
-import dynamic from 'next/dynamic';
 import merge from 'lodash/merge';
 // @mui
 import { useTheme, styled } from '@mui/material/styles';
 import { Box, Card, Stack, Divider, CardHeader, Typography } from '@mui/material';
 // hooks
 import useResponsive from 'Hooks/useResponsive';
-//
-import { BaseOptionChart } from 'Components/chart';
-
-// ----------------------------------------------------------------------
-
-const ReactApexChart = dynamic(() => import('react-apexcharts'), {
-  ssr: false,
-});
+// components
+import ReactApexChart, { BaseOptionChart } from 'Components/chart';
 
 // ----------------------------------------------------------------------
 

@@ -1,3 +1,5 @@
+// i18n
+import 'Locales/i18n';
 // scroll bar
 import 'simplebar/src/simplebar.css';
 
@@ -14,20 +16,25 @@ import 'react-lazy-load-image-component/src/effects/opacity.css';
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 
 import PropTypes from 'prop-types';
+import cookie from 'cookie';
 // next
 import Head from 'next/head';
-// i18next
-import { appWithTranslation } from 'next-i18next';
+import App from 'next/app';
 // @mui
-import { NoSsr } from '@mui/material';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+// react query
+import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 // contexts
 import { SettingsProvider } from 'Contexts/SettingsContext';
 import { CollapseDrawerProvider } from 'Contexts/CollapseDrawerContext';
-import { AuthProvider } from 'Contexts/FirebaseContext';
+import { AuthProvider } from 'Contexts/AuthContext';
 import { FlowManagerProvider } from 'Contexts/FlowManagerContext';
 // theme
 import ThemeProvider from 'Theme/index';
-import GlobalStyles from 'Theme/globalStyles';
+// utils
+import { getSettings } from 'Utils/settings';
 // components
 import Settings from 'Components/settings';
 import RtlLayout from 'Components/RtlLayout';
@@ -35,12 +42,21 @@ import ProgressBar from 'Components/ProgressBar';
 import ThemeColorPresets from 'Components/ThemeColorPresets';
 import MotionLazyContainer from 'Components/animate/MotionLazyContainer';
 import NotistackProvider from 'Components/NotistackProvider';
+import ThemeLocalization from 'Components/ThemeLocalization';
 import { ChartStyle } from 'Components/chart';
 
 // ----------------------------------------------------------------------
 
-const MyApp = (props) => {
-  const { Component, pageProps } = props;
+MyApp.propTypes = {
+  Component: PropTypes.func,
+  pageProps: PropTypes.object,
+  settings: PropTypes.object,
+};
+
+export default function MyApp(props) {
+  const { Component, pageProps, settings } = props;
+
+  const queryClient = new QueryClient();
 
   const getLayout = Component.getLayout ?? ((page) => page);
 
@@ -49,39 +65,52 @@ const MyApp = (props) => {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-
-      <SettingsProvider>
-        <AuthProvider>
-          <CollapseDrawerProvider>
-            <FlowManagerProvider>
-              <ThemeProvider>
-                <ThemeColorPresets>
-                  <RtlLayout>
-                    <NotistackProvider>
-                      <MotionLazyContainer>
-                        <NoSsr>
-                          <Settings />
-                        </NoSsr>
-                        <GlobalStyles />
-                        <ChartStyle />
-                        <ProgressBar />
-                        {getLayout(<Component {...pageProps} />)}
-                      </MotionLazyContainer>
-                    </NotistackProvider>
-                  </RtlLayout>
-                </ThemeColorPresets>
-              </ThemeProvider>
-            </FlowManagerProvider>
-          </CollapseDrawerProvider>
-        </AuthProvider>
-      </SettingsProvider>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools />
+        <Hydrate state={pageProps.dehydratedState}>
+          <AuthProvider>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <CollapseDrawerProvider>
+                <SettingsProvider defaultSettings={settings}>
+                  <FlowManagerProvider>
+                    <ThemeProvider>
+                      <NotistackProvider>
+                        <MotionLazyContainer>
+                          <ThemeColorPresets>
+                            <ThemeLocalization>
+                              <RtlLayout>
+                                <ChartStyle />
+                                <Settings />
+                                <ProgressBar />
+                                {getLayout(<Component {...pageProps} />)}
+                              </RtlLayout>
+                            </ThemeLocalization>
+                          </ThemeColorPresets>
+                        </MotionLazyContainer>
+                      </NotistackProvider>
+                    </ThemeProvider>
+                  </FlowManagerProvider>
+                </SettingsProvider>
+              </CollapseDrawerProvider>
+            </LocalizationProvider>
+          </AuthProvider>
+        </Hydrate>
+      </QueryClientProvider>
     </>
   );
-};
+}
 
-MyApp.propTypes = {
-  Component: PropTypes.func,
-  pageProps: PropTypes.any,
-};
+// ----------------------------------------------------------------------
 
-export default appWithTranslation(MyApp);
+MyApp.getInitialProps = async (context) => {
+  const appProps = await App.getInitialProps(context);
+
+  const cookies = cookie.parse(context.ctx.req ? context.ctx.req.headers.cookie || '' : document.cookie);
+
+  const settings = getSettings(cookies);
+
+  return {
+    ...appProps,
+    settings,
+  };
+};

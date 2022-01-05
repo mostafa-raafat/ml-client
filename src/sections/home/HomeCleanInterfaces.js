@@ -1,9 +1,10 @@
+import { m } from 'framer-motion';
 // @mui
 import { alpha, styled } from '@mui/material/styles';
 import { Box, Container, Typography, useTheme } from '@mui/material';
 // components
 import Image from 'Components/Image';
-import { MotionInView, varFade } from 'Components/animate';
+import { MotionViewport, varFade } from 'Components/animate';
 
 // ----------------------------------------------------------------------
 
@@ -35,15 +36,15 @@ export default function HomeCleanInterfaces() {
 
   return (
     <RootStyle>
-      <Container>
+      <Container component={MotionViewport}>
         <ContentStyle>
-          <MotionInView variants={varFade().inUp}>
+          <m.div variants={varFade().inUp}>
             <Typography component="div" variant="overline" sx={{ mb: 2, color: 'text.disabled' }}>
               clean & clear
             </Typography>
-          </MotionInView>
+          </m.div>
 
-          <MotionInView variants={varFade().inUp}>
+          <m.div variants={varFade().inUp}>
             <Typography
               variant="h2"
               paragraph
@@ -55,13 +56,14 @@ export default function HomeCleanInterfaces() {
             >
               Beautiful, modern and clean user interfaces
             </Typography>
-          </MotionInView>
+          </m.div>
         </ContentStyle>
 
         <Box sx={{ position: 'relative' }}>
           {IMG.map((_, index) => (
-            <MotionInView
+            <Box
               key={index}
+              component={m.div}
               variants={varFade().inUp}
               sx={{
                 top: 0,
@@ -77,7 +79,7 @@ export default function HomeCleanInterfaces() {
                 alt={`clean-${index + 1}`}
                 src={`https://minimal-assets-api.vercel.app/assets/images/home/clean-${index + 1}.png`}
               />
-            </MotionInView>
+            </Box>
           ))}
         </Box>
       </Container>

@@ -6,10 +6,6 @@ export default function Link() {
       defaultProps: {
         underline: 'hover',
       },
-
-      styleOverrides: {
-        root: {},
-      },
     },
   };
 }

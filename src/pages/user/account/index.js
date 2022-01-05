@@ -1,11 +1,9 @@
 // @mui
 import { Grid, Container, Stack } from '@mui/material';
-// i18next
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 // hooks
 import useSettings from 'Hooks/useSettings';
 // layouts
-import DashboardLayout from 'Layouts/dashboard';
+import Layout from 'Layouts/index';
 // components
 import Page from 'Components/Page';
 // sections
@@ -25,8 +23,7 @@ import useLocales from 'Hooks/useLocales';
 
 export default function UserAccount(props) {
   const { themeStretch } = useSettings();
-  const { translate } = useLocales('home');
-  console.log(translate('title'));
+  const { translate } = useLocales();
 
   return (
     <Page title="MoneyFly - Home">
@@ -77,14 +74,8 @@ export default function UserAccount(props) {
   );
 }
 
-export const getStaticProps = async ({ locale }) => ({
-  props: {
-    ...(await serverSideTranslations(locale, ['home'])),
-  },
-});
-
 // ----------------------------------------------------------------------
 
 UserAccount.getLayout = function getLayout(page) {
-  return <DashboardLayout>{page}</DashboardLayout>;
+  return <Layout>{page}</Layout>;
 };

@@ -1,10 +1,16 @@
 import { Container, Typography } from '@mui/material';
 // layouts
-import DashboardLayout from 'Layouts/dashboard';
+import Layout from 'Layouts/index';
 // hooks
 import useSettings from 'Hooks/useSettings';
 // components
 import Page from 'Components/Page';
+
+// ----------------------------------------------------------------------
+
+Settings.getLayout = function getLayout(page) {
+  return <Layout>{page}</Layout>;
+};
 
 // ----------------------------------------------------------------------
 
@@ -21,9 +27,3 @@ export default function Settings() {
     </Page>
   );
 }
-
-// ----------------------------------------------------------------------
-
-Settings.getLayout = function getLayout(page) {
-  return <DashboardLayout>{page}</DashboardLayout>;
-};

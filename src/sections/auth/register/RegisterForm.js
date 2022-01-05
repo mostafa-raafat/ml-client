@@ -1,115 +1,105 @@
 import * as Yup from 'yup';
 import { useState } from 'react';
-import { useFormik, Form, FormikProvider } from 'formik';
+import { useSnackbar } from 'notistack';
+// form
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
-import { Stack, TextField, IconButton, InputAdornment, Alert } from '@mui/material';
+import { Stack, IconButton, InputAdornment, Alert } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // hooks
 import useAuth from 'Hooks/useAuth';
 import useIsMountedRef from 'Hooks/useIsMountedRef';
+import useLocales from 'Hooks/useLocales';
 // components
 import Iconify from 'Components/Iconify';
+import { FormProvider, RHFTextField, RHFPhoneField } from 'Components/hook-form';
 
 // ----------------------------------------------------------------------
 
 export default function RegisterForm() {
   const { register } = useAuth();
-
+  const { translate } = useLocales();
   const isMountedRef = useIsMountedRef();
+  const { enqueueSnackbar } = useSnackbar();
 
   const [showPassword, setShowPassword] = useState(false);
 
   const RegisterSchema = Yup.object().shape({
-    firstName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('First name required'),
-    lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required'),
+    firstName: Yup.string().required('First name required'),
+    lastName: Yup.string().required('Last name required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     password: Yup.string().required('Password is required'),
+    mobile: Yup.string().required('Phone is required').min(13, 'Too Short!').max(13, 'Too Long!'),
   });
 
-  const formik = useFormik({
-    initialValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-    },
-    validationSchema: RegisterSchema,
-    onSubmit: async (values, { setErrors, setSubmitting }) => {
-      try {
-        await register(values.email, values.password, values.firstName, values.lastName);
-        if (isMountedRef.current) {
-          setSubmitting(false);
-        }
-      } catch (error) {
-        console.error(error);
-        if (isMountedRef.current) {
-          setErrors({ afterSubmit: error.message });
-          setSubmitting(false);
-        }
+  const defaultValues = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    mobile: '',
+    password: '',
+  };
+
+  const methods = useForm({
+    resolver: yupResolver(RegisterSchema),
+    defaultValues,
+  });
+
+  const {
+    reset,
+    setError,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = methods;
+
+  const onSubmit = async ({ email, password, firstName, lastName, mobile }) => {
+    try {
+      await register(email, password, firstName, lastName, mobile);
+      enqueueSnackbar('Register successfully!');
+    } catch (error) {
+      console.error(error, isMountedRef.current);
+      if (isMountedRef.current) {
+        setError('afterSubmit', error);
       }
-    },
-  });
-
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
+    } finally {
+      reset();
+    }
+  };
 
   return (
-    <FormikProvider value={formik}>
-      <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-        <Stack spacing={3}>
-          {errors.afterSubmit && <Alert severity="error">{errors.afterSubmit}</Alert>}
-
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <TextField
-              fullWidth
-              label="First name"
-              {...getFieldProps('firstName')}
-              error={Boolean(touched.firstName && errors.firstName)}
-              helperText={touched.firstName && errors.firstName}
-            />
-
-            <TextField
-              fullWidth
-              label="Last name"
-              {...getFieldProps('lastName')}
-              error={Boolean(touched.lastName && errors.lastName)}
-              helperText={touched.lastName && errors.lastName}
-            />
-          </Stack>
-
-          <TextField
-            fullWidth
-            autoComplete="username"
-            type="email"
-            label="Email address"
-            {...getFieldProps('email')}
-            error={Boolean(touched.email && errors.email)}
-            helperText={touched.email && errors.email}
-          />
-
-          <TextField
-            fullWidth
-            autoComplete="current-password"
-            type={showPassword ? 'text' : 'password'}
-            label="Password"
-            {...getFieldProps('password')}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton edge="end" onClick={() => setShowPassword((prev) => !prev)}>
-                    <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            error={Boolean(touched.password && errors.password)}
-            helperText={touched.password && errors.password}
-          />
-
-          <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
-            Register
-          </LoadingButton>
+    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+      <Stack spacing={3}>
+        {!!errors.afterSubmit && <Alert severity="error">{translate(`errors:${errors.afterSubmit.code}`)}</Alert>}
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+          <RHFTextField name="firstName" label="First name" autoComplete="firstName" />
+          <RHFTextField name="lastName" label="Last name" autoComplete="lastName" />
         </Stack>
-      </Form>
-    </FormikProvider>
+
+        <RHFTextField name="email" label="Email address" autoComplete="email" />
+
+        <RHFPhoneField name="mobile" label="Phone number" autoComplete="mobile" />
+
+        <RHFTextField
+          name="password"
+          label="Password"
+          type={showPassword ? 'text' : 'password'}
+          autoComplete="current-password"
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton edge="end" onClick={() => setShowPassword(!showPassword)}>
+                  <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+
+        <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
+          Register
+        </LoadingButton>
+      </Stack>
+    </FormProvider>
   );
 }

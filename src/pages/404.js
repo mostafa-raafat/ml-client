@@ -5,7 +5,7 @@ import NextLink from 'next/link';
 import { styled } from '@mui/material/styles';
 import { Box, Button, Typography, Container } from '@mui/material';
 // layouts
-import LogoOnlyLayout from 'Layouts/LogoOnlyLayout';
+import Layout from 'Layouts/index';
 // components
 import Page from 'Components/Page';
 import { MotionContainer, varBounce } from 'Components/animate';
@@ -16,11 +16,17 @@ import { PageNotFoundIllustration } from 'Assets/index';
 
 const RootStyle = styled('div')(({ theme }) => ({
   display: 'flex',
-  minHeight: '100%',
+  height: '100%',
   alignItems: 'center',
   paddingTop: theme.spacing(15),
   paddingBottom: theme.spacing(10),
 }));
+
+// ----------------------------------------------------------------------
+
+Page404.getLayout = function getLayout(page) {
+  return <Layout variant="logoOnly">{page}</Layout>;
+};
 
 // ----------------------------------------------------------------------
 
@@ -39,11 +45,9 @@ export default function Page404() {
               Sorry, we couldn’t find the page you’re looking for. Perhaps you’ve mistyped the URL? Be sure to check
               your spelling.
             </Typography>
-
             <m.div variants={varBounce().in}>
               <PageNotFoundIllustration sx={{ height: 260, my: { xs: 5, sm: 10 } }} />
             </m.div>
-
             <NextLink href="/">
               <Button size="large" variant="contained">
                 Go to Home
@@ -55,9 +59,3 @@ export default function Page404() {
     </Page>
   );
 }
-
-// ----------------------------------------------------------------------
-
-Page404.getLayout = function getLayout(page) {
-  return <LogoOnlyLayout>{page}</LogoOnlyLayout>;
-};

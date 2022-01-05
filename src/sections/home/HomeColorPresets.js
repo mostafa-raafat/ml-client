@@ -17,7 +17,7 @@ import {
 import useSettings from 'Hooks/useSettings';
 // components
 import Image from 'Components/Image';
-import { MotionInView, varFade } from 'Components/animate';
+import { MotionViewport, varFade } from 'Components/animate';
 
 // ----------------------------------------------------------------------
 
@@ -32,20 +32,20 @@ export default function HomeColorPresets() {
 
   return (
     <RootStyle>
-      <Container sx={{ position: 'relative', textAlign: 'center' }}>
-        <MotionInView variants={varFade().inUp}>
+      <Container component={MotionViewport} sx={{ position: 'relative', textAlign: 'center' }}>
+        <m.div variants={varFade().inUp}>
           <Typography component="div" variant="overline" sx={{ mb: 2, color: 'text.disabled' }}>
             choose your style
           </Typography>
-        </MotionInView>
+        </m.div>
 
-        <MotionInView variants={varFade().inUp}>
+        <m.div variants={varFade().inUp}>
           <Typography variant="h2" sx={{ mb: 3 }}>
             Color presets
           </Typography>
-        </MotionInView>
+        </m.div>
 
-        <MotionInView variants={varFade().inUp}>
+        <m.div variants={varFade().inUp}>
           <Typography
             sx={{
               color: (theme) => (theme.palette.mode === 'light' ? 'text.secondary' : 'text.primary'),
@@ -53,7 +53,7 @@ export default function HomeColorPresets() {
           >
             Express your own style with just one click.
           </Typography>
-        </MotionInView>
+        </m.div>
 
         <RadioGroup name="themeColorPresets" value={themeColorPresets} onChange={onChangeColor} sx={{ my: 5 }}>
           <Stack
@@ -134,17 +134,17 @@ export default function HomeColorPresets() {
           />
 
           <Box sx={{ position: 'absolute', top: 0 }}>
-            <MotionInView variants={varFade().inUp}>
+            <m.div variants={varFade().inUp}>
               <Image
                 disabledEffect
                 alt="screen"
                 src={`https://minimal-assets-api.vercel.app/assets/images/home/theme-color/screen-${themeColorPresets}.png`}
               />
-            </MotionInView>
+            </m.div>
           </Box>
 
           <Box sx={{ position: 'absolute', top: 0 }}>
-            <MotionInView variants={varFade().inDown}>
+            <m.div variants={varFade().inDown}>
               <m.div animate={{ y: [0, -15, 0] }} transition={{ duration: 8, repeat: Infinity }}>
                 <Image
                   disabledEffect
@@ -152,11 +152,11 @@ export default function HomeColorPresets() {
                   src={`https://minimal-assets-api.vercel.app/assets/images/home/theme-color/block1-${themeColorPresets}.png`}
                 />
               </m.div>
-            </MotionInView>
+            </m.div>
           </Box>
 
           <Box sx={{ position: 'absolute', top: 0 }}>
-            <MotionInView variants={varFade().inDown}>
+            <m.div variants={varFade().inDown}>
               <m.div animate={{ y: [-5, 10, -5] }} transition={{ duration: 8, repeat: Infinity }}>
                 <Image
                   disabledEffect
@@ -164,11 +164,11 @@ export default function HomeColorPresets() {
                   src={`https://minimal-assets-api.vercel.app/assets/images/home/theme-color/block2-${themeColorPresets}.png`}
                 />
               </m.div>
-            </MotionInView>
+            </m.div>
           </Box>
 
           <Box sx={{ position: 'absolute', top: 0 }}>
-            <MotionInView variants={varFade().inDown}>
+            <m.div variants={varFade().inDown}>
               <m.div animate={{ y: [-25, 5, -25] }} transition={{ duration: 10, repeat: Infinity }}>
                 <Image
                   disabledEffect
@@ -176,7 +176,7 @@ export default function HomeColorPresets() {
                   src={`https://minimal-assets-api.vercel.app/assets/images/home/theme-color/sidebar-${themeColorPresets}.png`}
                 />
               </m.div>
-            </MotionInView>
+            </m.div>
           </Box>
         </Box>
       </Container>

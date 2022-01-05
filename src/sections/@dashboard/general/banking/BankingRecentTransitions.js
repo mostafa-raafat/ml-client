@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { format } from 'date-fns';
 import { sentenceCase } from 'change-case';
 // @mui
@@ -7,9 +7,9 @@ import { useTheme } from '@mui/material/styles';
 import {
   Box,
   Card,
-  Menu,
   Table,
   Avatar,
+  Button,
   Divider,
   MenuItem,
   TableRow,
@@ -29,18 +29,14 @@ import { _bankingRecentTransitions } from '../../../../_mock';
 import Label from 'Components/Label';
 import Iconify from 'Components/Iconify';
 import Scrollbar from 'Components/Scrollbar';
-import LinkButton from 'Components/LinkButton';
+import MenuPopover from 'Components/MenuPopover';
 
 // ----------------------------------------------------------------------
 
 export default function BankingRecentTransitions() {
   const theme = useTheme();
-  const isLight = theme.palette.mode === 'light';
 
-  const handleClickDownload = () => {};
-  const handleClickPrint = () => {};
-  const handleClickShare = () => {};
-  const handleClickDelete = () => {};
+  const isLight = theme.palette.mode === 'light';
 
   return (
     <>
@@ -126,12 +122,7 @@ export default function BankingRecentTransitions() {
                     </TableCell>
 
                     <TableCell align="right">
-                      <MoreMenuButton
-                        onDownload={handleClickDownload}
-                        onPrint={handleClickPrint}
-                        onShare={handleClickShare}
-                        onDelete={handleClickDelete}
-                      />
+                      <MoreMenuButton />
                     </TableCell>
                   </TableRow>
                 ))}
@@ -143,14 +134,9 @@ export default function BankingRecentTransitions() {
         <Divider />
 
         <Box sx={{ p: 2, textAlign: 'right' }}>
-          <LinkButton
-            href="#"
-            size="small"
-            color="inherit"
-            endIcon={<Iconify icon={'eva:arrow-ios-forward-fill'} />}
-          >
+          <Button size="small" color="inherit" endIcon={<Iconify icon={'eva:arrow-ios-forward-fill'} />}>
             View All
-          </LinkButton>
+          </Button>
         </Box>
       </Card>
     </>
@@ -194,67 +180,64 @@ function renderAvatar(category, avatar) {
 
 // ----------------------------------------------------------------------
 
-MoreMenuButton.propTypes = {
-  onDelete: PropTypes.func,
-  onDownload: PropTypes.func,
-  onPrint: PropTypes.func,
-  onShare: PropTypes.func,
-};
+function MoreMenuButton() {
+  const [open, setOpen] = useState(null);
 
-function MoreMenuButton({ onDownload, onPrint, onShare, onDelete }) {
-  const menuRef = useRef(null);
-  const [open, setOpen] = useState(false);
-
-  const handleOpen = () => {
-    setOpen(true);
+  const handleOpen = (event) => {
+    setOpen(event.currentTarget);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setOpen(null);
+  };
+
+  const ICON = {
+    mr: 2,
+    width: 20,
+    height: 20,
   };
 
   return (
     <>
-      <IconButton ref={menuRef} size="large" onClick={handleOpen}>
+      <IconButton size="large" onClick={handleOpen}>
         <Iconify icon={'eva:more-vertical-fill'} width={20} height={20} />
       </IconButton>
 
-      <Menu
-        open={open}
-        anchorEl={menuRef.current}
+      <MenuPopover
+        open={Boolean(open)}
+        anchorEl={open}
         onClose={handleClose}
-        PaperProps={{
-          sx: { px: 1, width: 200, maxWidth: 1 },
-        }}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        arrow="right-top"
+        sx={{
+          mt: -0.5,
+          width: 160,
+          '& .MuiMenuItem-root': { px: 1, typography: 'body2', borderRadius: 0.75 },
+        }}
       >
-        <MenuItem onClick={onDownload} sx={{ borderRadius: 1 }}>
-          <Iconify icon={'eva:download-fill'} width={20} height={20} />
-          <Typography variant="body2" sx={{ ml: 2 }}>
-            Download
-          </Typography>
+        <MenuItem>
+          <Iconify icon={'eva:download-fill'} sx={{ ...ICON }} />
+          Download
         </MenuItem>
-        <MenuItem onClick={onPrint} sx={{ borderRadius: 1 }}>
-          <Iconify icon={'eva:printer-fill'} width={20} height={20} />
-          <Typography variant="body2" sx={{ ml: 2 }}>
-            Print
-          </Typography>
+
+        <MenuItem>
+          <Iconify icon={'eva:printer-fill'} sx={{ ...ICON }} />
+          Print
         </MenuItem>
-        <MenuItem onClick={onShare} sx={{ borderRadius: 1 }}>
-          <Iconify icon={'eva:share-fill'} width={20} height={20} />
-          <Typography variant="body2" sx={{ ml: 2 }}>
-            Share
-          </Typography>
+
+        <MenuItem>
+          <Iconify icon={'eva:share-fill'} sx={{ ...ICON }} />
+          Share
         </MenuItem>
-        <Divider />
-        <MenuItem onClick={onDelete} sx={{ color: 'error.main', borderRadius: 1 }}>
-          <Iconify icon={'eva:trash-2-outline'} width={20} height={20} />
-          <Typography variant="body2" sx={{ ml: 2 }}>
-            Delete
-          </Typography>
+
+        <Divider sx={{ borderStyle: 'dashed' }} />
+
+        <MenuItem sx={{ color: 'error.main' }}>
+          <Iconify icon={'eva:trash-2-outline'} sx={{ ...ICON }} />
+          Delete
         </MenuItem>
-      </Menu>
+      </MenuPopover>
     </>
   );
 }

@@ -1,0 +1,11 @@
+{
+  "USER_NOT_FOUND": "User not found",
+  "INVALID_CREDENTIALS": "Invalid Credential",
+  "USER_EXISTS": "User already exist",
+  "EMAIL_NOT_VERIFIED": "Email is not verified, Please check you email",
+  "EMAIL_VERIFICATION_EXPIRED_TOKEN": "Expired token",
+  "EMAIL_VERIFICATION_CODE_MISMATCH": "Wrong code",
+  "EMAIL_VERIFICATION_INVALID_TOKEN": "Invalid token",
+  "RESET_PASSWORD_TOKEN_USED": "You have already reset your password",
+  "RESET_PASSWORD_INVALID_TOKEN": "Invalid token"
+}

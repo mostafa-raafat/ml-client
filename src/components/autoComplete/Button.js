@@ -6,17 +6,20 @@ import { ButtonBase, Typography } from '@mui/material';
 import Iconify from 'Components/Iconify';
 // ----------------------------------------------------------------------
 
-const StyledButton = styled(ButtonBase)(({ theme }) => ({
+const StyledButton = styled(ButtonBase)(({ theme, width }) => ({
   display: 'flex',
-  width: '100%',
+  width,
   justifyContent: 'space-between',
   alignItems: 'center',
   paddingBottom: theme.spacing(1),
   color: theme.palette.text.disabled,
-  height: theme.spacing(6.6),
+  height: theme.spacing(7),
   padding: theme.spacing(0, 2),
   borderRadius: theme.shape.borderRadius,
   border: `1px solid ${theme.palette.grey[500_32]}`,
+  '& p': {
+    lineHeight: 0,
+  },
   '&:hover': {
     borderColor: theme.palette.grey[theme.palette.mode === 'light' ? 800 : 200],
   },

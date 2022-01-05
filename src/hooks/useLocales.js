@@ -1,54 +1,38 @@
-import { useTranslation } from 'next-i18next';
-import { useRouter } from 'next/router';
-// '@mui
-import { enUS, frFR, arEG } from '@mui/material/locale';
-import useLocalStorage from './useLocalStorage';
-import useSettings from './useSettings';
+import { useTranslation } from 'react-i18next';
+// @mui
+import { enUS, arEG } from '@mui/material/locale';
 
 // ----------------------------------------------------------------------
 
-const LANGS = {
-  en: {
+const LANGS = [
+  {
     label: 'English',
     value: 'en',
     systemValue: enUS,
-    icon: 'https://minimal-assets-api.vercel.app/assets/icons/ic_flag_en.svg',
-    dir: 'ltr',
+    icon: '/countries/us.svg',
   },
-  eg: {
-    label: 'Egypt',
-    value: 'eg',
+  {
+    label: 'Arabic',
+    value: 'ar',
     systemValue: arEG,
-    icon: 'https://minimal-assets-api.vercel.app/assets/icons/ic_flag_de.svg',
-    dir: 'rtl',
+    icon: '/countries/eg.svg',
   },
-  fk: {
-    label: 'Franko',
-    value: 'fk',
-    systemValue: frFR,
-    icon: 'https://minimal-assets-api.vercel.app/assets/icons/ic_flag_fr.svg',
-    dir: 'ltr',
-  },
-};
+];
 
-export default function useLocales(page = []) {
-  const { push, asPath, route, locale } = useRouter();
-  const { t: translate } = useTranslation(page);
-  const [langStorage, setLangStorage] = useLocalStorage('i18nextLng', locale);
-  const currentLang = LANGS[langStorage];
-  const allLang = Object.values(LANGS);
-  const { onChangeDirection } = useSettings();
+export default function useLocales() {
+  const { i18n, t: translate } = useTranslation();
+  const langStorage = typeof localStorage !== 'undefined' ? localStorage.getItem('i18nextLng') : null;
 
-  const handleChangeLanguage = (newLang) => {
-    setLangStorage(newLang);
-    onChangeDirection({ target: { value: LANGS[newLang].dir } });
-    push(route, asPath, { locale: newLang });
+  const currentLang = LANGS.find((_lang) => _lang.value === langStorage) || LANGS[1];
+
+  const handleChangeLanguage = (newlang) => {
+    i18n.changeLanguage(newlang);
   };
 
   return {
     onChangeLang: handleChangeLanguage,
     translate,
     currentLang,
-    allLang,
+    allLang: LANGS,
   };
 }

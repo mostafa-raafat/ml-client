@@ -1,6 +1,6 @@
 import { Container, Typography } from '@mui/material';
 // layouts
-import DashboardLayout from 'Layouts/dashboard';
+import Layout from 'Layouts/index';
 // hooks
 import useSettings from 'Hooks/useSettings';
 // components
@@ -25,5 +25,5 @@ export default function Profile() {
 // ----------------------------------------------------------------------
 
 Profile.getLayout = function getLayout(page) {
-  return <DashboardLayout>{page}</DashboardLayout>;
+  return <Layout>{page}</Layout>;
 };

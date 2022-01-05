@@ -1,23 +1,29 @@
-import PropTypes from 'prop-types';
-import Head from 'next/head';
 import { forwardRef } from 'react';
+import PropTypes from 'prop-types';
+// next
+import Head from 'next/head';
 // @mui
 import { Box } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
-const Page = forwardRef(({ children, title = '', ...other }, ref) => (
-  <Box ref={ref} {...other}>
+const Page = forwardRef(({ children, title = '', meta, ...other }, ref) => (
+  <>
     <Head>
       <title>{`${title} | Minimal-UI`}</title>
+      {meta}
     </Head>
-    {children}
-  </Box>
+
+    <Box ref={ref} {...other}>
+      {children}
+    </Box>
+  </>
 ));
 
 Page.propTypes = {
   children: PropTypes.node.isRequired,
   title: PropTypes.string,
+  meta: PropTypes.node,
 };
 
 export default Page;

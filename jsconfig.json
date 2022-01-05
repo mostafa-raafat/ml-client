@@ -9,10 +9,13 @@
       "Contexts/*": ["src/contexts/*"],
       "Hooks/*": ["src/hooks/*"],
       "Layouts/*": ["src/layouts/*"],
+      "Locales/*": ["src/locales/*"],
+      "Config/*": ["src/config/*"],
       "Routes/*": ["src/routes/*"],
       "Theme/*": ["src/theme/*"],
       "Utils/*": ["src/utils/*"],
-      "Guards/*": ["src/guards/*"]
+      "Guards/*": ["src/guards/*"],
+      "Services/*": ["src/services/*"]
     }
   },
   "include": ["src/**/*"],

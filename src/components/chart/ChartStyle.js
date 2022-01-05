@@ -17,8 +17,8 @@ export default function ChartStyle() {
           '.apexcharts-xaxistooltip': {
             ...cssStyles(theme).bgBlur(),
             border: 0,
-            boxShadow: theme.customShadows.z24,
             color: theme.palette.text.primary,
+            boxShadow: theme.customShadows.dropdown,
             borderRadius: Number(theme.shape.borderRadius) * 1.5,
             '&:before': { borderBottomColor: 'transparent' },
             '&:after': { borderBottomColor: alpha(theme.palette.background.default, 0.8) },
@@ -26,7 +26,7 @@ export default function ChartStyle() {
           '.apexcharts-tooltip.apexcharts-theme-light': {
             ...cssStyles(theme).bgBlur(),
             border: 0,
-            boxShadow: theme.customShadows.z24,
+            boxShadow: theme.customShadows.dropdown,
             borderRadius: Number(theme.shape.borderRadius) * 1.5,
             '& .apexcharts-tooltip-title': {
               border: 0,

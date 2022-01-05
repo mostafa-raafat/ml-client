@@ -1,9 +1,10 @@
+import { m } from 'framer-motion';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Grid, Container, Typography } from '@mui/material';
+import { Box, Grid, Container, Typography } from '@mui/material';
 // components
 import Image from 'Components/Image';
-import { MotionInView, varFade } from 'Components/animate';
+import { MotionViewport, varFade } from 'Components/animate';
 
 // ----------------------------------------------------------------------
 
@@ -32,7 +33,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
 export default function HomeDarkMode() {
   return (
     <RootStyle>
-      <Container sx={{ position: 'relative' }}>
+      <Container component={MotionViewport} sx={{ position: 'relative' }}>
         <Image
           visibleByDefault
           disabledEffect
@@ -54,42 +55,34 @@ export default function HomeDarkMode() {
         <Grid container spacing={5} direction="row-reverse" justifyContent="space-between">
           <Grid item xs={12} md={4}>
             <ContentStyle>
-              <MotionInView variants={varFade().inUp}>
+              <m.div variants={varFade().inUp}>
                 <Typography component="div" variant="overline" sx={{ mb: 2, color: 'text.disabled' }}>
                   Easy switch between styles.
                 </Typography>
-              </MotionInView>
+              </m.div>
 
-              <MotionInView variants={varFade().inUp}>
+              <m.div variants={varFade().inUp}>
                 <Typography variant="h2" sx={{ mb: 3, color: 'common.white' }}>
                   Dark mode
                 </Typography>
-              </MotionInView>
+              </m.div>
 
-              <MotionInView variants={varFade().inUp}>
+              <m.div variants={varFade().inUp}>
                 <Typography sx={{ color: 'common.white', mb: 5 }}>
                   A dark theme that feels easier on the eyes.
                 </Typography>
-              </MotionInView>
+              </m.div>
             </ContentStyle>
           </Grid>
 
           <Grid item xs={12} md={7} sx={{ position: 'relative' }}>
-            <MotionInView threshold={0.5} variants={varFade().inUp}>
-              <Image
-                disabledEffect
-                alt="light mode"
-                src="https://minimal-assets-api.vercel.app/assets/images/home/lightmode.png"
-              />
-            </MotionInView>
+            <m.div variants={varFade().inUp}>
+              <Image alt="light mode" src="https://minimal-assets-api.vercel.app/assets/images/home/lightmode.png" />
+            </m.div>
 
-            <MotionInView threshold={0.5} variants={varFade().inDown} sx={{ top: 0, left: 0, position: 'absolute' }}>
-              <Image
-                disabledEffect
-                alt="dark mode"
-                src="https://minimal-assets-api.vercel.app/assets/images/home/darkmode.png"
-              />
-            </MotionInView>
+            <Box component={m.div} variants={varFade().inDown} sx={{ top: 0, left: 0, position: 'absolute' }}>
+              <Image alt="dark mode" src="https://minimal-assets-api.vercel.app/assets/images/home/darkmode.png" />
+            </Box>
           </Grid>
         </Grid>
       </Container>

@@ -85,12 +85,9 @@ export function InputSelectIcon(props) {
     <SvgIcon
       {...props}
       sx={{
-        width: 20,
-        height: 20,
         right: 12,
-        fontSize: 'unset',
+        fontSize: 16,
         position: 'absolute',
-        top: 'calc(50% - 10px)',
         pointerEvents: 'none',
       }}
     >

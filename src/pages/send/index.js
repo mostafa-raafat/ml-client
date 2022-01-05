@@ -1,12 +1,14 @@
 // @mui
 import { Button, Container, Typography } from '@mui/material';
 // layouts
-import LogoOnlyLayout from 'Layouts/LogoOnlyLayout';
+import Layout from 'Layouts/index';
 // hooks
 import useSettings from 'Hooks/useSettings';
 // components
 import Page from 'Components/Page';
 import Stepper from 'Components/stepper';
+
+// ----------------------------------------------------------------------
 
 const Step = (props) => {
   // console.log(props);
@@ -43,5 +45,5 @@ export default function Send() {
 // ----------------------------------------------------------------------
 
 Send.getLayout = function getLayout(page) {
-  return <LogoOnlyLayout>{page}</LogoOnlyLayout>;
+  return <Layout>{page}</Layout>;
 };

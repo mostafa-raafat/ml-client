@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { m } from 'framer-motion';
 // @mui
 import { useTheme, styled } from '@mui/material/styles';
 import { Box, Grid, Card, Link, Stack, Button, Divider, Container, Typography } from '@mui/material';
@@ -7,7 +8,7 @@ import { _homePlans } from '../../_mock';
 // components
 import Image from 'Components/Image';
 import Iconify from 'Components/Iconify';
-import { MotionInView, varFade } from 'Components/animate';
+import { varFade, MotionViewport } from 'Components/animate';
 
 // ----------------------------------------------------------------------
 
@@ -27,19 +28,19 @@ export default function HomePricingPlans() {
 
   return (
     <RootStyle>
-      <Container>
+      <Container component={MotionViewport}>
         <Box sx={{ mb: 10, textAlign: 'center' }}>
-          <MotionInView variants={varFade().inUp}>
+          <m.div variants={varFade().inUp}>
             <Typography component="div" variant="overline" sx={{ mb: 2, color: 'text.disabled' }}>
               pricing plans
             </Typography>
-          </MotionInView>
-          <MotionInView variants={varFade().inDown}>
+          </m.div>
+          <m.div variants={varFade().inDown}>
             <Typography variant="h2" sx={{ mb: 3 }}>
               The right plan for your business
             </Typography>
-          </MotionInView>
-          <MotionInView variants={varFade().inDown}>
+          </m.div>
+          <m.div variants={varFade().inDown}>
             <Typography
               sx={{
                 color: isLight ? 'text.secondary' : 'text.primary',
@@ -47,32 +48,32 @@ export default function HomePricingPlans() {
             >
               Choose the perfect plan for your needs. Always flexible to grow
             </Typography>
-          </MotionInView>
+          </m.div>
         </Box>
 
         <Grid container spacing={5}>
           {_homePlans.map((plan) => (
             <Grid key={plan.license} item xs={12} md={4}>
-              <MotionInView variants={plan.license === 'Standard Plus' ? varFade().inDown : varFade().inUp}>
+              <m.div variants={plan.license === 'Standard Plus' ? varFade().inDown : varFade().inUp}>
                 <PlanCard plan={plan} />
-              </MotionInView>
+              </m.div>
             </Grid>
           ))}
         </Grid>
 
-        <MotionInView variants={varFade().in}>
+        <m.div variants={varFade().in}>
           <Box sx={{ p: 5, mt: 10, textAlign: 'center' }}>
-            <MotionInView variants={varFade().inDown}>
+            <m.div variants={varFade().inDown}>
               <Typography variant="h3">Still have questions?</Typography>
-            </MotionInView>
+            </m.div>
 
-            <MotionInView variants={varFade().inDown}>
+            <m.div variants={varFade().inDown}>
               <Typography sx={{ mt: 3, mb: 5, color: 'text.secondary' }}>
                 Please describe your case to receive the most accurate advice.
               </Typography>
-            </MotionInView>
+            </m.div>
 
-            <MotionInView variants={varFade().inUp}>
+            <m.div variants={varFade().inUp}>
               <Button
                 size="large"
                 variant="contained"
@@ -80,9 +81,9 @@ export default function HomePricingPlans() {
               >
                 Contact us
               </Button>
-            </MotionInView>
+            </m.div>
           </Box>
-        </MotionInView>
+        </m.div>
       </Container>
     </RootStyle>
   );
@@ -124,11 +125,11 @@ function PlanCard({ plan }) {
         </div>
 
         {standard ? (
-          <Image src={icons[2]} sx={{ width: 40, height: 40 }} />
+          <Image alt="package" src={icons[2]} sx={{ width: 40, height: 40 }} />
         ) : (
           <Stack direction="row" spacing={1}>
             {icons.map((icon) => (
-              <Image key={icon} src={icon} sx={{ width: 40, height: 40 }} />
+              <Image key={icon} alt="package" src={icon} sx={{ width: 40, height: 40 }} />
             ))}
           </Stack>
         )}

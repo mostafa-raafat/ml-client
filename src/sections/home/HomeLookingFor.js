@@ -1,10 +1,11 @@
+import { m } from 'framer-motion';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Button, Container, Typography, Grid } from '@mui/material';
+import { Box, Button, Container, Typography, Grid } from '@mui/material';
 // components
 import Image from 'Components/Image';
 import Iconify from 'Components/Iconify';
-import { MotionInView, varFade } from 'Components/animate';
+import { MotionViewport, varFade } from 'Components/animate';
 
 // ----------------------------------------------------------------------
 
@@ -20,22 +21,22 @@ const RootStyle = styled('div')(({ theme }) => ({
 export default function HomeLookingFor() {
   return (
     <RootStyle>
-      <Container>
+      <Container component={MotionViewport}>
         <Grid container alignItems="center" justifyContent="space-between" spacing={{ xs: 8, md: 3 }}>
           <Grid item xs={12} md={4} sx={{ textAlign: { xs: 'center', md: 'left' } }}>
-            <MotionInView variants={varFade().inDown}>
+            <m.div variants={varFade().inDown}>
               <Typography variant="overline" component="div" sx={{ color: 'text.disabled' }}>
                 Looking For a
               </Typography>
-            </MotionInView>
+            </m.div>
 
-            <MotionInView variants={varFade().inDown}>
+            <m.div variants={varFade().inDown}>
               <Typography variant="h2" sx={{ mt: 2, mb: 5 }}>
                 Landing Page Template?
               </Typography>
-            </MotionInView>
+            </m.div>
 
-            <MotionInView variants={varFade().inDown}>
+            <m.div variants={varFade().inDown}>
               <Button
                 color="inherit"
                 size="large"
@@ -47,11 +48,12 @@ export default function HomeLookingFor() {
               >
                 Visit Zone Landing
               </Button>
-            </MotionInView>
+            </m.div>
           </Grid>
 
           <Grid item xs={12} md={7}>
-            <MotionInView
+            <Box
+              component={m.div}
               variants={varFade().inUp}
               sx={{
                 mb: { xs: 3, md: 0 },
@@ -62,7 +64,7 @@ export default function HomeLookingFor() {
                 alt="rocket"
                 src="https://minimal-assets-api.vercel.app/assets/images/home/zone_screen.png"
               />
-            </MotionInView>
+            </Box>
           </Grid>
         </Grid>
       </Container>

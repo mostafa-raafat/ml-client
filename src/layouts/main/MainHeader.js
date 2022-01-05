@@ -1,3 +1,4 @@
+// next
 import { useRouter } from 'next/router';
 // @mui
 import { styled, useTheme } from '@mui/material/styles';
@@ -8,7 +9,7 @@ import useResponsive from 'Hooks/useResponsive';
 // utils
 import cssStyles from 'Utils/cssStyles';
 // config
-import { MAIN_HEADER_DESKTOP, MAIN_HEADER_MOBILE } from 'src/config';
+import { HEADER } from 'Config/index';
 // components
 import Logo from 'Components/Logo';
 import Label from 'Components/Label';
@@ -20,13 +21,13 @@ import navConfig from './MenuConfig';
 // ----------------------------------------------------------------------
 
 const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
-  height: MAIN_HEADER_MOBILE,
+  height: HEADER.MOBILE_HEIGHT,
   transition: theme.transitions.create(['height', 'background-color'], {
     easing: theme.transitions.easing.easeInOut,
     duration: theme.transitions.duration.shorter,
   }),
   [theme.breakpoints.up('md')]: {
-    height: MAIN_HEADER_DESKTOP,
+    height: HEADER.MAIN_DESKTOP_HEIGHT,
   },
 }));
 
@@ -46,7 +47,7 @@ const ToolbarShadowStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function MainHeader() {
-  const isOffset = useOffSetTop(MAIN_HEADER_DESKTOP);
+  const isOffset = useOffSetTop(HEADER.MAIN_DESKTOP_HEIGHT);
 
   const theme = useTheme();
 
@@ -63,7 +64,7 @@ export default function MainHeader() {
         sx={{
           ...(isOffset && {
             ...cssStyles(theme).bgBlur(),
-            height: { md: MAIN_HEADER_DESKTOP - 16 },
+            height: { md: HEADER.MAIN_DESKTOP_HEIGHT - 16 },
           }),
         }}
       >
@@ -77,7 +78,7 @@ export default function MainHeader() {
           <Logo />
 
           <Label color="info" sx={{ ml: 1 }}>
-            v2.8.0
+            v3.0.0
           </Label>
           <Box sx={{ flexGrow: 1 }} />
 

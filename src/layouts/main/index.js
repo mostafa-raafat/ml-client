@@ -1,18 +1,23 @@
+import PropTypes from 'prop-types';
+// next
 import { useRouter } from 'next/router';
-
 // @mui
-import { Box, Container, Typography, Stack } from '@mui/material';
+import { Box, Link, Container, Typography, Stack } from '@mui/material';
 // components
 import Logo from 'Components/Logo';
-import Link from 'Components/Link';
 //
 import MainFooter from './MainFooter';
 import MainHeader from './MainHeader';
 
 // ----------------------------------------------------------------------
 
+MainLayout.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
 export default function MainLayout({ children }) {
   const { pathname } = useRouter();
+
   const isHome = pathname === '/';
 
   return (

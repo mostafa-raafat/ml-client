@@ -5,77 +5,73 @@ import { Box, Stack, AppBar, Toolbar } from '@mui/material';
 // hooks
 import useOffSetTop from 'Hooks/useOffSetTop';
 import useResponsive from 'Hooks/useResponsive';
-import useCollapseDrawer from 'Hooks/useCollapseDrawer';
 // utils
 import cssStyles from 'Utils/cssStyles';
 // config
-import {
-  DASHBOARD_NAVBAR_WIDTH,
-  DASHBOARD_HEADER_MOBILE,
-  DASHBOARD_HEADER_DESKTOP,
-  DASHBOARD_NAVBAR_COLLAPSE_WIDTH,
-} from 'src/config';
+import { HEADER, NAVBAR } from 'Config/index';
 // components
+import Logo from 'Components/Logo';
 import Iconify from 'Components/Iconify';
 import { IconButtonAnimate } from 'Components/animate';
 //
 import Searchbar from './Searchbar';
 import AccountPopover from './AccountPopover';
 import LanguagePopover from './LanguagePopover';
+import ContactsPopover from './ContactsPopover';
 import NotificationsPopover from './NotificationsPopover';
 
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(AppBar, {
-  shouldForwardProp: (prop) => prop !== 'isCollapse',
-})(({ isCollapse, theme }) => ({
-  boxShadow: 'none',
+  shouldForwardProp: (prop) => prop !== 'isCollapse' && prop !== 'isOffset' && prop !== 'verticalLayout',
+})(({ isCollapse, isOffset, verticalLayout, theme }) => ({
   ...cssStyles(theme).bgBlur(),
-  transition: theme.transitions.create('width', {
+  boxShadow: 'none',
+  height: HEADER.MOBILE_HEIGHT,
+  zIndex: theme.zIndex.appBar + 1,
+  transition: theme.transitions.create(['width', 'height'], {
     duration: theme.transitions.duration.shorter,
   }),
   [theme.breakpoints.up('lg')]: {
-    width: `calc(100% - ${DASHBOARD_NAVBAR_WIDTH + 1}px)`,
+    height: HEADER.DASHBOARD_DESKTOP_HEIGHT,
+    width: `calc(100% - ${NAVBAR.DASHBOARD_WIDTH + 1}px)`,
     ...(isCollapse && {
-      width: `calc(100% - ${DASHBOARD_NAVBAR_COLLAPSE_WIDTH}px)`,
+      width: `calc(100% - ${NAVBAR.DASHBOARD_COLLAPSE_WIDTH}px)`,
     }),
-  },
-}));
-
-const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
-  minHeight: DASHBOARD_HEADER_MOBILE,
-  transition: theme.transitions.create('min-height', {
-    easing: theme.transitions.easing.easeInOut,
-    duration: theme.transitions.duration.shorter,
-  }),
-  [theme.breakpoints.up('lg')]: {
-    padding: theme.spacing(0, 5),
-    minHeight: DASHBOARD_HEADER_DESKTOP,
+    ...(isOffset && {
+      height: HEADER.DASHBOARD_DESKTOP_OFFSET_HEIGHT,
+    }),
+    ...(verticalLayout && {
+      width: '100%',
+      height: HEADER.DASHBOARD_DESKTOP_OFFSET_HEIGHT,
+      backgroundColor: theme.palette.background.default,
+    }),
   },
 }));
 
 // ----------------------------------------------------------------------
 
 DashboardHeader.propTypes = {
+  isCollapse: PropTypes.bool,
   onOpenSidebar: PropTypes.func,
+  verticalLayout: PropTypes.bool,
 };
 
-export default function DashboardHeader({ onOpenSidebar }) {
-  const { isCollapse } = useCollapseDrawer();
-
-  const isOffset = useOffSetTop(DASHBOARD_HEADER_DESKTOP);
+export default function DashboardHeader({ onOpenSidebar, isCollapse = false, verticalLayout = false }) {
+  const isOffset = useOffSetTop(HEADER.DASHBOARD_DESKTOP_HEIGHT) && !verticalLayout;
 
   const isDesktop = useResponsive('up', 'lg');
 
   return (
-    <RootStyle isCollapse={isCollapse}>
-      <ToolbarStyle
+    <RootStyle isCollapse={isCollapse} isOffset={isOffset} verticalLayout={verticalLayout}>
+      <Toolbar
         sx={{
-          ...(isOffset && {
-            minHeight: { md: DASHBOARD_HEADER_DESKTOP - 16 },
-          }),
+          minHeight: '100% !important',
+          px: { lg: 5 },
         }}
       >
+        {isDesktop && verticalLayout && <Logo sx={{ mr: 2.5 }} />}
+
         {!isDesktop && (
           <IconButtonAnimate onClick={onOpenSidebar} sx={{ mr: 1, color: 'text.primary' }}>
             <Iconify icon="eva:menu-2-fill" />
@@ -88,9 +84,10 @@ export default function DashboardHeader({ onOpenSidebar }) {
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
           <LanguagePopover />
           <NotificationsPopover />
+          <ContactsPopover />
           <AccountPopover />
         </Stack>
-      </ToolbarStyle>
+      </Toolbar>
     </RootStyle>
   );
 }

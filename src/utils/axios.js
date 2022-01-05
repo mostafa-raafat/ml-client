@@ -1,31 +1,17 @@
-import axios from "axios";
-import firebase from "Utils/firebase";
+import axios from 'axios';
 
 // config
-import { HOST_API } from '../config';
-
+import { HOST_API } from 'Config/index';
 
 // ----------------------------------------------------------------------
 
-const axiosPublic = axios.create({
+const axiosInstance = axios.create({
   baseURL: HOST_API,
 });
 
-const axiosAuth = axios.create({
-  baseURL: HOST_API,
-});
-
-axiosAuth.interceptors.request.use(
-  async (config) => {
-    let user = firebase.auth().currentUser;
-    config.headers.token = user ? await user.getIdToken(true) : "";
-    return config;
-  },
-  (error) => {
-    return Promise.reject(
-      (error.response && error.response.data) || "Something went wrong"
-    );
-  }
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong')
 );
 
-export { axiosPublic, axiosAuth };
+export default axiosInstance;

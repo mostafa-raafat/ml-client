@@ -1,6 +1,8 @@
 // @mui
 import { styled } from '@mui/material/styles';
 import { Grid, Divider, Container, Typography, Stack } from '@mui/material';
+// routes
+import { PATH_PAGE } from 'Routes/paths';
 // components
 import Logo from 'Components/Logo';
 import SocialsButton from 'Components/SocialsButton';
@@ -12,9 +14,9 @@ const LINKS = [
   {
     headline: 'Minimal',
     children: [
-      { name: 'About us', href: '#' },
-      { name: 'Contact us', href: '#' },
-      { name: 'FAQs', href: '#' },
+      { name: 'About us', href: PATH_PAGE.about },
+      { name: 'Contact us', href: PATH_PAGE.contact },
+      { name: 'FAQs', href: PATH_PAGE.faqs },
     ],
   },
   {
@@ -76,7 +78,7 @@ export default function MainFooter() {
                     {list.headline}
                   </Typography>
                   {list.children.map((link) => (
-                    <Link href={link.href} key={link.name} color="inherit" variant="body2" sx={{ display: 'block' }}>
+                    <Link color="inherit" variant="body2" sx={{ display: 'block' }} href={link.href}>
                       {link.name}
                     </Link>
                   ))}

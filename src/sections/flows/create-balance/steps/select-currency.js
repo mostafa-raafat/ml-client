@@ -1,9 +1,9 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 // @mui
 import { Button, Stack, Typography, useTheme } from '@mui/material';
 // sections
 import CurrencyAutoComplete from 'Sections/common/CurrencyAutoComplete';
-import { FlowManagerContext } from 'Contexts/FlowManagerContext';
+import useFlowManager from 'Hooks/useFlowManager';
 
 const initCurrency = { label: '', code: '', phone: '' };
 
@@ -12,10 +12,16 @@ export default function SelectCurrency() {
   const {
     flowManagerState: { activeStep, steps },
     flowManagerDispatch,
-  } = useContext(FlowManagerContext);
+  } = useFlowManager();
 
   const [currency, setCurrency] = useState(initCurrency);
-  const onSelectCurrency = (option) => setCurrency({ ...option });
+
+  const onSelectCurrency = useCallback(
+    (option) => {
+      setCurrency({ ...option });
+    },
+    [activeStep]
+  );
 
   useEffect(() => {
     setCurrency(steps[activeStep]?.value ?? initCurrency);

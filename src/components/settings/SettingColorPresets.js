@@ -1,7 +1,22 @@
-import { alpha } from '@mui/material/styles';
-import { Box, Grid, Paper, Radio, RadioGroup, CardActionArea, FormControlLabel } from '@mui/material';
+// @mui
+import { alpha, styled } from '@mui/material/styles';
+import { Box, Grid, RadioGroup, CardActionArea } from '@mui/material';
 // hooks
 import useSettings from 'Hooks/useSettings';
+//
+import { BoxMask } from '.';
+
+// ----------------------------------------------------------------------
+
+const BoxStyle = styled(CardActionArea)(({ theme }) => ({
+  height: 48,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: theme.palette.text.disabled,
+  border: `solid 1px ${theme.palette.grey[500_12]}`,
+  borderRadius: Number(theme.shape.borderRadius) * 1.25,
+}));
 
 // ----------------------------------------------------------------------
 
@@ -18,58 +33,33 @@ export default function SettingColorPresets() {
 
           return (
             <Grid key={colorName} item xs={4}>
-              <Paper
-                variant="outlined"
+              <BoxStyle
                 sx={{
-                  borderRadius: 1.25,
                   ...(isSelected && {
-                    bgcolor: alpha(colorValue, 0.12),
+                    bgcolor: alpha(colorValue, 0.08),
                     border: `solid 2px ${colorValue}`,
                     boxShadow: `inset 0 4px 8px 0 ${alpha(colorValue, 0.24)}`,
                   }),
                 }}
               >
-                <CardActionArea sx={{ borderRadius: 1.25, color: colorValue, height: 1 }}>
-                  <Box
-                    sx={{
-                      height: 48,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        width: 24,
-                        height: 14,
-                        borderRadius: '50%',
-                        bgcolor: colorValue,
-                        transform: 'rotate(-45deg)',
-                        transition: (theme) =>
-                          theme.transitions.create('all', {
-                            easing: theme.transitions.easing.easeInOut,
-                            duration: theme.transitions.duration.shorter,
-                          }),
-                        ...(isSelected && { transform: 'none' }),
-                      }}
-                    />
-                  </Box>
+                <Box
+                  sx={{
+                    width: 24,
+                    height: 14,
+                    borderRadius: '50%',
+                    bgcolor: colorValue,
+                    transform: 'rotate(-45deg)',
+                    transition: (theme) =>
+                      theme.transitions.create('all', {
+                        easing: theme.transitions.easing.easeInOut,
+                        duration: theme.transitions.duration.shorter,
+                      }),
+                    ...(isSelected && { transform: 'none' }),
+                  }}
+                />
 
-                  <FormControlLabel
-                    label=""
-                    value={colorName}
-                    control={<Radio sx={{ display: 'none' }} />}
-                    sx={{
-                      m: 0,
-                      top: 0,
-                      right: 0,
-                      bottom: 0,
-                      left: 0,
-                      position: 'absolute',
-                    }}
-                  />
-                </CardActionArea>
-              </Paper>
+                <BoxMask value={colorName} />
+              </BoxStyle>
             </Grid>
           );
         })}

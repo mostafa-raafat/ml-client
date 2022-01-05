@@ -1,9 +1,15 @@
-import { styled } from '@mui/material/styles';
+import { m } from 'framer-motion';
+// next
+import NextLink from 'next/link';
 // @mui
-import { Box, Typography, Container } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { Box, Button, Typography, Container } from '@mui/material';
+// layouts
+import Layout from 'Layouts/index';
 // components
 import Page from 'Components/Page';
-import LinkButton from 'Components/LinkButton';
+import { MotionContainer, varBounce } from 'Components/animate';
+// assets
 import { SeverErrorIllustration } from 'Assets/index';
 
 // ----------------------------------------------------------------------
@@ -18,22 +24,32 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
+Page500.getLayout = function getLayout(page) {
+  return <Layout variant="logoOnly">{page}</Layout>;
+};
+
+// ----------------------------------------------------------------------
+
 export default function Page500() {
   return (
     <Page title="500 Internal Server Error" sx={{ height: 1 }}>
       <RootStyle>
-        <Container>
+        <Container component={MotionContainer}>
           <Box sx={{ maxWidth: 480, margin: 'auto', textAlign: 'center' }}>
-            <Typography variant="h3" paragraph>
-              500 Internal Server Error
-            </Typography>
+            <m.div variants={varBounce().in}>
+              <Typography variant="h3" paragraph>
+                500 Internal Server Error
+              </Typography>
+            </m.div>
             <Typography sx={{ color: 'text.secondary' }}>There was an error, please try again later.</Typography>
-
-            <SeverErrorIllustration sx={{ height: 260, my: { xs: 5, sm: 10 } }} />
-
-            <LinkButton href="/" size="large" variant="contained">
-              Go to Home
-            </LinkButton>
+            <m.div variants={varBounce().in}>
+              <SeverErrorIllustration sx={{ height: 260, my: { xs: 5, sm: 10 } }} />
+            </m.div>
+            <NextLink href="/">
+              <Button size="large" variant="contained">
+                Go to Home
+              </Button>
+            </NextLink>
           </Box>
         </Container>
       </RootStyle>
