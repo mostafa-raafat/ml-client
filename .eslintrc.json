@@ -7,7 +7,6 @@
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:@next/next/recommended",
-    "next/babel",
     "next/core-web-vitals",
     "prettier"
   ],
@@ -19,11 +18,30 @@
     "sourceType": "module"
   },
   "plugins": ["react", "@next/eslint-plugin-next"],
+  "ignorePatterns": ["node_modules/", ".next/"],
   "settings": {
     "import/resolver": {
       "node": {
-        "paths": ["src"],
+        "paths": ["."],
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      },
+      "alias": {
+        "map": [
+          ["Pages", "./src/pages"],
+          ["Components", "./src/components"],
+          ["Sections", "./src/sections"],
+          ["Assets", "./src/assets"],
+          ["Contexts", "./src/contexts"],
+          ["Hooks", "./src/hooks"],
+          ["Layouts", "./src/layouts"],
+          ["Locales", "./src/locales"],
+          ["Config", "./src/config"],
+          ["Routes", "./src/routes"],
+          ["Theme", "./src/theme"],
+          ["Utils", "./src/utils"],
+          ["Guards", "./src/guards"],
+          ["Services", "./src/services"]
+        ]
       }
     }
   },
