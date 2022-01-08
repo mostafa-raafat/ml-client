@@ -5,7 +5,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, TwitterAuthProvider } from 'firebase/auth';
 // utils
 import axios from 'Utils/axios';
-import { getToken, isValidToken, removeSession, setSession } from 'Utils/jwt';
+import { isValidToken, destroySession, setSession } from 'Utils/jwt';
 //
 import { FIREBASE_API } from 'Config/index';
 
@@ -81,7 +81,7 @@ function AuthProvider({ children }) {
   useEffect(() => {
     const initialize = async () => {
       try {
-        const accessToken = getToken();
+        const accessToken = window.localStorage.getItem('accessToken');
 
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
@@ -186,7 +186,7 @@ function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-    removeSession();
+    destroySession();
     dispatch({ type: 'LOGOUT' });
   };
 

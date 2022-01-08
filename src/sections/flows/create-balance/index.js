@@ -4,7 +4,7 @@ import useFlowManager from 'Hooks/useFlowManager';
 //
 import steps from './steps';
 import SelectCurrency from './steps/select-currency';
-import FlowLayout from 'Layouts/flow';
+import Layout from 'Layouts/index';
 
 export default function CreateBalance() {
   const { flowManagerDispatch } = useFlowManager();
@@ -19,11 +19,11 @@ export default function CreateBalance() {
   }, []);
 
   return (
-    <FlowLayout>
+    <Layout variant="flow">
       <SelectCurrency />
       <SelectCurrency />
       <SelectCurrency />
       <SelectCurrency />
-    </FlowLayout>
+    </Layout>
   );
 }

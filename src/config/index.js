@@ -64,7 +64,6 @@ export const cookiesKey = {
   themeColorPresets: 'themeColorPresets',
   themeLayout: 'themeLayout',
   themeStretch: 'themeStretch',
-  accessToken: 'accessToken',
 };
 
 export const defaultSettings = {

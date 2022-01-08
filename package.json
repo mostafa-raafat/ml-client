@@ -1,8 +1,8 @@
 {
-  "name": "@minimal/minimal-kit-react",
-  "author": "minimals.cc",
-  "version": "2.8.0",
-  "description": "Demo next.js version",
+  "name": "money-fly-client",
+  "author": "Mostafa Raafat",
+  "version": "1.0.0",
+  "description": "Transfer Money App",
   "private": true,
   "scripts": {
     "dev": "next dev -p 3222",
@@ -70,6 +70,10 @@
     "react-query": "^3.34.7",
     "react-quill": "^2.0.0-beta.4",
     "react-slick": "^0.28.1",
+    "redux": "^4.1.2",
+    "react-redux": "^7.2.6",
+    "redux-persist": "^6.0.0",
+    "@reduxjs/toolkit": "^1.7.1",
     "simplebar": "^5.3.6",
     "simplebar-react": "^2.3.6",
     "slick-carousel": "^1.8.1",
@@ -79,7 +83,6 @@
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^12.0.7",
-    "babel-eslint": "^10.1.0",
     "eslint": "<8.0.0",
     "eslint-config-next": "^12.0.7",
     "eslint-config-prettier": "^8.3.0",

@@ -15,7 +15,8 @@
       "Theme/*": ["src/theme/*"],
       "Utils/*": ["src/utils/*"],
       "Guards/*": ["src/guards/*"],
-      "Services/*": ["src/services/*"]
+      "Services/*": ["src/services/*"],
+      "Redux/*": ["src/redux/*"]
     }
   },
   "include": ["src/**/*"],

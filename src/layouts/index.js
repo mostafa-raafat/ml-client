@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import AuthGuard from 'Guards/AuthGuard';
 // components
 import MainLayout from './main';
+import FlowLayout from './flow';
 import DashboardLayout from './dashboard';
 import LogoOnlyLayout from './LogoOnlyLayout';
 
@@ -10,7 +11,7 @@ import LogoOnlyLayout from './LogoOnlyLayout';
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
-  variant: PropTypes.oneOf(['dashboard', 'main', 'logoOnly']),
+  variant: PropTypes.oneOf(['dashboard', 'main', 'logoOnly', 'flow']),
 };
 
 export default function Layout({ variant = 'dashboard', children }) {
@@ -20,6 +21,14 @@ export default function Layout({ variant = 'dashboard', children }) {
 
   if (variant === 'main') {
     return <MainLayout>{children}</MainLayout>;
+  }
+
+  if (variant === 'flow') {
+    return (
+      <AuthGuard>
+        <FlowLayout>{children}</FlowLayout>
+      </AuthGuard>
+    );
   }
 
   return (
