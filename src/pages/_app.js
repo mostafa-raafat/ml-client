@@ -20,17 +20,12 @@ import cookie from 'cookie';
 // next
 import Head from 'next/head';
 import App from 'next/app';
-//
-import { Provider as ReduxProvider } from 'react-redux';
-import { PersistGate } from 'redux-persist/lib/integration/react';
 // @mui
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 // react query
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-// redux
-import { store, persistor } from 'Redux/store';
 // contexts
 import { SettingsProvider } from 'Contexts/SettingsContext';
 import { CollapseDrawerProvider } from 'Contexts/CollapseDrawerContext';
@@ -58,11 +53,10 @@ MyApp.propTypes = {
   settings: PropTypes.object,
 };
 
+const queryClient = new QueryClient();
+
 export default function MyApp(props) {
   const { Component, pageProps, settings } = props;
-
-  const queryClient = new QueryClient();
-
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
@@ -74,34 +68,30 @@ export default function MyApp(props) {
         <ReactQueryDevtools />
         <Hydrate state={pageProps.dehydratedState}>
           <AuthProvider>
-            <ReduxProvider store={store}>
-              <PersistGate loading={null} persistor={persistor}>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <CollapseDrawerProvider>
-                    <SettingsProvider defaultSettings={settings}>
-                      <FlowManagerProvider>
-                        <ThemeProvider>
-                          <NotistackProvider>
-                            <MotionLazyContainer>
-                              <ThemeColorPresets>
-                                <ThemeLocalization>
-                                  <RtlLayout>
-                                    <ChartStyle />
-                                    <Settings />
-                                    <ProgressBar />
-                                    {getLayout(<Component {...pageProps} />)}
-                                  </RtlLayout>
-                                </ThemeLocalization>
-                              </ThemeColorPresets>
-                            </MotionLazyContainer>
-                          </NotistackProvider>
-                        </ThemeProvider>
-                      </FlowManagerProvider>
-                    </SettingsProvider>
-                  </CollapseDrawerProvider>
-                </LocalizationProvider>
-              </PersistGate>
-            </ReduxProvider>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <CollapseDrawerProvider>
+                <SettingsProvider defaultSettings={settings}>
+                  <FlowManagerProvider>
+                    <ThemeProvider>
+                      <NotistackProvider>
+                        <MotionLazyContainer>
+                          <ThemeColorPresets>
+                            <ThemeLocalization>
+                              <RtlLayout>
+                                <ChartStyle />
+                                <Settings />
+                                <ProgressBar />
+                                {getLayout(<Component {...pageProps} />)}
+                              </RtlLayout>
+                            </ThemeLocalization>
+                          </ThemeColorPresets>
+                        </MotionLazyContainer>
+                      </NotistackProvider>
+                    </ThemeProvider>
+                  </FlowManagerProvider>
+                </SettingsProvider>
+              </CollapseDrawerProvider>
+            </LocalizationProvider>
           </AuthProvider>
         </Hydrate>
       </QueryClientProvider>

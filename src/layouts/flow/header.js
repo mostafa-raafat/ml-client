@@ -17,6 +17,8 @@ import {
 } from '@mui/material';
 // hooks
 import useFlowManager from 'Hooks/useFlowManager';
+// contexts
+import { FlowManagerActions } from 'Contexts/FlowManagerContext';
 // routes
 import { PATH_DASHBOARD } from 'Routes/paths';
 // config
@@ -70,7 +72,7 @@ const HeaderStyle = styled(Box)(({ theme }) => ({
 
 export default function FlowLayoutHeader() {
   const {
-    flowManagerState: { steps, activeStep },
+    flowManagerState: { steps, active },
     flowManagerDispatch,
   } = useFlowManager();
 
@@ -87,7 +89,7 @@ export default function FlowLayoutHeader() {
       {steps.length > 1 && (
         <MuiStepper
           alternativeLabel
-          activeStep={activeStep}
+          activeStep={active}
           connector={<QontoConnector />}
           sx={{
             flexGrow: '1',
@@ -102,15 +104,15 @@ export default function FlowLayoutHeader() {
               <StepLabelStyle
                 StepIconComponent={QontoStepIcon}
                 onClick={() =>
-                  index < activeStep &&
+                  index < active &&
                   flowManagerDispatch({
-                    type: 'ACTIVE_STEP',
+                    type: FlowManagerActions.ACTIVE_STEP,
                     payload: {
-                      activeStep: index,
+                      active: index,
                     },
                   })
                 }
-                sx={{ cursor: index < activeStep ? 'pointer' : 'default' }}
+                sx={{ cursor: index < active ? 'pointer' : 'default' }}
               >
                 {label}
               </StepLabelStyle>

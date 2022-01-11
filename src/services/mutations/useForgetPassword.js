@@ -7,5 +7,5 @@ const forgetPassword = (email) =>
   });
 
 export default function useForgetPassword() {
-  return useMutation(['forgetPassword'], ({ email }) => forgetPassword(email));
+  return useMutation(({ email }) => forgetPassword(email));
 }

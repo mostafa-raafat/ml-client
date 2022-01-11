@@ -1,31 +1,41 @@
-import { useState, useEffect, useCallback } from 'react';
+// next
+import { useRouter } from 'next/router';
 // @mui
 import { Button, Stack, Typography, useTheme } from '@mui/material';
+// hooks
+import useFlowManager from 'Hooks/useFlowManager';
+// contexts
+import { FlowManagerActions } from 'Contexts/FlowManagerContext';
+// services
+import useCreateBalance from 'Services/mutations/useCreateBalance';
+// routes
+import { PATH_DASHBOARD } from 'Routes/paths';
 // sections
 import CurrencyAutoComplete from 'Sections/common/CurrencyAutoComplete';
-import useFlowManager from 'Hooks/useFlowManager';
-
-const initCurrency = { label: '', code: '', phone: '' };
 
 export default function SelectCurrency() {
   const theme = useTheme();
   const {
-    flowManagerState: { activeStep, steps },
+    flowManagerState: { steps, active },
     flowManagerDispatch,
   } = useFlowManager();
 
-  const [currency, setCurrency] = useState(initCurrency);
+  const { mutate } = useCreateBalance();
+  const { push } = useRouter();
 
-  const onSelectCurrency = useCallback(
-    (option) => {
-      setCurrency({ ...option });
-    },
-    [activeStep]
-  );
+  const createBalance = ({ code }) =>
+    mutate(
+      {
+        code,
+      },
+      {
+        onSuccess() {
+          push(PATH_DASHBOARD.root);
+        },
+      }
+    );
 
-  useEffect(() => {
-    setCurrency(steps[activeStep]?.value ?? initCurrency);
-  }, [activeStep]);
+  const currency = steps[active]?.value;
 
   return (
     <Stack
@@ -40,31 +50,29 @@ export default function SelectCurrency() {
       <Typography variant="h3" component="div" sx={{ mb: 2 }}>
         Open a balance
       </Typography>
-      <CurrencyAutoComplete width={400} currency={currency} onChange={onSelectCurrency} />
+      <CurrencyAutoComplete
+        width={400}
+        currency={currency}
+        onChange={(option) => {
+          flowManagerDispatch({
+            type: FlowManagerActions.STEP_VALUE,
+            payload: {
+              value: option,
+            },
+          });
+        }}
+      />
       <Typography
         variant="body1"
         component="div"
         color={theme.palette.text.secondary}
         sx={{ mb: 1, textAlign: 'left', width: '100%' }}
       >
-        {currency.label
+        {currency
           ? `You'll be able to hold ${currency.code} to pay for future transfers.`
           : ' You can open balances in 50+ currencies.'}
       </Typography>
-      <Button
-        size="large"
-        fullWidth
-        variant="contained"
-        onClick={() => {
-          flowManagerDispatch({
-            type: 'NEXT_STEP',
-            payload: {
-              value: currency,
-            },
-          });
-          setCurrency(initCurrency);
-        }}
-      >
+      <Button size="large" fullWidth variant="contained" disabled={!currency} onClick={() => createBalance(currency)}>
         Confirm
       </Button>
     </Stack>

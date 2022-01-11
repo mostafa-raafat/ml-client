@@ -3,8 +3,10 @@ import Image from 'next/image';
 // @mui
 import { Box } from '@mui/material';
 import { styled } from '@mui/system';
-// utils
-import { currencies } from 'Utils/currencies';
+// services
+import useGetCurrencies from 'Services/query/useGetCurrencies';
+// config
+import { AWS_PACKET_API } from 'Config/index';
 // components
 import AutoComplete from 'Components/autoComplete';
 
@@ -16,26 +18,28 @@ const StyledOption = styled(Box)(({ theme, active }) => ({
 }));
 
 const CurrencyOption = ({ option, active = true, defaultLabel = 'Choose option', ...props }) => {
+  const name = option ? option.name : defaultLabel;
   return (
     <StyledOption active={active} {...props}>
-      {option.code && (
+      {option && (
         <Image
-          src={`/currencies/${option.code.toLowerCase()}.png`}
-          srcSet={`/currencies/${option.code.toLowerCase()}.png 2x`}
-          alt={option.label}
+          src={`${AWS_PACKET_API}/currencies/${option.code.toLowerCase()}.png`}
+          srcSet={`${AWS_PACKET_API}/currencies/${option.code.toLowerCase()}.png 2x`}
+          alt={name}
           width={24}
           height={16}
         />
       )}
-      {option.label || defaultLabel}
+      {name}
     </StyledOption>
   );
 };
 
 export default function CurrencyAutoComplete({ width = 400, currency, ...props }) {
+  const { isLoading, data } = useGetCurrencies();
   return (
-    <AutoComplete options={currencies} width={width} OptionComponent={CurrencyOption} {...props}>
-      <CurrencyOption option={currency} component="span" active={!!currency.label} defaultLabel="Choose currency" />
+    <AutoComplete options={data} loading={isLoading} width={width} OptionComponent={CurrencyOption} {...props}>
+      <CurrencyOption option={currency} component="span" active={!!currency} defaultLabel="Choose currency" />
     </AutoComplete>
   );
 }

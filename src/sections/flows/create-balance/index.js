@@ -1,17 +1,20 @@
 import { useEffect } from 'react';
 // hooks
 import useFlowManager from 'Hooks/useFlowManager';
+// context
+import { FlowManagerActions } from 'Contexts/FlowManagerContext';
+// layouts
+import Layout from 'Layouts/index';
 //
 import steps from './steps';
 import SelectCurrency from './steps/select-currency';
-import Layout from 'Layouts/index';
 
 export default function CreateBalance() {
   const { flowManagerDispatch } = useFlowManager();
 
   useEffect(() => {
     flowManagerDispatch({
-      type: 'INIT_STEPS',
+      type: FlowManagerActions.INIT_STEPS,
       payload: {
         steps,
       },
@@ -20,9 +23,6 @@ export default function CreateBalance() {
 
   return (
     <Layout variant="flow">
-      <SelectCurrency />
-      <SelectCurrency />
-      <SelectCurrency />
       <SelectCurrency />
     </Layout>
   );

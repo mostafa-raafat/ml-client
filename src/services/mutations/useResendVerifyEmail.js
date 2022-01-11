@@ -7,5 +7,5 @@ const resendVerifyEmail = (token) =>
   });
 
 export default function useResendVerifyEmail() {
-  return useMutation(['resendVerifyEmail'], ({ token }) => resendVerifyEmail(token));
+  return useMutation(({ token }) => resendVerifyEmail(token));
 }

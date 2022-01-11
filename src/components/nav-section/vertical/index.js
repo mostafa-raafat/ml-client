@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 // @mui
 import { styled } from '@mui/material/styles';
 import { List, Box, ListSubheader } from '@mui/material';
+// services
+import useGetBalances from 'Services/query/useGetBalance';
 //
 import { NavListRoot } from './NavList';
 

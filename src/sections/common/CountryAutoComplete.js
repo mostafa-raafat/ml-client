@@ -1,12 +1,15 @@
-// next
-import Image from 'next/image';
+// // next
+// import Image from 'next/image';
 // @mui
-import { Box, TextField, Stack } from '@mui/material';
+import { Box } from '@mui/material';
 import { styled } from '@mui/system';
-// utils
-import { countries } from 'Utils/countries';
+// services
+import useGetCountries from 'Services/query/useGetCountries';
+// config
+import { AWS_PACKET_API } from 'Config/index';
 // components
 import AutoComplete from 'Components/autoComplete';
+import Image from 'Components/Image';
 
 const StyledOption = styled(Box)(({ theme, active }) => ({
   display: 'flex',
@@ -16,43 +19,28 @@ const StyledOption = styled(Box)(({ theme, active }) => ({
 }));
 
 const CountryOption = ({ option, active = true, defaultLabel = 'Choose option', ...props }) => {
+  const name = option.name || defaultLabel;
   return (
     <StyledOption active={active} {...props}>
       {option.code && (
         <Image
-          src={`/countries/${option.code.toLowerCase()}.svg`}
-          srcSet={`/countries/${option.code.toLowerCase()}.png 2x`}
-          alt={option.label}
+          src={`${AWS_PACKET_API}/countries/${option.code.toLowerCase()}.png`}
+          srcSet={`${AWS_PACKET_API}/countries/${option.code.toLowerCase()}.png 2x`}
+          alt={name}
           width={24}
           height={16}
         />
       )}
-      {option.label + ' +' + option.phone || defaultLabel}
+      {name}
     </StyledOption>
   );
 };
 
 export default function CountryAutoComplete({ width = 400, country, helperText, error, ...props }) {
+  const { isLoading, data } = useGetCountries();
   return (
-    <Stack direction="row" justifyContent={'flex-end'} alignItems={'flex-end'} spacing={2}>
-      <AutoComplete options={countries} ButtonWidth={85} dropDownWidth={400} OptionComponent={CountryOption}>
-        <Image
-          src={`/countries/${country.code.toLowerCase()}.svg`}
-          srcSet={`/countries/${country.code.toLowerCase()}.png 2x`}
-          alt={country.label}
-          width={24}
-          height={16}
-        />
-      </AutoComplete>
-      <TextField
-        fullWidth
-        autoComplete="phone"
-        type="number"
-        label="Phone number"
-        error={error}
-        helperText={helperText}
-        {...props}
-      />
-    </Stack>
+    <AutoComplete options={data} loading={isLoading} width={width} OptionComponent={CountryOption} {...props}>
+      <CountryOption option={country} component="span" active={!!country.name} defaultLabel="Choose country" />
+    </AutoComplete>
   );
 }

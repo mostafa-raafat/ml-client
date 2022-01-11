@@ -1,7 +1,7 @@
 import jwtDecode from 'jwt-decode';
 import { verify, sign } from 'jsonwebtoken';
 //
-import axios from 'Utils/axios';
+import axiosInstance from 'Utils/axios';
 
 // ----------------------------------------------------------------------
 
@@ -30,7 +30,7 @@ const isValidToken = (accessToken) => {
 
 const setSession = (accessToken) => {
   localStorage.setItem('accessToken', accessToken);
-  axios.defaults.headers.common.Authorization = `JWT ${accessToken}`;
+  axiosInstance.defaults.headers.common.Authorization = `JWT ${accessToken}`;
   // This function below will handle when token is expired
   // const { exp } = jwtDecode(accessToken);
   // handleTokenExpired(exp);
@@ -38,7 +38,7 @@ const setSession = (accessToken) => {
 
 const destroySession = () => {
   localStorage.removeItem('accessToken');
-  delete axios.defaults.headers.common.Authorization;
+  delete axiosInstance.defaults.headers.common.Authorization;
 };
 
 export { isValidToken, setSession, destroySession, verify, sign };

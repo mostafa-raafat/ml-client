@@ -9,7 +9,5 @@ const resetPassword = (password, confirmPassword, token) =>
   });
 
 export default function useResetPassword() {
-  return useMutation(['resetPassword'], ({ password, confirmPassword, token }) =>
-    resetPassword(password, confirmPassword, token)
-  );
+  return useMutation(({ password, confirmPassword, token }) => resetPassword(password, confirmPassword, token));
 }

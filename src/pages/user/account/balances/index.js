@@ -5,7 +5,7 @@ import Page from 'Components/Page';
 
 export default function Balances() {
   return (
-    <Page title="Send">
+    <Page title="Balances">
       <CreateBalance />
     </Page>
   );

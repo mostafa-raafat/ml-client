@@ -8,5 +8,5 @@ const verifyEmail = (token, code) =>
   });
 
 export default function useVerifyEmail() {
-  return useMutation(['verifyEmail'], ({ token, code }) => verifyEmail(token, code));
+  return useMutation(({ token, code }) => verifyEmail(token, code));
 }

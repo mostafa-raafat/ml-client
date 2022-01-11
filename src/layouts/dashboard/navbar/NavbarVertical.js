@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 // next
 import { useRouter } from 'next/router';
 // @mui
 import { styled, useTheme } from '@mui/material/styles';
-import { Box, Stack, Drawer, Button, IconButton } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Box, Stack, Drawer, Button } from '@mui/material';
 // hooks
 import useResponsive from 'Hooks/useResponsive';
 import useCollapseDrawer from 'Hooks/useCollapseDrawer';
@@ -13,6 +12,8 @@ import useCollapseDrawer from 'Hooks/useCollapseDrawer';
 import cssStyles from 'Utils/cssStyles';
 // config
 import { NAVBAR } from 'Config/index';
+// services
+import useGetBalances from 'Services/query/useGetBalance';
 // components
 import Logo from 'Components/Logo';
 import Scrollbar from 'Components/Scrollbar';
@@ -43,6 +44,12 @@ NavbarVertical.propTypes = {
 
 export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
   const theme = useTheme();
+
+  const [active, setActive] = useState(true);
+
+  useEffect(() => {
+    if (active) setActive(false);
+  });
 
   const { pathname } = useRouter();
 

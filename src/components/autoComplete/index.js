@@ -42,6 +42,7 @@ AutoComplete.propTypes = {
 
 export default function AutoComplete({
   options = [],
+  loading = false,
   ButtonWidth = 400,
   dropDownWidth = 400,
   children,
@@ -97,13 +98,14 @@ export default function AutoComplete({
                 <OptionComponent component="li" option={option} {...props} />
               ) : (
                 <Box component="li" {...props}>
-                  {option.label}
+                  {option.name}
                 </Box>
               );
             }}
             options={options}
+            loading={loading}
             clearOnBlur={false}
-            getOptionLabel={(option) => option.label}
+            getOptionLabel={(option) => option.name}
             onInputChange={(test) => setInputValue(test?.target?.value || '')}
             inputValue={inputValue}
             renderInput={(params) => (

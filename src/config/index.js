@@ -17,6 +17,7 @@ export const FIREBASE_API = {
 };
 
 export const GOOGLE_ANALYTICS_API = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+export const AWS_PACKET_API = process.env.NEXT_PUBLIC_AWS_PACKET;
 
 // ROOT PATH AFTER LOGIN SUCCESSFUL
 export const PATH_AFTER_LOGIN = PATH_DASHBOARD.home; // as '/dashboard/app'

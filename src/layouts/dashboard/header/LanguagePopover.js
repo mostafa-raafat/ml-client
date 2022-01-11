@@ -7,6 +7,7 @@ import useLocales from 'Hooks/useLocales';
 import Image from 'Components/Image';
 import MenuPopover from 'Components/MenuPopover';
 import { IconButtonAnimate } from 'Components/animate';
+import { AWS_PACKET_API } from 'Config/index';
 
 // ----------------------------------------------------------------------
 
@@ -33,7 +34,7 @@ export default function LanguagePopover() {
           ...(open && { bgcolor: 'action.selected' }),
         }}
       >
-        <Image disabledEffect src={currentLang.icon} alt={currentLang.label} />
+        <Image disabledEffect src={`${AWS_PACKET_API}/countries/${currentLang.icon}`} alt={currentLang.label} />
       </IconButtonAnimate>
 
       <MenuPopover
@@ -57,7 +58,12 @@ export default function LanguagePopover() {
                 handleClose();
               }}
             >
-              <Image disabledEffect alt={option.label} src={option.icon} sx={{ width: 28, mr: 2 }} />
+              <Image
+                disabledEffect
+                alt={option.label}
+                src={`${AWS_PACKET_API}/countries/${option.icon}`}
+                sx={{ width: 28, mr: 2 }}
+              />
 
               {option.label}
             </MenuItem>
