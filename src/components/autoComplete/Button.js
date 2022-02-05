@@ -17,9 +17,7 @@ const StyledButton = styled(ButtonBase)(({ theme, width }) => ({
   padding: theme.spacing(0, 2),
   borderRadius: theme.shape.borderRadius,
   border: `1px solid ${theme.palette.grey[500_32]}`,
-  '& p': {
-    lineHeight: 0,
-  },
+  ...theme.typography.body1,
   '&:hover': {
     borderColor: theme.palette.grey[theme.palette.mode === 'light' ? 800 : 200],
   },
@@ -37,7 +35,7 @@ export default function AutoCompleteButton({ children, ...other }) {
   const theme = useTheme();
   return (
     <StyledButton disableRipple {...other}>
-      <Typography>{children}</Typography>
+      {children}
       <Iconify icon="akar-icons:chevron-down" color={theme.palette.primary.main} />
     </StyledButton>
   );

@@ -11,7 +11,6 @@ import Stepper from 'Components/Stepper';
 // ----------------------------------------------------------------------
 
 const Step = (props) => {
-  // console.log(props);
   const { label, key, handleNext } = props;
   return (
     <>

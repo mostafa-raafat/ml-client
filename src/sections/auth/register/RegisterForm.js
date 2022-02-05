@@ -1,6 +1,8 @@
 import * as Yup from 'yup';
 import { useState } from 'react';
 import { useSnackbar } from 'notistack';
+// next
+import { useRouter } from 'next/router';
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -11,6 +13,8 @@ import { LoadingButton } from '@mui/lab';
 import useAuth from 'Hooks/useAuth';
 import useIsMountedRef from 'Hooks/useIsMountedRef';
 import useLocales from 'Hooks/useLocales';
+// routes
+import { PATH_AUTH } from 'Routes/paths';
 // components
 import Iconify from 'Components/Iconify';
 import { FormProvider, RHFTextField, RHFPhoneField } from 'Components/hook-form';
@@ -18,6 +22,7 @@ import { FormProvider, RHFTextField, RHFPhoneField } from 'Components/hook-form'
 // ----------------------------------------------------------------------
 
 export default function RegisterForm() {
+  const router = useRouter();
   const { register } = useAuth();
   const { translate } = useLocales();
   const isMountedRef = useIsMountedRef();
@@ -57,6 +62,7 @@ export default function RegisterForm() {
     try {
       await register(email, password, firstName, lastName, mobile);
       enqueueSnackbar('Register successfully!');
+      router.push(PATH_AUTH.login);
     } catch (error) {
       console.error(error);
       reset();

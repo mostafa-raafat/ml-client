@@ -12,10 +12,11 @@ import LoadingScreen from 'Components/LoadingScreen';
 
 AuthGuard.propTypes = {
   children: PropTypes.node,
+  isAuthenticated: PropTypes.bool,
 };
 
-export default function AuthGuard({ children }) {
-  const { isAuthenticated, isInitialized } = useAuth();
+export default function AuthGuard({ children, isAuthenticated }) {
+  const { isInitialized } = useAuth();
   const { pathname, push } = useRouter();
   const [requestedLocation, setRequestedLocation] = useState(null);
 

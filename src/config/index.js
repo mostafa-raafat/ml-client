@@ -4,7 +4,7 @@ import { PATH_DASHBOARD } from 'Routes/paths';
 // API
 // ----------------------------------------------------------------------
 
-export const HOST_API = process.env.NEXT_PUBLIC_HOST_API || '';
+export const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const FIREBASE_API = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -40,6 +40,7 @@ export const NAVBAR = {
   DASHBOARD_ITEM_ROOT_HEIGHT: 48,
   DASHBOARD_ITEM_SUB_HEIGHT: 40,
   DASHBOARD_ITEM_HORIZONTAL_HEIGHT: 32,
+  DASHBOARD_ACCOUNT_POPOVER_WIDTH: 220,
 };
 
 export const ICON = {

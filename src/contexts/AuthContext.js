@@ -1,19 +1,9 @@
-import { createContext, useEffect, useReducer } from 'react';
+import { createContext, useReducer, useEffect } from 'react';
 import PropTypes from 'prop-types';
-// firebase
-import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, TwitterAuthProvider } from 'firebase/auth';
 // utils
-import axios from 'Utils/axios';
-import { isValidToken, destroySession, setSession } from 'Utils/jwt';
-//
-import { FIREBASE_API } from 'Config/index';
-
+import { axiosAuth, axiosPublic } from 'Utils/axios';
+import { useRouter } from 'next/router';
 // ----------------------------------------------------------------------
-
-const firebaseApp = initializeApp(FIREBASE_API);
-
-const AUTH = getAuth(firebaseApp);
 
 const initialState = {
   isAuthenticated: false,
@@ -24,6 +14,7 @@ const initialState = {
 const handlers = {
   INITIALIZE: (state, action) => {
     const { isAuthenticated, user } = action.payload;
+    debugger;
     return {
       ...state,
       isAuthenticated,
@@ -31,27 +22,12 @@ const handlers = {
       user,
     };
   },
-  LOGIN: (state, action) => {
-    const { user } = action.payload;
-
+  REFRESH_TOKEN: (state, action) => {
+    const { isAuthenticated } = action.payload;
+    debugger;
     return {
       ...state,
-      isAuthenticated: true,
-      user,
-    };
-  },
-  LOGOUT: (state) => ({
-    ...state,
-    isAuthenticated: false,
-    user: null,
-  }),
-  REGISTER: (state, action) => {
-    const { user } = action.payload;
-
-    return {
-      ...state,
-      isAuthenticated: true,
-      user,
+      isAuthenticated,
     };
   },
 };
@@ -67,6 +43,7 @@ const AuthContext = createContext({
   loginWithTwitter: () => Promise.resolve(),
   logout: () => Promise.resolve(),
   register: () => Promise.resolve(),
+  request_refresh: () => Promise.resolve(),
 });
 
 // ----------------------------------------------------------------------
@@ -75,67 +52,30 @@ AuthProvider.propTypes = {
   children: PropTypes.node,
 };
 
-function AuthProvider({ children }) {
-  const [state, dispatch] = useReducer(reducer, initialState);
-
-  useEffect(() => {
-    const initialize = async () => {
-      try {
-        const accessToken = window.localStorage.getItem('accessToken');
-
-        if (accessToken && isValidToken(accessToken)) {
-          setSession(accessToken);
-
-          const response = await axios.get('/users/auth/profile');
-
-          dispatch({
-            type: 'INITIALIZE',
-            payload: {
-              isAuthenticated: true,
-              user: response.data,
-            },
-          });
-        } else {
-          dispatch({
-            type: 'INITIALIZE',
-            payload: {
-              isAuthenticated: false,
-              user: null,
-            },
-          });
-        }
-      } catch (err) {
-        console.error(err);
-        dispatch({
-          type: 'INITIALIZE',
-          payload: {
-            isAuthenticated: false,
-            user: null,
-          },
-        });
-      }
-    };
-
-    initialize();
-  }, []);
+function AuthProvider({ children, isAuthenticated }) {
+  const [state, dispatch] = useReducer(reducer, { ...initialState, isAuthenticated });
+  const { pathname } = useRouter();
 
   const login = async (email, password) => {
-    const response = await axios.post('/users/auth/login', {
+    const { data } = await axiosAuth.post('/api/auth/login', {
       email,
       password,
     });
-    const { token, user } = response.data;
-    setSession(token);
+    debugger;
     dispatch({
-      type: 'LOGIN',
+      type: 'INITIALIZE',
       payload: {
-        user,
+        user: {
+          ...data,
+          displayName: data.firstName + ' ' + data.lastName,
+        },
+        isAuthenticated: true,
       },
     });
   };
 
   const register = async (email, password, firstName, lastName, mobile) => {
-    const response = await axios.post('/users/auth/register', {
+    return await axiosPublic.post('/users/auth/register', {
       email,
       password,
       firstName,
@@ -144,51 +84,75 @@ function AuthProvider({ children }) {
     });
   };
 
-  const loginWithGoogle = async () => {
-    const provider = new GoogleAuthProvider();
-    const result = await signInWithPopup(AUTH, provider);
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential.accessToken;
-    const user = result.user;
-
-    setSession(token);
-    dispatch({
-      type: 'LOGIN',
-      payload: {
-        user,
-      },
-    });
-  };
-
-  const loginWithFaceBook = async () => {
-    const provider = new FacebookAuthProvider();
-    const result = await signInWithPopup(AUTH, provider);
-
-    setSession(accessToken);
-    dispatch({
-      type: 'LOGIN',
-      payload: {
-        user,
-      },
-    });
-  };
-
-  const loginWithTwitter = async () => {
-    const provider = new TwitterAuthProvider();
-    const result = await signInWithPopup(AUTH, provider);
-    setSession(accessToken);
-    dispatch({
-      type: 'LOGIN',
-      payload: {
-        user,
-      },
-    });
-  };
-
   const logout = async () => {
-    destroySession();
-    dispatch({ type: 'LOGOUT' });
+    await axiosAuth.post('/api/auth/logout');
+    debugger;
+    dispatch({
+      type: 'INITIALIZE',
+      payload: { isAuthenticated: false, user: null },
+    });
   };
+
+  const request_refresh = async () => {
+    try {
+      await axiosAuth.get('/api/auth/refresh');
+      debugger;
+      dispatch({
+        type: 'REFRESH_TOKEN',
+        payload: {
+          isAuthenticated: true,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+      debugger;
+      dispatch({
+        type: 'INITIALIZE',
+        payload: {
+          isAuthenticated: false,
+          user: null,
+        },
+      });
+    }
+  };
+
+  const userProfile = async () => {
+    try {
+      const { data } = await axiosAuth.get('/api/auth/user');
+      dispatch({
+        type: 'INITIALIZE',
+        payload: {
+          isAuthenticated: true,
+          user: {
+            ...data,
+            displayName: data.firstName + data.lastName,
+          },
+        },
+      });
+    } catch (err) {
+      console.error(err);
+      debugger;
+      dispatch({
+        type: 'INITIALIZE',
+        payload: {
+          isAuthenticated: false,
+          user: null,
+        },
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (state?.isAuthenticated) {
+      userProfile();
+    }
+  }, [state?.isAuthenticated]);
+
+  useEffect(() => {
+    if (state?.isAuthenticated) {
+      request_refresh();
+    }
+  }, [pathname]);
 
   return (
     <AuthContext.Provider
@@ -198,9 +162,7 @@ function AuthProvider({ children }) {
         login,
         logout,
         register,
-        loginWithGoogle,
-        loginWithFaceBook,
-        loginWithTwitter,
+        request_refresh,
       }}
     >
       {children}

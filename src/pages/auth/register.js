@@ -1,4 +1,6 @@
 import { capitalCase } from 'change-case';
+// cookies
+import cookie from 'cookie';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Card, Container, Typography, Tooltip } from '@mui/material';
@@ -63,14 +65,14 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const Register = () => {
+const Register = ({isAuthenticated}) => {
   const { method } = useAuth();
 
   const smUp = useResponsive('up', 'sm');
   const mdUp = useResponsive('up', 'md');
 
   return (
-    <GuestGuard>
+    <GuestGuard isAuthenticated={isAuthenticated}>
       <Page title="Register">
         <RootStyle>
           <HeaderStyle>
@@ -150,3 +152,21 @@ const Register = () => {
 };
 
 export default Register;
+
+export async function getServerSideProps({ req }) {
+  const cookies = cookie.parse(req.headers.cookie ?? '');
+  const access = cookies.access ?? false;
+  if (access) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/user/account',
+      },
+    };
+  }
+  return {
+    props: {
+      isAuthenticated: access ? true : false,
+    },
+  };
+}

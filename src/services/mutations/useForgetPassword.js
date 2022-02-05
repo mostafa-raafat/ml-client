@@ -1,8 +1,8 @@
 import { useMutation } from 'react-query';
-import axiosInstance from 'Utils/axios';
+import { axiosPublic } from 'Utils/axios';
 
 const forgetPassword = (email) =>
-  axiosInstance.post('/users/auth/forgot-password', {
+  axiosPublic.post('/users/auth/forgot-password', {
     email,
   });
 

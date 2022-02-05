@@ -19,9 +19,10 @@ const StyledOption = styled(Box)(({ theme, active }) => ({
 
 const CurrencyOption = ({ option, active = true, defaultLabel = 'Choose option', ...props }) => {
   const name = option ? option.name : defaultLabel;
+
   return (
     <StyledOption active={active} {...props}>
-      {option && (
+      {option?.code && (
         <Image
           src={`${AWS_PACKET_API}/currencies/${option.code.toLowerCase()}.png`}
           srcSet={`${AWS_PACKET_API}/currencies/${option.code.toLowerCase()}.png 2x`}
@@ -36,10 +37,21 @@ const CurrencyOption = ({ option, active = true, defaultLabel = 'Choose option',
 };
 
 export default function CurrencyAutoComplete({ width = 400, currency, ...props }) {
-  const { isLoading, data } = useGetCurrencies();
+  const { isLoading, data = [] } = useGetCurrencies();
+  const option = data.find((item) => item.code === currency.code);
+
+  const isOptionEqualToValue = (option, value) => option.code === value.code;
+
   return (
-    <AutoComplete options={data} loading={isLoading} width={width} OptionComponent={CurrencyOption} {...props}>
-      <CurrencyOption option={currency} component="span" active={!!currency} defaultLabel="Choose currency" />
+    <AutoComplete
+      options={data}
+      loading={isLoading}
+      width={width}
+      OptionComponent={CurrencyOption}
+      isOptionEqualToValue={isOptionEqualToValue}
+      {...props}
+    >
+      <CurrencyOption option={option} component="span" active={!!currency} defaultLabel="Choose currency" />
     </AutoComplete>
   );
 }

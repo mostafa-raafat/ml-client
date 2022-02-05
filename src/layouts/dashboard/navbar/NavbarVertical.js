@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 // next
 import { useRouter } from 'next/router';
 // @mui
@@ -11,10 +11,13 @@ import useCollapseDrawer from 'Hooks/useCollapseDrawer';
 // utils
 import cssStyles from 'Utils/cssStyles';
 // config
-import { NAVBAR } from 'Config/index';
+import { AWS_PACKET_API, NAVBAR } from 'Config/index';
 // services
-import useGetBalances from 'Services/query/useGetBalance';
+import useGetBalances from 'Services/query/useGetBalances';
+// routes
+import { PATH_DASHBOARD } from 'Routes/paths';
 // components
+import Image from 'Components/Image';
 import Logo from 'Components/Logo';
 import Scrollbar from 'Components/Scrollbar';
 import { NavSectionVertical } from 'Components/nav-section';
@@ -22,7 +25,7 @@ import { NavSectionVertical } from 'Components/nav-section';
 import navConfig from './NavConfig';
 import NavbarDocs from './NavbarDocs';
 import CollapseButton from './CollapseButton';
-import { PATH_DASHBOARD } from 'Routes/paths';
+import { Icon } from '@iconify/react';
 
 // ----------------------------------------------------------------------
 
@@ -44,25 +47,43 @@ NavbarVertical.propTypes = {
 
 export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
   const theme = useTheme();
-
-  const [active, setActive] = useState(true);
-
-  useEffect(() => {
-    if (active) setActive(false);
-  });
-
-  const { pathname } = useRouter();
-
   const isDesktop = useResponsive('up', 'lg');
+
+  const { pathname, push } = useRouter();
 
   const { isCollapse, collapseClick, collapseHover, onToggleCollapse, onHoverEnter, onHoverLeave } =
     useCollapseDrawer();
+
+  const { data = [] } = useGetBalances();
+
+  const userNavConfig = useMemo(() => {
+    const configItems = data.map(({ amount, currencyCode, balanceId }) => ({
+      title: `${amount} ${currencyCode}`,
+      path: `${PATH_DASHBOARD.user.balances}/${balanceId}`,
+      query: { amount, code: currencyCode },
+      icon: (
+        <Image
+          key={balanceId}
+          src={`${AWS_PACKET_API}/currencies/${currencyCode.toLowerCase()}.png`}
+          alt={currencyCode}
+          width={36}
+          height={28}
+        />
+      ),
+    }));
+    const addBalance = {
+      title: 'Open a balance',
+      path: PATH_DASHBOARD.user.balances,
+      icon: <Icon icon="akar-icons:plus" />,
+    };
+    navConfig['balances']['items'] = [...configItems, addBalance];
+    return Object.values(navConfig);
+  }, [data]);
 
   useEffect(() => {
     if (isOpenSidebar) {
       onCloseSidebar();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   const renderContent = (
@@ -96,14 +117,14 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
             sx={{
               px: 5,
             }}
-            onClick={() => push(PATH_DASHBOARD.user.sendMoney)}
+            onClick={() => push(PATH_DASHBOARD.user.balances)}
           >
             Send Money
           </Button>
         </Stack>
       </Stack>
 
-      <NavSectionVertical navConfig={navConfig} isCollapse={isCollapse} />
+      <NavSectionVertical navConfig={userNavConfig} isCollapse={isCollapse} />
 
       <Box sx={{ flexGrow: 1 }} />
 

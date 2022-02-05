@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from 'react-query';
-import axiosInstance from 'Utils/axios';
+import { axiosAuth } from 'Utils/axios';
 
 const createBalance = (code) =>
-  axiosInstance.post('/balances', {
+  axiosAuth.post('api/balances', {
     currencyCode: code,
   });
 

@@ -1,8 +1,8 @@
 import { useMutation } from 'react-query';
-import axiosInstance from 'Utils/axios';
+import { axiosPublic } from 'Utils/axios';
 
 const verifyEmail = (token, code) =>
-  axiosInstance.post('/users/auth/verify-email', {
+  axiosPublic.post('/users/auth/verify-email', {
     token,
     code,
   });

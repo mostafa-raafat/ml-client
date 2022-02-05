@@ -2,7 +2,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Popper, ClickAwayListener, Autocomplete, InputBase, Box } from '@mui/material';
+import { Popper, ClickAwayListener, Autocomplete, InputBase, Box, Typography } from '@mui/material';
 //
 import AutoCompletePopper from './Popper';
 import AutoCompleteButton from './Button';
@@ -12,7 +12,6 @@ import AutoCompleteButton from './Button';
 const StyledPopper = styled(Popper)(({ theme, width }) => ({
   border: `1px solid ${theme.palette.grey[theme.palette.mode === 'light' ? 200 : 900]}`,
   borderRadius: theme.shape.borderRadius,
-  top: `-${theme.spacing(7)} !important`,
   width: width,
   zIndex: theme.zIndex.modal,
   backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
@@ -32,12 +31,25 @@ const StyledInput = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+const InputLabelStyle = styled(Typography)(({ theme }) => ({
+  paddingLeft: theme.spacing(1.5),
+  marginTop: theme.spacing(1),
+  color: theme.palette.primary.main,
+  position: 'absolute',
+  top: `-${theme.spacing(2.2)}`,
+  left: theme.spacing(1),
+  background: theme.palette.background.default,
+  padding: theme.spacing(0, 0.7),
+}));
+
 AutoComplete.propTypes = {
   options: PropTypes.arrayOf(PropTypes.object),
   width: PropTypes.number,
   onChange: PropTypes.func,
   children: PropTypes.node,
   OptionComponent: PropTypes.func,
+  label: PropTypes.string,
+  sx: PropTypes.object,
 };
 
 export default function AutoComplete({
@@ -48,6 +60,10 @@ export default function AutoComplete({
   children,
   onChange,
   OptionComponent,
+  isOptionEqualToValue = () => {},
+  label = '',
+  sx,
+  ...other
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [value, setValue] = useState(null);
@@ -68,12 +84,31 @@ export default function AutoComplete({
   const id = open ? 'autoComplete-label' : undefined;
 
   return (
-    <Box width={ButtonWidth + 2}>
+    <Box width={ButtonWidth + 2} sx={{ ...sx, position: 'relative' }} {...other}>
       <AutoCompleteButton onClick={handleClick} width={ButtonWidth}>
         {children}
       </AutoCompleteButton>
 
-      <StyledPopper id={id} open={open} anchorEl={anchorEl} width={dropDownWidth + 2}>
+      {label && (
+        <InputLabelStyle variant="body2" component="div">
+          {label}
+        </InputLabelStyle>
+      )}
+
+      <StyledPopper
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        width={dropDownWidth + 2}
+        modifiers={[
+          {
+            name: 'offset',
+            options: {
+              offset: [0, -64],
+            },
+          },
+        ]}
+      >
         <ClickAwayListener onClickAway={handleClose}>
           <Autocomplete
             open
@@ -102,6 +137,7 @@ export default function AutoComplete({
                 </Box>
               );
             }}
+            isOptionEqualToValue={isOptionEqualToValue}
             options={options}
             loading={loading}
             clearOnBlur={false}

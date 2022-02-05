@@ -8,11 +8,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Stack, Alert, IconButton, InputAdornment } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // routes
-import { PATH_AUTH } from 'Routes/paths';
+import { PATH_AUTH, PATH_DASHBOARD } from 'Routes/paths';
 // hooks
 import useAuth from 'Hooks/useAuth';
 import useIsMountedRef from 'Hooks/useIsMountedRef';
 import useLocales from 'Hooks/useLocales';
+import useServerRefresher from 'Hooks/useServerRefresher';
 // components
 import Link from 'Components/Link';
 import Iconify from 'Components/Iconify';
@@ -21,10 +22,11 @@ import { FormProvider, RHFTextField, RHFCheckbox } from 'Components/hook-form';
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
-  const { login } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const { translate } = useLocales();
 
+  const { login } = useAuth();
+  const refresh = useServerRefresher();
   const isMountedRef = useIsMountedRef();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -54,6 +56,7 @@ export default function LoginForm() {
   const onSubmit = async ({ email, password }) => {
     try {
       await login(email, password);
+      refresh();
       enqueueSnackbar('Login successfully!');
     } catch (error) {
       console.error(error);

@@ -8,6 +8,8 @@ import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem } from '@mui/material';
 // routes
 import { PATH_DASHBOARD, PATH_AUTH } from 'Routes/paths';
+// config
+import { DASHBOARD_ACCOUNT_POPOVER_WIDTH } from 'Config/index';
 // hooks
 import useAuth from 'Hooks/useAuth';
 import useIsMountedRef from 'Hooks/useIsMountedRef';
@@ -102,6 +104,7 @@ export default function AccountPopover() {
             typography: 'body2',
             borderRadius: 0.75,
           },
+          width: DASHBOARD_ACCOUNT_POPOVER_WIDTH,
         }}
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>

@@ -1,8 +1,8 @@
 import { useQuery } from 'react-query';
-import axiosInstance from 'Utils/axios';
+import { axiosPublic } from 'Utils/axios';
 
 const getCountries = async () => {
-  const { data } = await axiosInstance.get('/global/country');
+  const { data } = await axiosPublic.get('/global/country');
   return data;
 };
 

@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 // @mui
 import { enUS, arEG } from '@mui/material/locale';
-import axiosInstance from 'Utils/axios';
+import { axiosAuth, axiosPublic } from 'Utils/axios';
 
 // ----------------------------------------------------------------------
 
@@ -28,7 +28,8 @@ export default function useLocales() {
 
   const handleChangeLanguage = (lang) => {
     i18n.changeLanguage(lang);
-    axiosInstance.defaults.headers.common.language = lang;
+    axiosAuth.defaults.headers.common.language = lang;
+    axiosPublic.defaults.headers.common.language = lang;
   };
 
   return {

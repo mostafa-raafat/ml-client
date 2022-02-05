@@ -1,7 +1,14 @@
+// cookies
+import cookie from 'cookie';
+import { QueryClient } from 'react-query';
+import { dehydrate } from 'react-query/hydration';
 // @mui
 import { Grid, Container, Stack } from '@mui/material';
+// services
+import { getBalances } from 'Services/query/useGetBalances';
 // hooks
 import useSettings from 'Hooks/useSettings';
+import useLocales from 'Hooks/useLocales';
 // layouts
 import Layout from 'Layouts/index';
 // components
@@ -17,11 +24,9 @@ import {
   BankingRecentTransitions,
   BankingExpensesCategories,
 } from 'Sections/@dashboard/general/banking';
-import useLocales from 'Hooks/useLocales';
 
 // ----------------------------------------------------------------------
-
-export default function UserAccount(props) {
+function UserAccount() {
   const { themeStretch } = useSettings();
   const { translate } = useLocales();
 
@@ -79,3 +84,31 @@ export default function UserAccount(props) {
 UserAccount.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
+
+// ----------------------------------------------------------------------
+
+export async function getServerSideProps(ctx) {
+  const cookies = cookie.parse(ctx.req.headers.cookie ?? '');
+  const access = cookies.access ?? false;
+  if (!access) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/auth/login',
+      },
+    };
+  }
+
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery('balances', () => getBalances({ access }));
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+      isAuthenticated: access ? true : false,
+    },
+  };
+}
+
+export default UserAccount;

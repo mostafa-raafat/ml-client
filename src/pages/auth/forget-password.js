@@ -1,4 +1,6 @@
 import { useState } from 'react';
+// cookies
+import cookie from 'cookie';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Container, Typography } from '@mui/material';
@@ -28,12 +30,12 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const ForgetPassword = () => {
+const ForgetPassword = ({ isAuthenticated }) => {
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
 
   return (
-    <GuestGuard>
+    <GuestGuard isAuthenticated={isAuthenticated}>
       <Page title="Forget Password" sx={{ height: 1 }}>
         <RootStyle>
           <LogoOnlyLayout />
@@ -84,3 +86,21 @@ const ForgetPassword = () => {
 };
 
 export default ForgetPassword;
+
+export async function getServerSideProps({ req }) {
+  const cookies = cookie.parse(req.headers.cookie ?? '');
+  const access = cookies.access ?? false;
+  if (access) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/user/account',
+      },
+    };
+  }
+  return {
+    props: {
+      isAuthenticated: access ? true : false,
+    },
+  };
+}

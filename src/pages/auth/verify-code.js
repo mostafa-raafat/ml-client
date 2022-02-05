@@ -1,5 +1,7 @@
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
+// cookies
+import cookie from 'cookie';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Container, Typography, Alert } from '@mui/material';
@@ -32,7 +34,7 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const VerifyCode = () => {
+const VerifyCode = ({isAuthenticated}) => {
   const { query } = useRouter();
   const { translate } = useLocales();
   const { enqueueSnackbar } = useSnackbar();
@@ -46,7 +48,7 @@ const VerifyCode = () => {
       }
     );
   return (
-    <GuestGuard>
+    <GuestGuard isAuthenticated={isAuthenticated}>
       <Page title="Verify" sx={{ height: 1 }}>
         <RootStyle>
           <LogoOnlyLayout />
@@ -100,3 +102,21 @@ const VerifyCode = () => {
 };
 
 export default VerifyCode;
+
+export async function getServerSideProps({ req }) {
+  const cookies = cookie.parse(req.headers.cookie ?? '');
+  const access = cookies.access ?? false;
+  if (access) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/user/account',
+      },
+    };
+  }
+  return {
+    props: {
+      isAuthenticated: access ? true : false,
+    },
+  };
+}

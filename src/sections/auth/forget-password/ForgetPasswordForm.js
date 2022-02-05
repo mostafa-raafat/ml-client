@@ -27,6 +27,8 @@ export default function ForgetPasswordForm({ onSent, onGetEmail }) {
 
   const { mutate, error, isLoading, isError } = useForgetPassword();
 
+  console.log(error, isLoading, isError)
+
   const ResetPasswordSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
   });

@@ -1,8 +1,8 @@
 import { useQuery } from 'react-query';
-import axiosInstance from 'Utils/axios';
+import { axiosPublic } from 'Utils/axios';
 
 const getCurrencies = async () => {
-  const { data } = await axiosInstance.get('/global/currency');
+  const { data } = await axiosPublic.get('/global/currency');
   return data;
 };
 

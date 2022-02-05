@@ -1,8 +1,8 @@
 import { useMutation } from 'react-query';
-import axiosInstance from 'Utils/axios';
+import { axiosPublic } from 'Utils/axios';
 
 const resetPassword = (password, confirmPassword, token) =>
-  axiosInstance.post('/users/auth/reset-password', {
+  axiosPublic.post('/users/auth/reset-password', {
     password,
     confirmPassword,
     token,

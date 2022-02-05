@@ -1,64 +1,18 @@
+import PropTypes from 'prop-types';
 // nextjs
 import { useRouter } from 'next/router';
 // @mui
 import { styled } from '@mui/material/styles';
 import { useTheme } from '@mui/system';
-import {
-  Box,
-  Step,
-  Stepper as MuiStepper,
-  StepLabel,
-  StepConnector,
-  stepConnectorClasses,
-  Avatar,
-  Divider,
-  IconButton,
-  Stack,
-} from '@mui/material';
-// hooks
-import useFlowManager from 'Hooks/useFlowManager';
-// contexts
-import { FlowManagerActions } from 'Contexts/FlowManagerContext';
-// routes
-import { PATH_DASHBOARD } from 'Routes/paths';
+import { Box, Step, Stepper, Avatar, Divider, IconButton, Stack } from '@mui/material';
 // config
 import { FLOW } from 'Config/index';
 // components
 import Logo from 'Components/Logo';
 import Iconify from 'Components/Iconify';
-import { QontoStepIcon } from 'Components/Stepper';
+import { StepIcon, StepConnectorStyle, StepLabelStyle } from 'Components/Stepper';
 
 // ----------------------------------------------------------------------
-
-const QontoConnector = styled(StepConnector)(({ theme }) => ({
-  [`&.${stepConnectorClasses.alternativeLabel}`]: {
-    top: 10,
-    left: '-50%',
-    right: '50%',
-    marginTop: 0,
-  },
-  [`&.${stepConnectorClasses.active}`]: {
-    [`& .${stepConnectorClasses.line}`]: {
-      borderColor: theme.palette.success.main,
-    },
-  },
-  [`&.${stepConnectorClasses.completed}`]: {
-    [`& .${stepConnectorClasses.line}`]: {
-      borderColor: theme.palette.success.main,
-    },
-  },
-  [`& .${stepConnectorClasses.line}`]: {
-    borderRadius: 1,
-    borderTopWidth: 3,
-    borderColor: theme.palette.divider,
-  },
-}));
-
-const StepLabelStyle = styled(StepLabel)(({ theme }) => ({
-  '& span span': {
-    marginTop: `${theme.spacing(1)} !important`,
-  },
-}));
 
 const HeaderStyle = styled(Box)(({ theme }) => ({
   alignItems: 'center',
@@ -70,55 +24,46 @@ const HeaderStyle = styled(Box)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function FlowLayoutHeader() {
-  const {
-    flowManagerState: { steps, active },
-    flowManagerDispatch,
-  } = useFlowManager();
+FlowLayoutHeader.propTypes = {
+  labels: PropTypes.arrayOf(PropTypes.string).isRequired,
+  visitedSteps: PropTypes.arrayOf(PropTypes.bool).isRequired,
+  stepIndex: PropTypes.number.isRequired,
+  setActiveStep: PropTypes.func.isRequired,
+};
 
+// ----------------------------------------------------------------------
+
+export default function FlowLayoutHeader({ visitedSteps, stepIndex, labels, setActiveStep }) {
   const router = useRouter();
   const theme = useTheme();
-
-  const goBack = () => router.push(PATH_DASHBOARD.root);
 
   return (
     <HeaderStyle>
       <Box sx={{ width: FLOW.LOGO_WIDTH, alignItems: 'center', justifyContent: 'center', display: 'flex' }}>
         <Logo />
       </Box>
-      {steps.length > 1 && (
-        <MuiStepper
+      {visitedSteps.length > 1 && (
+        <Stepper
           alternativeLabel
-          activeStep={active}
-          connector={<QontoConnector />}
+          activeStep={stepIndex}
+          connector={<StepConnectorStyle />}
           sx={{
             flexGrow: '1',
             alignItems: 'center',
             justifyContent: 'center',
             minWidth: FLOW.STEPPER_WIDTH,
-            px: theme.spacing(3),
           }}
         >
-          {steps.map(({ label }, index) => (
-            <Step key={label}>
-              <StepLabelStyle
-                StepIconComponent={QontoStepIcon}
-                onClick={() =>
-                  index < active &&
-                  flowManagerDispatch({
-                    type: FlowManagerActions.ACTIVE_STEP,
-                    payload: {
-                      active: index,
-                    },
-                  })
-                }
-                sx={{ cursor: index < active ? 'pointer' : 'default' }}
-              >
-                {label}
-              </StepLabelStyle>
+          {visitedSteps.map((_, index) => (
+            <Step
+              key={labels[index]}
+              onClick={() => setActiveStep(index)}
+              sx={{ cursor: visitedSteps[index] && index < stepIndex ? 'pointer' : 'default' }}
+            >
+              <StepLabelStyle StepIconComponent={StepIcon}>{labels[index]}</StepLabelStyle>
             </Step>
           ))}
-        </MuiStepper>
+        </Stepper>
       )}
       <Stack
         direction="row"
@@ -131,7 +76,13 @@ export default function FlowLayoutHeader() {
           alt="Rayan Moran"
           sx={{ width: theme.spacing(6), height: theme.spacing(6) }}
         />
-        <IconButton size="large" color="primary" aria-label="upload picture" component="span" onClick={goBack}>
+        <IconButton
+          size="large"
+          color="primary"
+          aria-label="upload picture"
+          component="span"
+          onClick={() => router.back()}
+        >
           <Iconify icon="codicon:chrome-close" />
         </IconButton>
       </Stack>

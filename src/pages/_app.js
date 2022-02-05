@@ -30,7 +30,6 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import { SettingsProvider } from 'Contexts/SettingsContext';
 import { CollapseDrawerProvider } from 'Contexts/CollapseDrawerContext';
 import { AuthProvider } from 'Contexts/AuthContext';
-import { FlowManagerProvider } from 'Contexts/FlowManagerContext';
 // theme
 import ThemeProvider from 'Theme/index';
 // utils
@@ -56,7 +55,7 @@ MyApp.propTypes = {
 const queryClient = new QueryClient();
 
 export default function MyApp(props) {
-  const { Component, pageProps, settings } = props;
+  const { Component, pageProps, settings, isAuthenticated } = props;
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
@@ -67,28 +66,26 @@ export default function MyApp(props) {
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools />
         <Hydrate state={pageProps.dehydratedState}>
-          <AuthProvider>
+          <AuthProvider isAuthenticated={isAuthenticated}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <CollapseDrawerProvider>
                 <SettingsProvider defaultSettings={settings}>
-                  <FlowManagerProvider>
-                    <ThemeProvider>
-                      <NotistackProvider>
-                        <MotionLazyContainer>
-                          <ThemeColorPresets>
-                            <ThemeLocalization>
-                              <RtlLayout>
-                                <ChartStyle />
-                                <Settings />
-                                <ProgressBar />
-                                {getLayout(<Component {...pageProps} />)}
-                              </RtlLayout>
-                            </ThemeLocalization>
-                          </ThemeColorPresets>
-                        </MotionLazyContainer>
-                      </NotistackProvider>
-                    </ThemeProvider>
-                  </FlowManagerProvider>
+                  <ThemeProvider>
+                    <NotistackProvider>
+                      <MotionLazyContainer>
+                        <ThemeColorPresets>
+                          <ThemeLocalization>
+                            <RtlLayout>
+                              <ChartStyle />
+                              <Settings />
+                              <ProgressBar />
+                              {getLayout(<Component {...pageProps} />)}
+                            </RtlLayout>
+                          </ThemeLocalization>
+                        </ThemeColorPresets>
+                      </MotionLazyContainer>
+                    </NotistackProvider>
+                  </ThemeProvider>
                 </SettingsProvider>
               </CollapseDrawerProvider>
             </LocalizationProvider>
@@ -111,5 +108,6 @@ MyApp.getInitialProps = async (context) => {
   return {
     ...appProps,
     settings,
+    isAuthenticated: cookies.access ? true : false,
   };
 };

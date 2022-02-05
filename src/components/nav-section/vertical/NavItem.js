@@ -7,6 +7,7 @@ import { Box, Link, ListItemText } from '@mui/material';
 import Iconify from 'Components/Iconify';
 import { ListItemStyle, ListItemTextStyle, ListItemIconStyle } from './style';
 import { isExternalLink } from '..';
+import { useRouter } from 'next/router';
 
 // ----------------------------------------------------------------------
 
@@ -25,7 +26,17 @@ NavItemRoot.propTypes = {
 };
 
 export function NavItemRoot({ item, isCollapse, open = false, active, onOpen }) {
-  const { title, path, icon, info, children } = item;
+  const { title, path, icon, info, children, query = {} } = item;
+  const router = useRouter();
+
+  const goTo = (pathname, query) =>
+    router.push(
+      {
+        pathname,
+        query,
+      },
+      pathname
+    );
 
   const renderContent = (
     <>
@@ -53,9 +64,9 @@ export function NavItemRoot({ item, isCollapse, open = false, active, onOpen }) 
       {renderContent}
     </ListItemStyle>
   ) : (
-    <NextLink href={path}>
-      <ListItemStyle activeRoot={active}>{renderContent}</ListItemStyle>
-    </NextLink>
+    <ListItemStyle activeRoot={active} onClick={() => goTo(path, query)}>
+      {renderContent}
+    </ListItemStyle>
   );
 }
 

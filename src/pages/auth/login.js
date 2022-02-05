@@ -1,4 +1,6 @@
 import { capitalCase } from 'change-case';
+// cookies
+import cookie from 'cookie';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Card, Stack, Tooltip, Container, Typography } from '@mui/material';
@@ -63,14 +65,14 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const Login = () => {
+const Login = ({ isAuthenticated }) => {
   const { method } = useAuth();
 
   const smUp = useResponsive('up', 'sm');
   const mdUp = useResponsive('up', 'md');
 
   return (
-    <GuestGuard>
+    <GuestGuard isAuthenticated={isAuthenticated}>
       <Page title="Login">
         <RootStyle>
           <HeaderStyle>
@@ -139,3 +141,21 @@ const Login = () => {
 };
 
 export default Login;
+
+export async function getServerSideProps({ req }) {
+  const cookies = cookie.parse(req.headers.cookie ?? '');
+  const access = cookies.access ?? false;
+  if (access) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/user/account',
+      },
+    };
+  }
+  return {
+    props: {
+      isAuthenticated: access ? true : false,
+    },
+  };
+}

@@ -11,10 +11,10 @@ const ICONS = {
   gift: <Icon icon="bx:bx-gift" />,
 };
 
-const sidebarConfig = [
+const sidebarConfig = {
   // GENERAL
   // ----------------------------------------------------------------------
-  {
+  general: {
     subheader: '',
     items: [
       { title: 'Home', path: PATH_DASHBOARD.root, icon: ICONS.home },
@@ -26,20 +26,14 @@ const sidebarConfig = [
 
   // Balances
   // ----------------------------------------------------------------------
-  {
+  balances: {
     subheader: 'balances',
-    items: [
-      {
-        title: 'Open a balance',
-        path: PATH_DASHBOARD.user.balances,
-        icon: ICONS.plus,
-      },
-    ],
+    items: [],
   },
 
   // Jars
   // ----------------------------------------------------------------------
-  {
+  jars: {
     subheader: 'jars',
     items: [
       {
@@ -49,6 +43,6 @@ const sidebarConfig = [
       },
     ],
   },
-];
+};
 
 export default sidebarConfig;

@@ -1,17 +1,29 @@
 import axios from 'axios';
-
-// config
-import { HOST_API } from 'Config/index';
+import { API_URL } from 'Config/index';
 
 // ----------------------------------------------------------------------
 
-const axiosInstance = axios.create({
-  baseURL: HOST_API,
+const axiosPublic = axios.create({
+  baseURL: API_URL,
 });
 
-axiosInstance.interceptors.response.use(
+const axiosAuth = axios.create({
+  baseURL: '/',
+});
+
+axiosPublic.interceptors.response.use(
   (response) => response,
   (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong')
 );
 
-export default axiosInstance;
+axiosAuth.interceptors.response.use(
+  (response) => response,
+  (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong')
+  // (error) => {
+  //   if (error.response.status === 401) {
+  //     window.location = '/auth/login';
+  //   }
+  // }
+);
+
+export { axiosPublic, axiosAuth };

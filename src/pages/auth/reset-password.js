@@ -1,3 +1,5 @@
+// cookies
+import cookie from 'cookie';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Container, Typography } from '@mui/material';
@@ -25,9 +27,9 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const ResetPassword = () => {
+const ResetPassword = ({isAuthenticated}) => {
   return (
-    <GuestGuard>
+    <GuestGuard isAuthenticated={isAuthenticated}>
       <Page title="Reset Password" sx={{ height: 1 }}>
         <RootStyle>
           <LogoOnlyLayout />
@@ -53,3 +55,21 @@ const ResetPassword = () => {
 };
 
 export default ResetPassword;
+
+export async function getServerSideProps({ req }) {
+  const cookies = cookie.parse(req.headers.cookie ?? '');
+  const access = cookies.access ?? false;
+  if (access) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/user/account',
+      },
+    };
+  }
+  return {
+    props: {
+      isAuthenticated: access ? true : false,
+    },
+  };
+}

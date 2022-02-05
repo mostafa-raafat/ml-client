@@ -31,9 +31,8 @@ export const PATH_DASHBOARD = {
   account: '/account',
   recipients: '/recipients',
   user: {
-    balances: path(ROOTS_DASHBOARD, '/balances#create'),
+    balances: path(ROOTS_DASHBOARD, '/balances'),
     jars: path(ROOTS_DASHBOARD, '/jars#create'),
-    sendMoney: '/send#sourceaccount',
   },
   profile: '/profile',
   settings: '/settings',
