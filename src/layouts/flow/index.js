@@ -6,8 +6,6 @@ import { useRouter } from 'next/router';
 import { Container, Divider } from '@mui/material';
 // config
 import { FLOW } from 'Config/index';
-// guards
-import AuthGuard from 'Guards/AuthGuard';
 //
 import FlowLayoutContent from './content';
 import FlowLayoutHeader from './header';

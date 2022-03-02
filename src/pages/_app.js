@@ -24,7 +24,7 @@ import App from 'next/app';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 // react query
-import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
+import { dehydrate, Hydrate, QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 // contexts
 import { SettingsProvider } from 'Contexts/SettingsContext';
@@ -34,6 +34,8 @@ import { AuthProvider } from 'Contexts/AuthContext';
 import ThemeProvider from 'Theme/index';
 // utils
 import { getSettings } from 'Utils/settings';
+// Service
+import queries from 'Services/queries';
 // components
 import Settings from 'Components/settings';
 import RtlLayout from 'Components/RtlLayout';
@@ -55,7 +57,7 @@ MyApp.propTypes = {
 const queryClient = new QueryClient();
 
 export default function MyApp(props) {
-  const { Component, pageProps, settings, isAuthenticated } = props;
+  const { Component, pageProps, settings } = props;
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
@@ -66,7 +68,7 @@ export default function MyApp(props) {
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools />
         <Hydrate state={pageProps.dehydratedState}>
-          <AuthProvider isAuthenticated={isAuthenticated}>
+          <AuthProvider>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <CollapseDrawerProvider>
                 <SettingsProvider defaultSettings={settings}>
@@ -100,14 +102,14 @@ export default function MyApp(props) {
 
 MyApp.getInitialProps = async (context) => {
   const appProps = await App.getInitialProps(context);
-
   const cookies = cookie.parse(context.ctx.req ? context.ctx.req.headers.cookie || '' : document.cookie);
-
   const settings = getSettings(cookies);
+
+  // get all balances
+  // await queryClient.prefetchQuery('balances', () => queries.getBalances({ access }));
 
   return {
     ...appProps,
     settings,
-    isAuthenticated: cookies.access ? true : false,
   };
 };

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 // utils
 import { axiosAuth, axiosPublic } from 'Utils/axios';
 import { useRouter } from 'next/router';
+import { PATH_DASHBOARD } from 'Routes/paths';
 // ----------------------------------------------------------------------
 
 const initialState = {
@@ -14,20 +15,11 @@ const initialState = {
 const handlers = {
   INITIALIZE: (state, action) => {
     const { isAuthenticated, user } = action.payload;
-    debugger;
     return {
       ...state,
       isAuthenticated,
       isInitialized: true,
       user,
-    };
-  },
-  REFRESH_TOKEN: (state, action) => {
-    const { isAuthenticated } = action.payload;
-    debugger;
-    return {
-      ...state,
-      isAuthenticated,
     };
   },
 };
@@ -52,16 +44,16 @@ AuthProvider.propTypes = {
   children: PropTypes.node,
 };
 
-function AuthProvider({ children, isAuthenticated }) {
-  const [state, dispatch] = useReducer(reducer, { ...initialState, isAuthenticated });
+function AuthProvider({ children }) {
+  const [state, dispatch] = useReducer(reducer, { ...initialState });
   const { pathname } = useRouter();
+  const ProtectedRoute = Object.values(PATH_DASHBOARD).some((path) => pathname.includes(path));
 
   const login = async (email, password) => {
     const { data } = await axiosAuth.post('/api/auth/login', {
       email,
       password,
     });
-    debugger;
     dispatch({
       type: 'INITIALIZE',
       payload: {
@@ -86,7 +78,6 @@ function AuthProvider({ children, isAuthenticated }) {
 
   const logout = async () => {
     await axiosAuth.post('/api/auth/logout');
-    debugger;
     dispatch({
       type: 'INITIALIZE',
       payload: { isAuthenticated: false, user: null },
@@ -96,16 +87,15 @@ function AuthProvider({ children, isAuthenticated }) {
   const request_refresh = async () => {
     try {
       await axiosAuth.get('/api/auth/refresh');
-      debugger;
       dispatch({
-        type: 'REFRESH_TOKEN',
+        type: 'INITIALIZE',
         payload: {
           isAuthenticated: true,
+          user: state.user,
         },
       });
     } catch (err) {
       console.error(err);
-      debugger;
       dispatch({
         type: 'INITIALIZE',
         payload: {
@@ -131,7 +121,6 @@ function AuthProvider({ children, isAuthenticated }) {
       });
     } catch (err) {
       console.error(err);
-      debugger;
       dispatch({
         type: 'INITIALIZE',
         payload: {
@@ -143,13 +132,13 @@ function AuthProvider({ children, isAuthenticated }) {
   };
 
   useEffect(() => {
-    if (state?.isAuthenticated) {
+    if (ProtectedRoute) {
       userProfile();
     }
-  }, [state?.isAuthenticated]);
+  }, []);
 
   useEffect(() => {
-    if (state?.isAuthenticated) {
+    if (ProtectedRoute) {
       request_refresh();
     }
   }, [pathname]);

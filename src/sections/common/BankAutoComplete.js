@@ -2,7 +2,7 @@
 import { Avatar, Box } from '@mui/material';
 import { styled } from '@mui/system';
 // services
-import useGetCountries from 'Services/query/useGetCountries';
+import useGetCountries from 'Services/queries/useGetCountries';
 // components
 import AutoComplete from 'Components/autoComplete';
 

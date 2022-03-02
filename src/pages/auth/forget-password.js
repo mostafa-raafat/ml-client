@@ -1,6 +1,4 @@
 import { useState } from 'react';
-// cookies
-import cookie from 'cookie';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Container, Typography } from '@mui/material';
@@ -8,8 +6,6 @@ import { Box, Container, Typography } from '@mui/material';
 import LogoOnlyLayout from 'Layouts/LogoOnlyLayout';
 // routes
 import { PATH_AUTH } from 'Routes/paths';
-// guards
-import GuestGuard from 'Guards/GuestGuard';
 // assets
 import { SentIcon } from 'Assets/index';
 // sections
@@ -30,12 +26,12 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const ForgetPassword = ({ isAuthenticated }) => {
+const ForgetPassword = () => {
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
 
   return (
-    <GuestGuard isAuthenticated={isAuthenticated}>
+
       <Page title="Forget Password" sx={{ height: 1 }}>
         <RootStyle>
           <LogoOnlyLayout />
@@ -81,26 +77,8 @@ const ForgetPassword = ({ isAuthenticated }) => {
           </Container>
         </RootStyle>
       </Page>
-    </GuestGuard>
+  
   );
 };
 
 export default ForgetPassword;
-
-export async function getServerSideProps({ req }) {
-  const cookies = cookie.parse(req.headers.cookie ?? '');
-  const access = cookies.access ?? false;
-  if (access) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/user/account',
-      },
-    };
-  }
-  return {
-    props: {
-      isAuthenticated: access ? true : false,
-    },
-  };
-}

@@ -12,9 +12,12 @@ import FlowManager from 'Components/FlowManager';
 import Amount from './steps/amount';
 import Bank from './steps/bank';
 import Payment from './steps/confirm';
+import VerifyAccount from './steps/verify';
+import useAuth from 'Hooks/useAuth';
 
 const AddBalance = () => {
   const { mutate } = useCreateBalance();
+  const { user } = useAuth();
   const {
     push,
     query: { code, amount },
@@ -34,7 +37,7 @@ const AddBalance = () => {
         wrapper: {
           component: FlowLayout,
           props: {
-            labels: ['Amount', 'Bank', 'Payment'],
+            labels: ['Amount', 'Verify', 'Bank', 'Payment'],
           },
         },
         steps: [
@@ -45,7 +48,23 @@ const AddBalance = () => {
               variables: ['value', { currency: { code } }],
             },
             props: { amount },
-            enabledNext: ({ amount: { value = '', currency = '' } }) => parseInt(value) > 0 && currency,
+            enabledNext: ({ amount: { value = '', currency } }) => parseInt(value) > 0 && currency,
+            done: ({ manager: { skipStep } }) =>
+              new Promise((resolve, reject) => {
+                if (!user) {
+                  skipStep(1, true);
+                }
+                resolve();
+              }),
+          },
+          {
+            component: VerifyAccount,
+            stateContext: 'verify',
+            setters: {
+              variables: ['faceId', 'identityFront', 'identityBack'],
+            },
+            enabledNext: ({ verify: { faceId = '', identityFront = '', identityBack = '' } }) =>
+              faceId && identityFront && identityBack,
           },
           {
             component: Bank,

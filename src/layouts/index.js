@@ -1,6 +1,4 @@
 import PropTypes from 'prop-types';
-// guards
-import AuthGuard from 'Guards/AuthGuard';
 // components
 import MainLayout from './main';
 import FlowLayout from './flow';
@@ -24,11 +22,7 @@ export default function Layout({ variant = 'dashboard', children }) {
   }
 
   if (variant === 'flow') {
-    return (
-      <AuthGuard>
-        <FlowLayout>{children}</FlowLayout>
-      </AuthGuard>
-    );
+    return <FlowLayout>{children}</FlowLayout>;
   }
 
   return <DashboardLayout> {children} </DashboardLayout>;

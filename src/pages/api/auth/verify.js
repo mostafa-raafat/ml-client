@@ -22,8 +22,11 @@ export default async (req, res) => {
     });
 
     if (apiRes.status === 200) {
+      console.log('200');
       return res.status(200).json({ success: 'Authenticated successfully' });
     } else {
+      console.log('error');
+
       return res.status(apiRes.status).json(apiRes.data);
     }
   } catch (err) {

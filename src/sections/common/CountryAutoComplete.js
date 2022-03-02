@@ -4,7 +4,7 @@
 import { Box } from '@mui/material';
 import { styled } from '@mui/system';
 // services
-import useGetCountries from 'Services/query/useGetCountries';
+import useGetCountries from 'Services/queries/useGetCountries';
 // config
 import { AWS_PACKET_API } from 'Config/index';
 // components

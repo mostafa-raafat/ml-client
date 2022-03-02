@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 // routes
 import { PATH_DASHBOARD } from 'Routes/paths';
+// hooks
+import useAuth from 'Hooks/useAuth';
 
 // ----------------------------------------------------------------------
 
@@ -12,8 +14,9 @@ GuestGuard.propTypes = {
   isAuthenticated: PropTypes.bool,
 };
 
-export default function GuestGuard({ children, isAuthenticated }) {
+export default function GuestGuard({ children }) {
   const { push } = useRouter();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     if (isAuthenticated) {

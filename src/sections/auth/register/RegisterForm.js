@@ -1,6 +1,5 @@
 import * as Yup from 'yup';
 import { useState } from 'react';
-import { useSnackbar } from 'notistack';
 // next
 import { useRouter } from 'next/router';
 // form
@@ -26,7 +25,6 @@ export default function RegisterForm() {
   const { register } = useAuth();
   const { translate } = useLocales();
   const isMountedRef = useIsMountedRef();
-  const { enqueueSnackbar } = useSnackbar();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -61,13 +59,12 @@ export default function RegisterForm() {
   const onSubmit = async ({ email, password, firstName, lastName, mobile }) => {
     try {
       await register(email, password, firstName, lastName, mobile);
-      enqueueSnackbar('Register successfully!');
       router.push(PATH_AUTH.login);
     } catch (error) {
       console.error(error);
       reset();
       if (isMountedRef.current) {
-        setError('afterSubmit', error);
+        setError('afterSubmit', { ...error, message: error.message });
       }
     }
   };

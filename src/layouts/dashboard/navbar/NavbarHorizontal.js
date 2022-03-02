@@ -1,7 +1,7 @@
 import { memo } from 'react';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Container } from '@mui/material';
+import { Container, AppBar } from '@mui/material';
 // config
 import { HEADER } from 'Config/index';
 // components
@@ -11,7 +11,7 @@ import navConfig from './NavConfig';
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled('div')(({ theme }) => ({
+const RootStyle = styled(AppBar)(({ theme }) => ({
   transition: theme.transitions.create('top', {
     easing: theme.transitions.easing.easeInOut,
     duration: theme.transitions.duration.shorter,

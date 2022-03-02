@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Box } from '@mui/material';
 import { styled } from '@mui/system';
 // services
-import useGetCurrencies from 'Services/query/useGetCurrencies';
+import useGetCurrencies from 'Services/queries/useGetCurrencies';
 // config
 import { AWS_PACKET_API } from 'Config/index';
 // components

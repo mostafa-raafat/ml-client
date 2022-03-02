@@ -1,20 +1,16 @@
-import { axiosAuth } from 'Utils/axios';
+import { axiosAuth, ssrHeaders } from 'Utils/axios';
 
-const getBalance = async ({ id, access }) => {
+const getBalance = async ({ id, access = false } = {}) => {
   const { data } = await axiosAuth.get(`http://localhost:3222/api/balances/${id}`, {
-    headers: {
-      Cookie: `access=${access};`,
-    },
+    ...ssrHeaders(access),
     withCredentials: true,
   });
   return data;
 };
 
-const getBalances = async ({ access }) => {
+const getBalances = async ({ access } = { access: false }) => {
   const { data } = await axiosAuth.get('http://localhost:3222/api/balances', {
-    headers: {
-      Cookie: `access=${access};`,
-    },
+    ...ssrHeaders(access),
     withCredentials: true,
   });
   return data;

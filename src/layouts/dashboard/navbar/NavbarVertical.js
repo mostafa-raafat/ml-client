@@ -13,7 +13,7 @@ import cssStyles from 'Utils/cssStyles';
 // config
 import { AWS_PACKET_API, NAVBAR } from 'Config/index';
 // services
-import useGetBalances from 'Services/query/useGetBalances';
+import queries from 'Services/queries';
 // routes
 import { PATH_DASHBOARD } from 'Routes/paths';
 // components
@@ -54,7 +54,7 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
   const { isCollapse, collapseClick, collapseHover, onToggleCollapse, onHoverEnter, onHoverLeave } =
     useCollapseDrawer();
 
-  const { data = [] } = useGetBalances();
+  const { data = [] } = queries.useGetBalances();
 
   const userNavConfig = useMemo(() => {
     const configItems = data.map(({ amount, currencyCode, balanceId }) => ({

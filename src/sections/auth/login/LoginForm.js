@@ -1,6 +1,5 @@
 import * as Yup from 'yup';
 import { useState } from 'react';
-import { useSnackbar } from 'notistack';
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -13,20 +12,19 @@ import { PATH_AUTH, PATH_DASHBOARD } from 'Routes/paths';
 import useAuth from 'Hooks/useAuth';
 import useIsMountedRef from 'Hooks/useIsMountedRef';
 import useLocales from 'Hooks/useLocales';
-import useServerRefresher from 'Hooks/useServerRefresher';
 // components
 import Link from 'Components/Link';
 import Iconify from 'Components/Iconify';
 import { FormProvider, RHFTextField, RHFCheckbox } from 'Components/hook-form';
+import { useRouter } from 'next/router';
 
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
-  const { enqueueSnackbar } = useSnackbar();
   const { translate } = useLocales();
 
   const { login } = useAuth();
-  const refresh = useServerRefresher();
+  const router = useRouter();
   const isMountedRef = useIsMountedRef();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -56,13 +54,12 @@ export default function LoginForm() {
   const onSubmit = async ({ email, password }) => {
     try {
       await login(email, password);
-      refresh();
-      enqueueSnackbar('Login successfully!');
+      router.push(PATH_DASHBOARD);
     } catch (error) {
       console.error(error);
       reset();
       if (isMountedRef.current) {
-        setError('afterSubmit', error);
+        setError('afterSubmit', { ...error, message: error.message });
       }
     }
   };

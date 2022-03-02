@@ -3,12 +3,23 @@ import { API_URL } from 'Config/index';
 
 // ----------------------------------------------------------------------
 
-const axiosPublic = axios.create({
-  baseURL: API_URL,
-});
-
+// Next.js API
 const axiosAuth = axios.create({
   baseURL: '/',
+});
+
+axiosAuth.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    return Promise.reject((error.response && error.response.data) || 'Something went wrong');
+  }
+);
+
+// ------------------------------------------------------------------------------------------------
+
+// Backend API
+const axiosPublic = axios.create({
+  baseURL: API_URL,
 });
 
 axiosPublic.interceptors.response.use(
@@ -16,14 +27,14 @@ axiosPublic.interceptors.response.use(
   (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong')
 );
 
-axiosAuth.interceptors.response.use(
-  (response) => response,
-  (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong')
-  // (error) => {
-  //   if (error.response.status === 401) {
-  //     window.location = '/auth/login';
-  //   }
-  // }
-);
+// ------------------------------------------------------------------------------------------------
 
-export { axiosPublic, axiosAuth };
+const ssrHeaders = (access) => ({
+  ...(access && {
+    headers: {
+      Cookie: `access=${access};`,
+    },
+  }),
+});
+
+export { axiosPublic, axiosAuth, ssrHeaders };
